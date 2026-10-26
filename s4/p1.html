@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4과목 1. 전기안전관리업무 수행</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 4과목 · 전기설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 1. 전기안전관리업무 수행 · 세세항목 6개 → 학습단위 7개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">4과목 목차</a><span class="dis">◀ 이전</span><a href="p2.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s4-p1-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'1-1. 전기안전관리'},
+{id:'a1',title:'1. 배(분)전반',
+ core:'배전반 = 전력 {{수전·분배·제어·보호}} 장치를 모은 반 / 분전반 = {{부하 쪽으로 나누는}} 반 / 안전 {{외함 접지·충전부 방호·잠금·명칭 표시·정면 작업 공간}}',
+ def:'<ul><li><b>배전반</b>: 수전한 전력을 계측·제어·보호하고 각 계통으로 보내는 개폐기·계기·계전기를 모아 둔 반</li><li><b>분전반</b>: 배전반에서 받은 전력을 각 부하(조명·콘센트·기계)로 나누어 보내는 분기회로용 반</li></ul>',
+ detail:'<ul><li>구성: 차단기(MCCB·ELB), 개폐기, 계기(전압·전류계), 보호계전기, 모선, 단자대</li><li>안전 기준<ul><li>외함은 금속제로 하고 <b>보호접지</b></li><li>충전부가 노출되지 않게 폐쇄형 구조·보호판</li><li>문은 잠금장치, 관계자 외 조작 금지 표지</li><li>각 회로의 명칭·용도 표시 (잘못 차단 방지)</li><li>앞면에 작업·점검 공간 확보, 습기·먼지·인화성 물질 차단</li><li>정전 작업 시 해당 차단기에 잠금·표지(LOTO)</li></ul></li></ul>',
+ ex:'<ul><li>분전반 회로 이름이 없어 엉뚱한 회로를 끄고 작업 → 감전 → 회로 명칭 표시 필수</li></ul>',
+ exam:'<ul><li>배전반 안전 조치 (접지, 충전부 방호, 잠금)</li></ul>',
+ law:'산업안전보건기준에 관한 규칙 제2편 제3장(전기로 인한 위험 방지), 한국전기설비규정(KEC).'},
+
+{id:'a2',title:'2. 개폐기',
+ core:'{{단로기(DS)}} 무부하 개폐만 / {{부하개폐기(LBS)}} 부하전류 개폐 / {{차단기(CB)}} 고장(단락)전류까지 차단 / 차단 순서 {{CB → DS}}, 투입 순서 {{DS → CB}}',
+ def:'<ul><li><b>개폐기</b>: 전기 회로를 열고 닫는 장치. 끊을 수 있는 전류의 크기에 따라 종류가 나뉩니다.</li></ul>',
+ why:'<ul><li>단로기는 아크를 끄는 능력이 없어서 부하전류가 흐를 때 열면 큰 아크가 생겨 화상·폭발이 납니다. 그래서 반드시 차단기로 먼저 전류를 끊어야 합니다.</li></ul>',
+ detail:'<table><tr><th>개폐기</th><th>끊을 수 있는 전류</th><th>용도</th></tr><tr><td>{{단로기(DS)}}</td><td>무부하(전류 거의 없음)</td><td>점검 시 회로를 눈에 보이게 분리 (아크 소호 능력 없음)</td></tr><tr><td>{{부하개폐기(LBS)}}</td><td>정상 부하전류</td><td>부하 개폐 (고장전류는 퓨즈와 조합)</td></tr><tr><td>{{차단기(CB)}}</td><td>부하전류 + 고장(단락)전류</td><td>사고 시 자동 차단</td></tr><tr><td>퓨즈</td><td>과전류에서 녹아 차단</td><td>단락 보호, 1회용</td></tr></table><b>차단기 종류 (소호 방식)</b>: 유입(OCB, 기름), 기중(ACB, 공기, 저압), 진공(VCB, 고압에 많이 씀), 가스(GCB, SF<sub>6</sub>), 공기(ABB, 압축공기), 자기(MBB), 배선용(MCCB, 저압)<br><b>조작 순서</b><ul><li>정전(차단): 차단기(CB) 먼저 개방 → 단로기(DS) 개방</li><li>송전(투입): 단로기(DS) 먼저 투입 → 차단기(CB) 투입</li><li>단로기 오조작 방지: 인터록 설치</li></ul>',
+ ex:'<ul><li>수변전실 점검: VCB 개방 → DS 개방 → 검전 → 접지 → 작업</li></ul>',
+ cmp:'<table><tr><th>단로기</th><th>차단기</th></tr><tr><td>전류 없을 때만 열기</td><td>사고 전류도 끊음</td></tr><tr><td>끌 때 나중, 켤 때 먼저</td><td>끌 때 먼저, 켤 때 나중</td></tr></table>',
+ exam:'<ul><li>차단·투입 순서 (자주 출제)</li><li>단로기 특징 (부하전류 차단 불가)</li></ul>',
+ law:'안전보건기준규칙 제2편 제3장, KEC.'},
+
+{id:'a3',title:'3. 보호계전기',
+ core:'{{과전류(OCR)}} · {{지락(GR·OCGR)}} · {{과전압(OVR)}} · {{부족전압(UVR)}} · {{비율차동}}(변압기 내부 고장) · 방향 계전기 / 이상 감지 → {{차단기에 트립 신호}}',
+ def:'<ul><li><b>보호계전기</b>: 전력 계통의 이상(과전류·지락·전압 이상)을 감지해 차단기를 작동시키는 장치</li></ul>',
+ detail:'<table><tr><th>계전기</th><th>감지 대상</th></tr><tr><td>{{과전류계전기(OCR)}}</td><td>과부하·단락으로 전류가 설정값 초과</td></tr><tr><td>{{지락계전기(GR, OCGR)}}</td><td>지락(전선이 대지와 접촉) 전류</td></tr><tr><td>{{과전압계전기(OVR)}}</td><td>전압이 설정값 이상</td></tr><tr><td>{{부족전압계전기(UVR)}}</td><td>정전·전압 강하 (재기동 사고 방지)</td></tr><tr><td>{{비율차동계전기}}</td><td>변압기·발전기 <b>내부 고장</b> (입·출력 전류 차이)</td></tr><tr><td>방향계전기·거리계전기</td><td>고장 방향, 고장 지점까지 거리 (송전선)</td></tr></table><ul><li>동작 특성: 순한시(즉시), 정한시(일정 시간), 반한시(전류가 클수록 빨리), 반한시 정한시</li><li>정기적으로 동작 시험(계전기 시험)</li></ul>',
+ exam:'<ul><li>계전기와 감지 대상 짝짓기 (변압기 내부 고장 = 비율차동)</li></ul>',
+ law:'KEC, 전기안전관리법(정기검사).'},
+
+{id:'a4',title:'4. 과전류 및 누전 차단기',
+ core:'누전차단기 {{정격감도전류 30mA 이하·동작시간 0.03초 이내}} / 설치 대상 {{대지전압 150V 초과 이동·휴대형·물 등 도전성 높은 장소·철판 위·임시배선}} / 과전류차단기 {{배선용 차단기·퓨즈}}',
+ def:'<ul><li><b>과전류차단기</b>: 과부하·단락으로 전류가 넘치면 차단 (배선·기기 보호, 화재 예방)</li><li><b>누전차단기(ELB, RCD)</b>: 누설전류(지락)를 감지해 차단 (감전·누전화재 예방)</li></ul>',
+ why:'<ul><li>과전류차단기는 사람이 감전되는 정도의 작은 전류(수십 mA)로는 작동하지 않습니다. 사람을 지키는 것은 누전차단기입니다.</li></ul>',
+ detail:'<b>누전차단기 (안전보건기준규칙 제304조)</b><ul><li>설치 대상<ul><li>대지전압 {{150V 초과}} 이동형·휴대형 전기기계·기구</li><li>물 등 도전성이 높은 액체가 있는 습윤 장소에서 쓰는 저압용 전기기계·기구</li><li>철판·철골 위 등 도전성이 높은 장소에서 쓰는 이동형·휴대형</li><li>임시배선 전로에 접속하는 이동형·휴대형</li></ul></li><li>성능: 정격감도전류 {{30mA 이하}}, 동작시간 {{0.03초 이내}} (고감도 고속형)</li><li>정격전부하전류 50A 이상 대용량은 정격감도전류 200mA 이하, 동작시간 0.1초 이내로 할 수 있음</li><li>작동 여부를 시험 버튼으로 점검</li></ul><b>누전차단기 분류</b><table><tr><th>감도</th><th>정격감도전류</th></tr><tr><td>고감도형</td><td>5~30mA</td></tr><tr><td>중감도형</td><td>50~1,000mA</td></tr><tr><td>저감도형</td><td>3~20A</td></tr></table><table><tr><th>동작시간</th><th>시간</th></tr><tr><td>고속형</td><td>0.1초 이내 (감전 보호용은 0.03초)</td></tr><tr><td>시연형</td><td>0.1초 초과 2초 이내</td></tr><tr><td>반한시형</td><td>전류가 클수록 빨리</td></tr></table><b>과전류차단기</b>: 배선용 차단기(MCCB), 퓨즈 — 단락 시 빠르게, 과부하 시 시간 지연 후 차단',
+ ex:'<ul><li>건설 현장 임시 분전반에서 쓰는 전동 공구 → 누전차단기 필수</li></ul>',
+ cmp:'<table><tr><th>과전류차단기</th><th>누전차단기</th></tr><tr><td>기계·배선 보호 (큰 전류)</td><td>사람 보호 (30mA)</td></tr></table>',
+ exam:'<ul><li>30mA · 0.03초 (매회 출제 수준)</li><li>누전차단기 설치 대상 (150V 초과)</li></ul>',
+ law:'안전보건기준규칙 제304조(누전차단기에 의한 감전방지), 제305조(과전류 차단장치).'},
+
+{id:'a5',title:'5. 정격차단용량 (kA)',
+ core:'3상 차단용량 = {{√3 × 정격전압 × 정격차단전류}} / 단락전류 Is = {{(100 ÷ %Z) × In}} / 차단용량은 설치 지점 {{최대 단락전류 이상}}',
+ def:'<ul><li><b>정격차단전류</b>: 차단기가 끊을 수 있는 최대 고장(단락) 전류 (kA)</li><li><b>정격차단용량</b>: 그 전류를 끊을 수 있는 능력을 전력(MVA)으로 나타낸 값</li></ul>',
+ why:'<ul><li>단락 전류가 차단기 능력보다 크면 차단기가 끊지 못하고 폭발합니다. 그래서 설치 지점의 최대 단락전류를 계산해 그보다 큰 차단기를 고릅니다.</li></ul>',
+ detail:'<ul><li>3상: 차단용량(MVA) = √3 × 정격전압(kV) × 정격차단전류(kA)</li><li>단상: 차단용량 = 정격전압 × 정격차단전류</li><li>단락전류: Is = (100 ÷ %Z) × In (In: 정격전류, %Z: 퍼센트 임피던스) — %Z가 작을수록 단락전류가 큼</li><li>차단기 정격차단전류 ≥ 설치 지점 최대 단락전류</li></ul>',
+ calc:'① 7.2kV, 12.5kA 차단기 → √3 × 7.2 × 12.5 ≈ <b>155.9MVA</b><br>② 정격전류 100A, %Z = 5% → Is = (100 ÷ 5) × 100 = <b>2,000A</b>',
+ exam:'<ul><li>3상 차단용량 계산 (√3 빠뜨리기 함정)</li></ul>',
+ law:'KEC.'},
+
+{id:'a6',title:'6. 전기안전 관련 법령',
+ core:'{{산업안전보건기준에 관한 규칙 제2편 제3장}}(근로자 감전·전기화재 방지) / {{전기안전관리법}}(전기설비 안전관리자·검사) / {{한국전기설비규정(KEC)}}(전기설비 기술기준) / 전압 구분 {{저압 AC 1kV·DC 1.5kV 이하}}, {{특고압 7kV 초과}}',
+ def:'<ul><li>전기 안전은 여러 법령이 함께 규율합니다. 산업안전기사 시험은 주로 안전보건기준규칙(사업주 의무)과 KEC(기술 기준)를 묻습니다.</li></ul>',
+ detail:'<table><tr><th>법령</th><th>내용</th></tr><tr><td>{{산업안전보건기준에 관한 규칙}} 제2편 제3장</td><td>전기기계·기구 위험 방지, 충전부 방호, 누전차단기, 접지, 정전·활선 작업, 정전기, 방폭</td></tr><tr><td>{{전기안전관리법}} (2021~)</td><td>전기안전관리자 선임, 사용 전·정기 검사, 전기안전 점검</td></tr><tr><td>{{한국전기설비규정(KEC)}} (2021~)</td><td>전기설비 기술 기준 — 전압 구분, 접지, 보호, 배선</td></tr><tr><td>전기사업법</td><td>전기사업, 전기설비 기술기준 근거</td></tr></table><b>전압의 구분 (KEC, 2021년부터)</b><table><tr><th>구분</th><th>교류(AC)</th><th>직류(DC)</th></tr><tr><td>{{저압}}</td><td>1kV 이하</td><td>1.5kV 이하</td></tr><tr><td>{{고압}}</td><td>1kV 초과 7kV 이하</td><td>1.5kV 초과 7kV 이하</td></tr><tr><td>{{특고압}}</td><td colspan="2">7kV 초과</td></tr></table><span style="color:var(--sub);font-size:13px">※ 옛 기준(저압 AC 600V·DC 750V 이하)은 2021년 KEC 시행으로 바뀜. 옛 기출 해설 주의.</span>',
+ exam:'<ul><li>전압 구분 (KEC 기준)</li></ul>',
+ law:'산업안전보건기준에 관한 규칙 제301조~제327조, 전기안전관리법, 한국전기설비규정.'},
+
+{id:'a7',title:'키워드 카드 — 4과목 주요항목 1',tag:'암기',
+ core:'DS {{무부하}} / 끌 때 {{CB → DS}} / 30mA·0.03초 / √3 × V × I / 저압 {{AC 1kV}}',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>무부하 개폐만</td><td>{{단로기}}</td></tr><tr><td>고장전류 차단</td><td>{{차단기}}</td></tr><tr><td>정전 순서</td><td>{{CB → DS}}</td></tr><tr><td>송전 순서</td><td>{{DS → CB}}</td></tr><tr><td>SF₆</td><td>{{가스차단기}}</td></tr><tr><td>변압기 내부 고장</td><td>{{비율차동계전기}}</td></tr><tr><td>정전 후 재기동 방지</td><td>{{부족전압계전기}}</td></tr><tr><td>누전차단기 감도·시간</td><td>{{30mA · 0.03초}}</td></tr><tr><td>누전차단기 대상 전압</td><td>{{대지전압 150V 초과}}</td></tr><tr><td>시연형</td><td>{{0.1~2초}}</td></tr><tr><td>(100/%Z) × In</td><td>{{단락전류}}</td></tr><tr><td>저압</td><td>{{AC 1kV · DC 1.5kV 이하}}</td></tr><tr><td>특고압</td><td>{{7kV 초과}}</td></tr></table>'}
+];
+
+var MN={
+a2:[
+ {k:'끌 때 CB→DS / 켤 때 DS→CB',s:'"<b>수도</b>: 끌 땐 <b>수도꼭지</b>(차단기)부터 잠그고 <b>밸브</b>(단로기)를 닫는다, 켤 땐 밸브 열고 꼭지 연다 — 단로기는 물(전류) 흐를 때 만지면 안 됨"',m:'정전 {{CB → DS}} / 송전 {{DS → CB}}'},
+ {k:'단 · 부 · 차',s:'"<b>단</b>로기는 <b>빈</b> 회로만, <b>부</b>하개폐기는 <b>평소</b> 전류, <b>차</b>단기는 <b>사고</b> 전류까지"',m:'DS {{무부하}} · LBS {{부하전류}} · CB {{고장전류}}'}],
+a3:[
+ {k:'과 · 지 · 과압 · 부족 · 비율',s:'"<b>많이</b> 흐르면 OCR, <b>땅으로</b> 새면 GR, <b>높으면</b> OVR, <b>낮으면</b> UVR, <b>변압기 속</b> 고장은 비율차동"',m:'{{과전류}} · {{지락}} · {{과전압}} · {{부족전압}} · {{비율차동}}'}],
+a4:[
+ {k:'30 · 0.03',s:'"<b>삼십</b>(30)mA를 <b>영점영삼</b>(0.03)초 안에 — 숫자 3이 두 번"',m:'{{30mA 이하}} · {{0.03초 이내}}'},
+ {k:'150V',s:'"<b>백오십</b>(150) 볼트 넘는 들고 다니는 기계엔 누전차단기"',m:'대지전압 {{150V 초과}} 이동·휴대형'}],
+a5:[
+ {k:'루트3 V I',s:'"<b>3상</b>은 <b>루트 3</b>을 꼭 붙인다"',m:'3상 차단용량 = {{√3 × V × I}}'}],
+a6:[
+ {k:'1 · 1.5 · 7',s:'"교류 <b>1</b>천, 직류 <b>1.5</b>천까지 저압, <b>7</b>천 넘으면 특고압"',m:'저압 {{AC 1kV·DC 1.5kV 이하}} / 특고압 {{7kV 초과}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

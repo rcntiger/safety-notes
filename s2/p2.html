@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2과목 2. 위험성 파악·결정</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 2과목 · 인간공학 및 위험성 평가·관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 2. 위험성 파악·결정 · 세세항목 9개 → 학습단위 7개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">2과목 목차</a><a href="p1.html">◀ 이전</a><a href="p3.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s2-p2-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'2-1. 위험성 평가'},
+{id:'b1',title:'1. 위험성평가의 정의·개요 · 평가대상 · 평가항목 · 관련법',
+ core:'정의 {{유해·위험요인 파악 → 위험성 결정 → 감소대책}} / 대상 {{근로자에게 노출된 모든 유해·위험요인(아차사고 포함)}} / 근거 {{산안법 제36조·위험성평가 지침}} / 기록 {{3년}}',
+ def:'<ul><li><b>위험성평가</b>: 사업주가 유해·위험요인을 스스로 파악하고, 부상·질병으로 이어질 가능성과 중대성을 고려해 위험성 수준을 결정하고, 감소대책을 수립·실행하는 과정</li><li>1과목 6장(법규)의 위험성평가 카드와 함께 보세요.</li></ul>',
+ detail:'<b>평가대상 선정</b><ul><li>업무 중 근로자에게 노출된 것이 확인되었거나 노출될 것이 합리적으로 예견 가능한 모든 유해·위험요인</li><li><b>아차사고</b>를 포함, 중대 산업재해·산업재해가 발생한 작업은 반드시 대상</li><li>매우 경미한 부상·질병만 예상되는 것은 제외 가능</li><li>단위 작업·공정별로 나눠 선정</li></ul><b>평가항목 (유해·위험요인 분류 예)</b><table><tr><th>분류</th><th>예</th></tr><tr><td>기계적 요인</td><td>협착, 말림, 절단, 충돌, 추락, 낙하·비래</td></tr><tr><td>전기적 요인</td><td>감전, 아크, 정전기</td></tr><tr><td>화학(물질)적 요인</td><td>화재·폭발, 유해물질 노출</td></tr><tr><td>생물학적 요인</td><td>병원체, 동물·식물</td></tr><tr><td>작업특성 요인</td><td>중량물, 반복작업, 불량 자세, 소음·진동</td></tr><tr><td>작업환경 요인</td><td>고열·한랭, 조명, 밀폐공간, 기상</td></tr></table><b>관련 법</b><ul><li>산업안전보건법 제36조(위험성평가의 실시), 시행규칙 제37조(기록 3년 보존)</li><li>고시: 사업장 위험성평가에 관한 지침 — 절차, 시기(최초·수시·정기·상시), 방법(체크리스트·OPS·3단계 판단법 등)</li><li>근로자 참여, 결과 공유(TBM 등) 의무</li></ul>',
+ ex:'<ul><li>지게차 하역 작업: 충돌(기계), 화물 낙하(기계), 배터리 충전 시 수소(화학) 요인을 파악</li></ul>',
+ exam:'<ul><li>평가대상에서 제외할 수 있는 것 (매우 경미한 부상)</li><li>아차사고도 평가대상</li></ul>',
+ law:'산업안전보건법 제36조, 시행규칙 제37조, 고용노동부 고시 「사업장 위험성평가에 관한 지침」.'},
+
+{grp:'2-2. 시스템 위험성 추정 및 결정'},
+{id:'b2',title:'2. 시스템 위험성 분석 및 관리',
+ core:'위험 강도 {{I 파국적·II 위기적·III 한계적·IV 무시가능}} / 수명주기 {{구상 → 정의 → 개발 → 생산 → 운전}} / PHA는 {{구상단계}}',
+ def:'<ul><li><b>시스템 안전</b>: 시스템의 전 수명주기에 걸쳐 위험을 찾아내고 제거·통제하는 체계적 관리 (미국 국방성 MIL-STD-882에서 시작)</li></ul>',
+ why:'<ul><li>설계 초기에 위험을 찾을수록 비용이 적게 들므로, 수명주기 단계마다 맞는 분석 기법을 씁니다.</li></ul>',
+ detail:'<b>위험 강도(심각도) 분류 — MIL-STD-882</b><table><tr><th>범주</th><th>이름</th><th>상태</th></tr><tr><td>I</td><td>{{파국적}}(catastrophic)</td><td>사망, 시스템 손실</td></tr><tr><td>II</td><td>{{위기적}}(critical)</td><td>중상, 시스템 중대 손상 — 즉시 조치 필요</td></tr><tr><td>III</td><td>{{한계적}}(marginal)</td><td>경상, 경미한 손상 — 통제 가능</td></tr><tr><td>IV</td><td>{{무시가능}}(negligible)</td><td>상해·손상 없음</td></tr></table><b>발생 빈도 분류</b>: 자주 발생(frequent) → 보통 발생(probable) → 가끔 발생(occasional) → 거의 발생하지 않음(remote) → 극히 발생하지 않음(improbable)<br><b>시스템 수명주기와 분석</b><table><tr><th>단계</th><th>주요 분석</th></tr><tr><td>1. 구상(개념)</td><td>{{PHA}}(예비위험분석)</td></tr><tr><td>2. 정의(설계)</td><td>FHA, FMEA, 시스템 안전 계획</td></tr><tr><td>3. 개발</td><td>FTA, FMEA, 시험</td></tr><tr><td>4. 생산</td><td>품질·안전 관리, 교육</td></tr><tr><td>5. 운전(전개·폐기)</td><td>OSHA(운용위험분석), 사고 조사, 개선</td></tr></table><b>위험 관리 순서</b>: 위험 파악 → 분석 → 평가(위험도 = 빈도 × 강도) → 대책(설계로 제거 → 안전장치 → 경고 → 절차·교육) → 확인',
+ ex:'<ul><li>프레스 협착 → 손가락 절단 = 위기적(II), 사망 가능하면 파국적(I)</li></ul>',
+ cmp:'<table><tr><th>위기적(II)</th><th>한계적(III)</th></tr><tr><td>즉시 조치 필요</td><td>통제 가능</td></tr></table>',
+ exam:'<ul><li>위험 강도 범주 순서와 이름</li><li>PHA 실시 시기 = 구상(최초) 단계</li></ul>',
+ law:'법령 근거 없음(이론, MIL-STD-882).'},
+
+{id:'b3',title:'3. 위험분석 기법',
+ core:'{{PHA}} 최초·정성 / {{FHA}} 서브시스템 간 / {{FMEA}} 부품 고장형태·귀납·정성 / {{ETA}} 사건수·귀납·정량 / {{FTA}} 결함수·연역·정량 / {{HAZOP}} 가이드워드 / {{MORT}} 관리 소홀까지',
+ def:'<ul><li>시스템의 위험을 체계적으로 찾아내고 평가하는 분석 방법들. 언제(단계), 어떻게(귀납·연역), 무엇으로(정성·정량) 하는지가 다릅니다.</li></ul>',
+ detail:'<table><tr><th>기법</th><th>이름</th><th>특징</th></tr><tr><td>{{PHA}}</td><td>예비위험분석</td><td>구상 단계 최초 분석, 위험 상태를 정성적으로 파악, 위험 강도 범주 분류</td></tr><tr><td>{{FHA}}</td><td>결함위험분석</td><td>서브시스템 간의 인터페이스에서 생기는 위험 분석 (분업 설계 시)</td></tr><tr><td>{{FMEA}}</td><td>고장형태와 영향분석</td><td>부품·요소의 <b>고장 형태</b>별로 상위 시스템에 미치는 영향 분석, <b>귀납적·정성적</b>, 서식 표 사용</td></tr><tr><td>FMECA</td><td>FMEA + 치명도 분석</td><td>FMEA에 치명도(CA)를 더해 정량화</td></tr><tr><td>CA</td><td>위험도(치명도) 분석</td><td>고장이 시스템에 주는 치명도를 정량 평가</td></tr><tr><td>{{ETA}}</td><td>사건수 분석</td><td>초기 사건에서 시작해 성공/실패로 갈라지는 나무, <b>귀납적·정량적</b> (좌→우)</td></tr><tr><td>{{FTA}}</td><td>결함수 분석</td><td>정상사상(사고)에서 원인을 거슬러 내려감, <b>연역적·정량적</b>, 논리 게이트 사용</td></tr><tr><td>THERP</td><td>인간실수율 예측</td><td>인간 실수 확률 (1장)</td></tr><tr><td>{{MORT}}</td><td>경영소홀 및 위험수 분석</td><td>FTA와 같은 논리로 관리·설계·생산·보전 등 <b>광범위한 관리 요소</b>까지 분석 (원자력 산업)</td></tr><tr><td>OSHA</td><td>운용 및 지원 위험분석</td><td>생산·보전·시험·운반·폐기 등 운용 단계 위험</td></tr><tr><td>{{HAZOP}}</td><td>위험과 운전 분석</td><td>공정 변수(유량·온도·압력)에 <b>가이드워드</b>를 붙여 이탈 원인·결과 검토 (화학공장, 5과목)</td></tr><tr><td>체크리스트, What-if</td><td>—</td><td>정성적, 간단</td></tr></table><b>HAZOP 가이드워드</b>: No/Not(없음), More/Less(증가·감소), As well as(성질 상 증가), Part of(일부), Reverse(반대), Other than(완전 대체)<br><b>FMEA 고장 영향 분류(β)</b><table><tr><th>영향</th><th>발생 확률 β</th></tr><tr><td>실제 손실</td><td>β = 1.00</td></tr><tr><td>예상되는 손실</td><td>0.10 ≤ β &lt; 1.00</td></tr><tr><td>가능한 손실</td><td>0 &lt; β &lt; 0.10</td></tr><tr><td>영향 없음</td><td>β = 0</td></tr></table>',
+ ex:'<ul><li>"배관 압력 More" → 원인: 제어밸브 고장, 결과: 파열 → HAZOP</li><li>"정전 발생 → 비상발전기 성공/실패 → 냉각 성공/실패" 나무 → ETA</li></ul>',
+ cmp:'<table><tr><th></th><th>귀납적(아래→위)</th><th>연역적(위→아래)</th></tr><tr><td>기법</td><td>FMEA, ETA</td><td>FTA, MORT</td></tr><tr><td>출발</td><td>부품 고장·초기 사건</td><td>최종 사고(정상사상)</td></tr></table>',
+ exam:'<ul><li>설명을 주고 기법 이름 고르기 (가장 많이 출제)</li><li>FTA = 연역적·정량적, FMEA = 귀납적·정성적</li><li>HAZOP 가이드워드 뜻</li></ul>',
+ law:'공정안전보고서(PSM)의 위험성평가 기법으로 HAZOP·FTA·ETA 등이 쓰임 (5과목).'},
+
+{id:'b4',title:'4. 결함수 분석 (FTA)',
+ core:'기호 {{직사각형 결함사상·원 기본사상·마름모 생략사상·집모양 통상사상·삼각형 전이}} / {{AND = 곱}}, {{OR = 1 − Π(1 − q)}} / {{최소 컷셋 = 위험성}}, {{최소 패스셋 = 신뢰성}}',
+ def:'<ul><li><b>FTA(Fault Tree Analysis)</b>: 원하지 않는 사고(정상사상)를 맨 위에 두고, 그 원인을 AND·OR 게이트로 연결해 아래로 내려가며 분석하는 연역적·정량적 기법 (Watson, 벨 연구소)</li></ul>',
+ why:'<ul><li>사고가 일어나려면 어떤 원인 조합이 필요한지(컷셋) 보여 주어, 어디를 막으면 가장 효과적인지 알 수 있습니다.</li></ul>',
+ detail:'<b>FTA 기호</b><table><tr><th>기호</th><th>이름</th><th>뜻</th></tr><tr><td>직사각형</td><td>{{결함사상}}</td><td>더 전개되는 사상 (정상사상·중간사상)</td></tr><tr><td>원</td><td>{{기본사상}}</td><td>더 이상 전개하지 않는 기본 고장</td></tr><tr><td>마름모</td><td>{{생략사상}}</td><td>정보 부족·해석 기술 부족으로 더 전개하지 않음</td></tr><tr><td>집 모양</td><td>{{통상사상}}</td><td>보통 발생하는 사상</td></tr><tr><td>삼각형</td><td>{{전이기호}}</td><td>다른 부분으로 연결 (in/out)</td></tr><tr><td>AND 게이트</td><td>논리곱</td><td>입력이 <b>모두</b> 일어나야 출력</td></tr><tr><td>OR 게이트</td><td>논리합</td><td>입력 중 <b>하나라도</b> 일어나면 출력</td></tr><tr><td>육각형</td><td>억제 게이트</td><td>조건이 만족될 때만 출력</td></tr><tr><td>—</td><td>우선적 AND, 조합 AND, 배타적 OR, 위험지속 기호</td><td>수정 게이트</td></tr></table><b>FTA 절차</b>: 정상사상 선정 → 각 사상의 재해 원인 규명 → FT도 작성 → 개선 계획 작성 → 개선안 실시<br><b>확률 계산</b><ul><li>AND: Q = q<sub>1</sub> × q<sub>2</sub> × …</li><li>OR: Q = 1 − (1 − q<sub>1</sub>)(1 − q<sub>2</sub>)…</li></ul><b>컷셋과 패스셋</b><table><tr><th>구분</th><th>뜻</th></tr><tr><td>컷셋</td><td>그 기본사상들이 <b>모두 일어나면</b> 정상사상이 일어나는 집합</td></tr><tr><td>{{최소 컷셋}}</td><td>컷셋 중 더 줄일 수 없는 최소 집합 → 시스템의 <b>위험성</b>(약점)</td></tr><tr><td>패스셋</td><td>그 기본사상들이 <b>모두 일어나지 않으면</b> 정상사상이 일어나지 않는 집합</td></tr><tr><td>{{최소 패스셋}}</td><td>최소 패스셋 → 시스템의 <b>신뢰성</b></td></tr></table><ul><li>최소 컷셋은 불 대수(흡수법칙 A + AB = A, 멱등법칙 A·A = A)로 정리</li></ul>',
+ calc:'① AND: q<sub>1</sub> = 0.1, q<sub>2</sub> = 0.2 → Q = 0.1 × 0.2 = <b>0.02</b><br>② OR: q<sub>1</sub> = 0.1, q<sub>2</sub> = 0.2 → Q = 1 − (0.9 × 0.8) = 1 − 0.72 = <b>0.28</b><br>③ 컷셋 {A}, {A, B}, {B, C} → 흡수법칙으로 {A, B} 제거 → 최소 컷셋 <b>{A}, {B, C}</b>',
+ ex:'<ul><li>정상사상 "프레스 손 협착" = 손이 위험구역에 있음 AND 슬라이드 하강 AND (방호장치 고장 OR 방호장치 해제)</li></ul>',
+ cmp:'<table><tr><th>최소 컷셋</th><th>최소 패스셋</th></tr><tr><td>모두 일어나면 사고 → <b>위험성</b></td><td>모두 안 일어나면 무사고 → <b>신뢰성</b></td></tr></table>',
+ exam:'<ul><li>기호 그림과 이름 (특히 마름모 생략사상, 집 모양 통상사상)</li><li>AND·OR 확률 계산 (매회 출제 수준)</li><li>최소 컷셋 구하기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'b5',title:'5. 정성적 · 정량적 분석',
+ core:'정성적 {{PHA·FMEA·HAZOP·체크리스트·What-if}} / 정량적 {{FTA·ETA·CA·FMECA·THERP}} / 위험도 = {{발생빈도 × 심각도}}',
+ def:'<ul><li><b>정성적 분석</b>: 위험의 종류·원인·영향을 말과 등급으로 표현 (높음·중간·낮음)</li><li><b>정량적 분석</b>: 위험을 확률·빈도·손실 등 숫자로 계산</li></ul>',
+ detail:'<table><tr><th></th><th>정성적</th><th>정량적</th></tr><tr><td>기법</td><td>{{PHA, FMEA, HAZOP, 체크리스트, What-if, 상대위험순위(Dow·Mond)}}</td><td>{{FTA, ETA, CA, FMECA, THERP}}</td></tr><tr><td>장점</td><td>빠르고 쉬움, 전문 데이터 불필요</td><td>객관적 비교, 투자 효과 판단</td></tr><tr><td>단점</td><td>평가자 주관</td><td>고장률 데이터 필요, 시간·비용</td></tr></table><b>위험도(Risk) 평가</b><ul><li>위험도 = 발생 가능성(빈도) × 중대성(심각도)</li><li>위험성 매트릭스: 빈도와 심각도를 가로·세로로 놓고 등급 결정 (1과목 위험성평가와 연결)</li><li>2023 위험성평가 지침은 정량 계산을 강제하지 않음 (3단계 판단법 등 허용)</li></ul>',
+ ex:'<ul><li>체크리스트로 위험을 찾은 뒤(정성), 중요한 것만 FTA로 확률 계산(정량)</li></ul>',
+ exam:'<ul><li>정량적 기법이 <b>아닌</b> 것 고르기 (PHA·HAZOP·체크리스트는 정성)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'b6',title:'6. 신뢰도 계산',
+ core:'직렬 R = {{R₁ × R₂ × …}} / 병렬 R = {{1 − (1 − R₁)(1 − R₂)…}} / R(t) = {{e^(−λt)}} / MTBF = {{1/λ}} / 가용도 = {{MTBF ÷ (MTBF + MTTR)}} / 욕조곡선 {{초기·우발·마모}}',
+ def:'<ul><li><b>신뢰도</b>: 시스템·부품이 정해진 조건에서 정해진 기간 동안 고장 없이 기능을 수행할 확률</li><li><b>고장률 λ</b>: 단위 시간당 고장 나는 비율</li></ul>',
+ why:'<ul><li>직렬은 하나만 고장 나도 전체가 멈추고, 병렬은 모두 고장 나야 멈춥니다. 안전장치를 이중화(병렬)하는 이유가 여기 있습니다.</li></ul>',
+ detail:'<b>구조별 신뢰도</b><table><tr><th>구조</th><th>식</th><th>특징</th></tr><tr><td>{{직렬}}</td><td>R = R<sub>1</sub> × R<sub>2</sub> × … × R<sub>n</sub></td><td>하나만 고장 나도 시스템 고장 → 부품이 많을수록 신뢰도 ↓</td></tr><tr><td>{{병렬}}</td><td>R = 1 − (1 − R<sub>1</sub>)(1 − R<sub>2</sub>)…(1 − R<sub>n</sub>)</td><td>모두 고장 나야 시스템 고장 → 중복(redundancy)</td></tr><tr><td>혼합</td><td>병렬 묶음을 먼저 계산 → 직렬로 곱함</td><td>—</td></tr><tr><td>k-out-of-n</td><td>n개 중 k개 이상 작동하면 정상</td><td>2-out-of-3 등</td></tr></table><b>시간과 신뢰도 (지수분포, 고장률 일정)</b><ul><li>R(t) = e<sup>−λt</sup>, 불신뢰도 F(t) = 1 − R(t)</li><li>MTBF(평균고장간격, 수리 가능) = 1/λ, MTTF(평균고장시간, 수리 불가) = 1/λ</li><li>MTTR: 평균수리시간</li><li>가용도 A = MTBF ÷ (MTBF + MTTR)</li><li>같은 부품 n개 직렬 MTTF = 1/(nλ), 병렬 MTTF = (1/λ)(1 + 1/2 + … + 1/n)</li></ul><b>욕조곡선 (고장률 곡선)</b><table><tr><th>기간</th><th>고장률</th><th>원인·대책</th></tr><tr><td>{{초기고장}}</td><td>감소</td><td>설계·제조 결함 → 디버깅, 번인(burn-in)</td></tr><tr><td>{{우발고장}}</td><td>일정</td><td>예측 불가 우발 원인 → 극한 상황 피하기, 사후보전 (지수분포 적용 구간)</td></tr><tr><td>{{마모고장}}</td><td>증가</td><td>노화·피로 → 예방보전, 정기 교체</td></tr></table><b>중복 설계(Redundancy)</b>: 병렬, 대기(standby), 스페어 부품, 다수결(2/3) 등',
+ calc:'① 직렬 0.9 × 0.8 = <b>0.72</b><br>② 병렬 1 − (0.1 × 0.2) = <b>0.98</b><br>③ 0.9와 0.9 병렬 후 0.8 직렬: (1 − 0.01) × 0.8 = 0.99 × 0.8 = <b>0.792</b><br>④ λ = 0.001/시간, t = 100시간 → R = e<sup>−0.1</sup> ≈ <b>0.905</b>, MTBF = 1/0.001 = <b>1,000시간</b><br>⑤ MTBF 90시간, MTTR 10시간 → 가용도 = 90/100 = <b>0.9</b>',
+ ex:'<ul><li>비상정지 스위치를 2개 병렬로 → 하나가 고장 나도 정지 기능 유지</li></ul>',
+ cmp:'<table><tr><th>직렬</th><th>병렬</th></tr><tr><td>곱한다 (작아짐)</td><td>실패를 곱해서 1에서 뺀다 (커짐)</td></tr></table>',
+ exam:'<ul><li>직렬·병렬·혼합 계산 (매회 출제 수준)</li><li>욕조곡선 구간별 대책 (번인 = 초기, 예방보전 = 마모)</li><li>가용도 계산</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'b7',title:'키워드 카드 — 2과목 주요항목 2',tag:'암기',
+ core:'I {{파국}}·II {{위기}}·III {{한계}}·IV {{무시}} / FTA {{연역}} / FMEA {{귀납}} / 직렬 {{곱}}·병렬 {{1−실패곱}}',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>구상 단계 최초 분석</td><td>{{PHA}}</td></tr><tr><td>서브시스템 간 인터페이스</td><td>{{FHA}}</td></tr><tr><td>부품 고장형태별 영향</td><td>{{FMEA}}</td></tr><tr><td>초기 사건에서 성공·실패 나무</td><td>{{ETA}}</td></tr><tr><td>정상사상에서 원인으로 내려감</td><td>{{FTA}}</td></tr><tr><td>관리 소홀까지 분석</td><td>{{MORT}}</td></tr><tr><td>가이드워드</td><td>{{HAZOP}}</td></tr><tr><td>마름모</td><td>{{생략사상}}</td></tr><tr><td>집 모양</td><td>{{통상사상}}</td></tr><tr><td>원</td><td>{{기본사상}}</td></tr><tr><td>최소 컷셋</td><td>{{시스템 위험성}}</td></tr><tr><td>최소 패스셋</td><td>{{시스템 신뢰성}}</td></tr><tr><td>A + AB = A</td><td>{{흡수법칙}}</td></tr><tr><td>β = 1.00</td><td>{{FMEA 실제 손실}}</td></tr><tr><td>e<sup>−λt</sup></td><td>{{신뢰도 R(t)}}</td></tr><tr><td>1/λ</td><td>{{MTBF}}</td></tr><tr><td>MTBF/(MTBF+MTTR)</td><td>{{가용도}}</td></tr><tr><td>번인·디버깅</td><td>{{초기고장 대책}}</td></tr><tr><td>예방보전</td><td>{{마모고장 대책}}</td></tr></table>'}
+];
+
+var MN={
+b2:[
+ {k:'파 · 위 · 한 · 무',s:'"<b>파위한무</b> → \'파도가 위험한 무(無)인도\'" — 다 부서짐(파국) → 크게 다침(위기) → 조금 다침(한계) → 괜찮음(무시)',m:'I {{파국적}} · II {{위기적}} · III {{한계적}} · IV {{무시가능}}'},
+ {k:'구·정·개·생·운',s:'"<b>구정</b>에 <b>개</b>가 <b>생운</b>(생일 운세)" — 생각 → 정하고 → 만들고 → 찍어내고 → 쓴다',m:'{{구상}} → {{정의}} → {{개발}} → {{생산}} → {{운전}} (PHA는 구상)'}],
+b3:[
+ {k:'P · F · FM · E · FT',s:'"<b>P</b>re(먼저) 훑고 → <b>F</b>H(서브시스템 사이) → <b>FM</b>(부품 고장 하나씩) → <b>E</b>vent(사건이 퍼져 나감) → <b>F</b>ault <b>T</b>ree(사고에서 거꾸로)"',m:'{{PHA 예비}} · {{FHA 인터페이스}} · {{FMEA 고장형태}} · {{ETA 사건수}} · {{FTA 결함수}}'},
+ {k:'귀납 FMEA·ETA / 연역 FTA',s:'"<b>E</b>TA·FM<b>E</b>A는 <b>E</b>xpand(아래에서 퍼져 올라감 = 귀납) / <b>FT</b>A는 <b>F</b>rom <b>T</b>op(위에서 내려옴 = 연역)"',m:'귀납 {{FMEA·ETA}} / 연역 {{FTA·MORT}}'},
+ {k:'MORT = 경영',s:'"<b>MORT</b>gage(담보대출)는 경영자가 챙긴다 — 관리 소홀까지 파고드는 분석"',m:'MORT = {{경영소홀 및 위험수 분석}}'}],
+b4:[
+ {k:'□ ○ ◇ ⌂ △',s:'"<b>네모</b>는 아직 풀 게 남은 문제(결함사상), <b>동그라미</b>는 끝(기본사상), <b>마름모</b>는 \'몰라\' 하고 넘김(생략), <b>집</b>은 평소 일(통상), <b>세모</b>는 다른 페이지로(전이)"',m:'{{결함}} · {{기본}} · {{생략}} · {{통상}} · {{전이}}'},
+ {k:'AND = × / OR = 1 − (1−)(1−)',s:'"<b>AND</b>는 둘 다 → 확률이 작아짐(곱) / <b>OR</b>는 하나라도 → \'둘 다 안 일어날 확률\'을 1에서 뺌"',m:'AND {{q₁ × q₂}} / OR {{1 − (1 − q₁)(1 − q₂)}}'},
+ {k:'컷 = 위험 / 패스 = 신뢰',s:'"<b>컷</b>(cut) = 잘리는 곳 = 약점 = 위험 / <b>패스</b>(pass) = 통과 = 안전 = 신뢰"',m:'최소 컷셋 {{위험성}} / 최소 패스셋 {{신뢰성}}'}],
+b5:[
+ {k:'정량 = 숫자 나무들',s:'"<b>나무</b>(Tree)로 확률을 계산하는 것들은 정량 — FTA·ETA·THERP + 치명도(CA)"',m:'정량 {{FTA·ETA·CA·FMECA·THERP}} / 정성 {{PHA·FMEA·HAZOP·체크리스트}}'}],
+b6:[
+ {k:'직렬 = 크리스마스 전구',s:'"옛날 <b>크리스마스 전구</b>는 하나 나가면 줄 전체가 꺼짐(직렬, 곱) / <b>쌍발 비행기</b>는 엔진 하나 꺼져도 남(병렬)"',m:'직렬 {{R₁ × R₂}} / 병렬 {{1 − (1 − R₁)(1 − R₂)}}'},
+ {k:'초 · 우 · 마',s:'"<b>신생아</b>(초기, 처음엔 아프다 좋아짐) → <b>청년</b>(우발, 사고만 조심) → <b>노인</b>(마모, 점점 아픔)" — 욕조 모양',m:'{{초기고장 ↓ 번인}} · {{우발고장 일정}} · {{마모고장 ↑ 예방보전}}'},
+ {k:'가용도 = 일한 ÷ 전체',s:'"<b>가동 시간</b>을 (가동 + 수리) 시간으로 나눔 — 출석률과 같다"',m:'A = {{MTBF ÷ (MTBF + MTTR)}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1과목 4. 인간의 행동과학</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 1과목 · 산업재해 예방 및 안전보건교육</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 4. 인간의 행동과학 · 세세항목 18개 → 학습단위 19개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">1과목 목차</a><a href="p3.html">◀ 이전</a><a href="p5.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s1-p4-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'4-1. 조직과 인간행동'},
+{id:'f1',title:'1. 인간관계',
+ core:'테일러 {{과학적 관리}}(능률·표준화) → 메이요 {{호손 실험}}(인간관계·비공식 조직이 생산성을 좌우) / 관리 방법 {{제안제도·고충처리·카운슬링·사기조사}}',
+ def:'<ul><li><b>인간관계</b>: 조직 구성원 사이의 감정·태도·상호작용. 생산성과 안전에 큰 영향을 줍니다.</li><li><b>호손(Hawthorne) 실험</b>: 메이요(E. Mayo)가 미국 호손 공장에서 한 실험. 조명 같은 물리적 조건보다 <b>인간관계와 심리적 요인</b>이 생산성에 더 크게 작용한다는 것을 밝혔습니다.</li></ul>',
+ why:'<ul><li>테일러식 과학적 관리는 사람을 기계처럼 보아 한계가 있었고, 호손 실험 이후 사람의 감정·소속감·비공식 조직을 관리해야 한다는 인간관계론이 나왔습니다.</li></ul>',
+ detail:'<table><tr><th></th><th>과학적 관리(테일러)</th><th>인간관계론(메이요)</th></tr><tr><td>인간관</td><td>경제적 인간(돈으로 움직임)</td><td>사회적 인간(관계·감정으로 움직임)</td></tr><tr><td>핵심</td><td>시간·동작 연구, 작업 표준화, 성과급</td><td>비공식 조직, 사기, 의사소통</td></tr><tr><td>조직</td><td>공식 조직</td><td>{{비공식 조직}} 중시</td></tr></table><b>호손 실험의 결론</b><ul><li>작업 능률은 조명·휴식 같은 물리적 조건보다 <b>인간관계</b>(소속감, 관심, 집단 규범)에 더 좌우된다</li><li>공식 조직 안에 자연스럽게 생긴 <b>비공식 조직</b>이 행동을 크게 좌우한다</li></ul><b>인간관계 관리 방법</b>: 제안제도, 고충처리제도, 인사상담(카운슬링), 사기조사(모랄 서베이), 의사소통 활성화',
+ ex:'<ul><li>같은 설비인데 팀 분위기가 좋은 조가 사고가 적음 → 인간관계·집단 규범의 영향</li></ul>',
+ cmp:'<table><tr><th>테일러</th><th>메이요</th></tr><tr><td>물리적 조건·표준화</td><td>인간관계·비공식 조직</td></tr></table>',
+ exam:'<ul><li>호손 실험의 결론 고르기 ("조명이 밝을수록 생산성이 높다" → 틀림)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f2',title:'2. 사회행동의 기초',
+ core:'사회행동 기본형태 {{협력(조력·분업)·대립(공격·경쟁)·도피(고립·정신병·자살)·융합(강제·타협·통합)}}',
+ def:'<ul><li>사람이 집단 속에서 다른 사람과 관계를 맺는 기본적인 행동 방식</li></ul>',
+ detail:'<table><tr><th>기본형태</th><th>세부</th></tr><tr><td>{{협력}}</td><td>조력, 분업</td></tr><tr><td>{{대립}}</td><td>공격, 경쟁</td></tr><tr><td>{{도피}}</td><td>고립, 정신병, 자살</td></tr><tr><td>{{융합}}</td><td>강제, 타협, 통합</td></tr></table><ul><li>사회행동은 개인의 욕구(동기부여 카드)와 집단의 규범(집단행동 카드)에서 영향을 받음</li></ul>',
+ ex:'<ul><li>두 작업조가 실적 다툼 → 대립(경쟁) / 노사가 양보해 합의 → 융합(타협)</li></ul>',
+ cmp:'<table><tr><th>대립</th><th>융합</th></tr><tr><td>공격·경쟁</td><td>강제·타협·통합</td></tr></table>',
+ exam:'<ul><li>기본형태와 세부 짝짓기 (특히 "분업" = 협력, "타협" = 융합)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f3',title:'3. 인간관계 메커니즘',
+ core:'{{동일화·투사·커뮤니케이션·모방·암시}}',
+ def:'<ul><li>사람과 사람 사이에 영향을 주고받는 심리적 방식</li></ul>',
+ detail:'<table><tr><th>메커니즘</th><th>뜻</th></tr><tr><td>{{동일화}}</td><td>다른 사람의 행동·태도를 자기 것처럼 받아들임 (닮고 싶은 사람과 자신을 같게 여김)</td></tr><tr><td>{{투사}}</td><td>자기 안의 감정·결점을 남에게 있는 것처럼 여김</td></tr><tr><td>{{커뮤니케이션}}</td><td>언어·몸짓 등으로 의미를 전달</td></tr><tr><td>{{모방}}</td><td>남의 행동을 그대로 따라 함</td></tr><tr><td>{{암시}}</td><td>다른 사람의 판단·행동을 근거 없이 그대로 받아들임</td></tr></table>',
+ ex:'<ul><li>신입이 선배가 안전대 안 거는 걸 보고 따라 함 → 모방</li><li>"다들 괜찮다더라"는 말에 확인 없이 작업 → 암시</li></ul>',
+ cmp:'<table><tr><th>모방</th><th>암시</th></tr><tr><td>행동을 따라 함</td><td>판단을 그대로 받아들임</td></tr></table>',
+ exam:'<ul><li>메커니즘에 해당하지 <b>않는</b> 것 (예: "승화", "합리화" — 적응기제)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f4',title:'4. 집단행동',
+ core:'통제 있는 {{관습·제도적 행동·유행}} / 통제 없는 {{군중·모브·패닉·심리적 전염}}',
+ def:'<ul><li>여러 사람이 함께 있을 때 나타나는 행동. 규범의 통제를 받는지에 따라 둘로 나눕니다.</li></ul>',
+ detail:'<b>통제가 있는 집단행동</b> (규칙·관습이 있음)<ul><li>{{관습}}: 풍습·예의·금기 등</li><li>{{제도적 행동}}: 합리적으로 성원 행동을 통제·표준화</li><li>{{유행}}: 공통적인 행동 양식이나 태도</li></ul><b>통제가 없는 집단행동</b> (감정에 좌우)<ul><li>{{군중}}: 성원 사이에 지위·역할 분화가 없고 비판력이 없음</li><li>{{모브(mob)}}: 폭동 — 군중보다 합의성이 없고 감정만으로 행동</li><li>{{패닉(panic)}}: 이상적 상황에서 모브가 공격적인 데 비해 <b>방어적</b>인 도피 행동</li><li>{{심리적 전염}}: 유행과 비슷하나 비합리적이고 무비판적으로 퍼짐</li></ul>',
+ ex:'<ul><li>화재 경보에 비상구로 한꺼번에 몰려 압사 → 패닉</li></ul>',
+ cmp:'<table><tr><th>모브</th><th>패닉</th></tr><tr><td>공격적</td><td>방어적(도피)</td></tr></table>',
+ exam:'<ul><li>통제 없는 집단행동이 <b>아닌</b> 것 (예: "유행" — 통제 있음)</li><li>모브 vs 패닉 구분</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f5',title:'5. 인간의 일반적인 행동특성',
+ core:'{{간결성 원리}}(최소 에너지 → 생략·지름길) / {{주의의 일점집중}} / {{리스크 테이킹}} / {{억측판단}}',
+ def:'<ul><li>대부분의 사람이 공통으로 보이는 행동 경향. 불안전 행동의 배경이 됩니다.</li></ul>',
+ why:'<ul><li>사람은 원래 편하고 빠른 쪽을 고르도록 되어 있어서, 이 특성을 알고 작업 설계·교육에 반영해야 사고를 줄일 수 있습니다.</li></ul>',
+ detail:'<ul><li>{{간결성의 원리}}: 최소의 에너지로 목적을 달성하려는 경향 → 생략행위, 지름길 반응, 근도 반응, 단락 반응</li><li>{{주의의 일점집중}}: 돌발 상황이나 한 가지에 몰두하면 다른 것을 보지 못함</li><li>{{리스크 테이킹(risk taking)}}: 위험을 알면서도 감수하고 행동함 — 안전 태도가 나쁠수록, 위험을 작게 볼수록 커짐</li><li>억측판단: "괜찮겠지" 하는 자기 판단</li><li>소리·움직임에 반사적으로 반응</li><li>순간적으로 위험을 피하려는 반사 행동</li></ul>',
+ ex:'<ul><li>안전 통로가 멀어 컨베이어 위로 넘어감 → 간결성(지름길 반응)</li><li>"잠깐이면 돼" 하며 방호장치 해제 → 리스크 테이킹</li></ul>',
+ cmp:'<table><tr><th>억측판단</th><th>리스크 테이킹</th></tr><tr><td>위험이 <b>없다고</b> 믿음</td><td>위험을 <b>알고도</b> 감수</td></tr></table>',
+ exam:'<ul><li>리스크 테이킹의 정의·영향 요인</li><li>간결성 원리와 생략행위 연결</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'4-2. 재해 빈발성 및 행동과학'},
+{id:'f6',title:'6. 사고경향',
+ core:'{{사고경향성}} = 특정인이 다른 사람보다 사고를 더 자주 일으키는 경향 (그린우드) / 원인 {{소질 + 환경}}',
+ def:'<ul><li><b>사고경향성(accident proneness)</b>: 같은 조건에서도 어떤 사람은 사고를 반복해서 일으키는 경향</li></ul>',
+ why:'<ul><li>사고 반복자를 찾아내 교육·상담·적정 배치를 하면 재해를 효과적으로 줄일 수 있다는 관점입니다. 다만 환경 요인을 무시하면 안 됩니다.</li></ul>',
+ detail:'<ul><li>그린우드(Greenwood) 등이 통계로 제시: 소수의 사람이 다수의 사고를 일으킴</li><li>사고경향자의 특성: 주의력 산만, 충동적, 정서 불안정, 낮은 지능 또는 감각운동 기능 부적합, 비협조적, 도덕성 결여</li><li>대책: 적성검사로 선발·배치, 상담·교육, 작업 전환</li><li>비판: 사고는 개인보다 작업·환경 조건 영향이 크다는 반론 → 재해 빈발성 이론(기회설 등)으로 연결</li></ul>',
+ ex:'<ul><li>1년에 같은 사람이 3번 손가락 협착 → 사고경향자인지, 작업 자체 문제인지 함께 조사</li></ul>',
+ exam:'<ul><li>사고경향성 정의</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f7',title:'7. 성격의 유형',
+ core:'Y-G {{A·B·C·D·E형}}(3-1 참고) / 기질 4유형 {{다혈질·담즙질·우울질·점액질}} / 안전에 유리한 성격 {{정서 안정·적극(D형)}}',
+ def:'<ul><li><b>성격</b>: 개인의 일관된 행동·사고·감정 양식</li></ul>',
+ detail:'<b>기질 4유형 (히포크라테스-갈레노스)</b><table><tr><th>유형</th><th>특징</th></tr><tr><td>다혈질</td><td>쾌활·사교적, 쉽게 흥분하고 쉽게 식음</td></tr><tr><td>담즙질</td><td>의지 강함·적극적, 성급하고 공격적</td></tr><tr><td>우울질</td><td>신중·꼼꼼, 비관적·소극적</td></tr><tr><td>점액질</td><td>침착·냉정, 느리고 무관심</td></tr></table><b>안전과 성격</b><ul><li>정서적으로 안정되고 사회 적응력이 좋은 성격(Y-G <b>D형</b>)이 사고가 적음</li><li>정서 불안정·충동성·과잉 자신감·인내력 부족은 사고 요인</li><li>성격검사: Y-G, MMPI, 로르샤흐, TAT (3-1 심리검사 카드)</li></ul>',
+ ex:'<ul><li>성급한 담즙질 작업자 → 확인 절차 생략 위험 → 지적확인 훈련</li></ul>',
+ exam:'<ul><li>성격과 안전의 관계, Y-G 유형 (3-1과 같이 복습)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f8',title:'8. 재해 빈발성',
+ core:'빈발 이론 {{기회설·암시설·빈발경향자설}} / 누발자 4유형 {{미숙성·상황성·습관성·소질성}}',
+ def:'<ul><li><b>재해 빈발성</b>: 재해가 특정 사람·작업에 반복적으로 일어나는 현상과 그 원인에 대한 이론</li></ul>',
+ why:'<ul><li>원인이 "작업"에 있으면 작업을 바꾸고, "사람"에 있으면 교육·배치를 바꿔야 하므로 원인 이론을 구분합니다.</li></ul>',
+ detail:'<b>재해 빈발 이론</b><table><tr><th>설</th><th>내용</th></tr><tr><td>{{기회설}}</td><td>개인 문제가 아니라 <b>작업 자체</b>에 위험이 많아서 재해가 반복됨 → 작업 환경 개선</td></tr><tr><td>{{암시설}}</td><td>한 번 재해를 겪으면 겁이 나고 신경이 과민해져 또 재해를 일으킴</td></tr><tr><td>{{빈발경향자설}}</td><td>재해를 잘 일으키는 <b>소질</b>을 가진 사람이 있음</td></tr></table><b>재해 누발자 유형</b><table><tr><th>유형</th><th>원인</th></tr><tr><td>{{미숙성}} 누발자</td><td>기능 미숙, 환경에 익숙하지 못함</td></tr><tr><td>{{상황성}} 누발자</td><td>작업이 어려움, 기계설비 결함, 환경상 주의력 집중 곤란, 심신에 근심</td></tr><tr><td>{{습관성}} 누발자</td><td>재해 경험으로 겁쟁이·신경과민, 일종의 슬럼프</td></tr><tr><td>{{소질성}} 누발자</td><td>주의력 산만·지속 불능, 저지능, 흥분성, 비협조성, 도덕성 결여, 감각운동 부적합 등 개인 소질</td></tr></table>',
+ ex:'<ul><li>신입이 장비 사용법을 몰라 반복 사고 → 미숙성 / 고장 잦은 설비 때문에 반복 사고 → 상황성</li></ul>',
+ cmp:'<table><tr><th>암시설</th><th>습관성 누발자</th></tr><tr><td>재해 경험 → 겁 → 재해 (이론)</td><td>같은 현상을 보이는 누발자 유형</td></tr></table>',
+ exam:'<ul><li>누발자 유형과 원인 짝짓기 (특히 "기계설비 결함" = 상황성)</li><li>기회설 정의</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f9',title:'9. 동기부여',
+ core:'매슬로 {{생리→안전→사회→존경→자아실현}} / 알더퍼 {{E·R·G}} / 허츠버그 {{위생요인(불만)·동기요인(만족)}} / 맥그리거 {{X(통제)·Y(자율)}} / 데이비스 {{능력=지식×기능, 동기=상황×태도}}',
+ def:'<ul><li><b>동기부여</b>: 사람이 목표를 향해 행동하도록 의욕을 불러일으키는 과정</li></ul>',
+ why:'<ul><li>안전 수칙을 지키게 하려면 벌만이 아니라 욕구를 채워 주는 방식이 필요합니다. 각 이론이 무엇을 채워야 한다고 보는지 비교하는 문제가 많습니다.</li></ul>',
+ detail:'<b>매슬로(Maslow) 욕구 5단계</b> — 아래 단계가 채워져야 위로 감<ol><li>{{생리적}} 욕구 (의식주, 수면)</li><li>{{안전}} 욕구 (위험·불안으로부터 보호)</li><li>{{사회적}} 욕구 (소속·애정)</li><li>{{존경}} 욕구 (인정·명예)</li><li>{{자아실현}} 욕구 (잠재력 발휘)</li></ol><b>알더퍼(Alderfer) ERG</b>: 존재(Existence) · 관계(Relatedness) · 성장(Growth)<br><b>허츠버그(Herzberg) 2요인</b><table><tr><th>위생요인 (불만 방지, 환경)</th><th>동기요인 (만족 증대, 일 자체)</th></tr><tr><td>임금, 작업조건, 회사 정책·관리, 감독, 대인관계, 지위, 안전</td><td>성취감, 인정, 일 자체, 책임, 성장·승진</td></tr></table><b>맥그리거(McGregor) X·Y이론</b><table><tr><th>X이론</th><th>Y이론</th></tr><tr><td>인간은 게으르고 일을 싫어함 → 명령·통제·처벌, 물질적 욕구(저차원)</td><td>인간은 일을 즐기고 책임을 짐 → 자율·참여, 정신적 욕구(고차원)</td></tr></table><b>맥클랜드(McClelland) 성취동기</b>: 성취·권력·친화 욕구<br><b>데이비스(Davis) 동기부여 이론</b><ul><li>지식 × 기능 = {{능력}}</li><li>상황 × 태도 = {{동기유발}}</li><li>능력 × 동기유발 = {{인간의 성과}}</li><li>인간의 성과 × 물질적 성과 = {{경영의 성과}}</li></ul><b>이론 대응표</b><table><tr><th>매슬로</th><th>알더퍼</th><th>허츠버그</th><th>맥그리거</th></tr><tr><td>생리·안전</td><td>존재(E)</td><td>위생요인</td><td>X이론</td></tr><tr><td>사회</td><td>관계(R)</td><td>위생요인</td><td>—</td></tr><tr><td>존경·자아실현</td><td>성장(G)</td><td>동기요인</td><td>Y이론</td></tr></table>',
+ ex:'<ul><li>임금을 올렸더니 불만은 줄었지만 의욕은 그대로 → 허츠버그의 위생요인</li><li>무재해 달성 팀을 사내 발표회에서 칭찬 → 존경 욕구·동기요인 자극</li></ul>',
+ cmp:'<table><tr><th>위생요인</th><th>동기요인</th></tr><tr><td>없으면 불만, 있어도 만족은 X</td><td>있으면 만족·의욕 증가</td></tr><tr><td>임금·작업조건</td><td>성취·인정·책임</td></tr></table>',
+ exam:'<ul><li>매슬로 단계 순서, 특히 3단계 <b>사회적</b> 욕구와 4단계 <b>존경</b> 욕구 순서</li><li>허츠버그 위생요인 고르기 ("임금"은 위생요인)</li><li>데이비스 공식 (상황 × 태도 = 동기유발)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f10',title:'10. 주의와 부주의',
+ core:'주의 특성 {{선택성·방향성·변동성}} / 부주의 원인 {{의식의 단절·우회·수준 저하·과잉}} / 의식수준 {{Phase 0~IV}}, 최고 신뢰도 {{Phase III(명료)}}',
+ def:'<ul><li><b>주의</b>: 의식을 특정 대상에 집중하는 것</li><li><b>부주의</b>: 주의가 필요한 대상에서 의식이 벗어난 상태 — 불안전 행동의 결과이지 원인 그 자체는 아님 (원인은 따로 있음)</li></ul>',
+ why:'<ul><li>사람은 주의를 계속 유지할 수 없으므로, "주의하라"는 말만으로는 사고를 막을 수 없습니다. 부주의가 생기는 원인별로 대책이 다릅니다.</li></ul>',
+ detail:'<b>주의의 특성</b><table><tr><th>특성</th><th>뜻</th></tr><tr><td>{{선택성}}</td><td>한 번에 여러 곳에 주의할 수 없고, 소수의 특정한 것만 고름</td></tr><tr><td>{{방향성}}</td><td>주시점(시선 방향)만 인지, 주변은 주의가 약해짐</td></tr><tr><td>{{변동성}}</td><td>주의는 일정하게 지속되지 않고 주기적으로 오르내림</td></tr></table><b>부주의의 원인 (의식 상태)</b><table><tr><th>원인</th><th>뜻</th></tr><tr><td>{{의식의 단절(중단)}}</td><td>의식 흐름이 끊김 (질병 등 특수한 경우)</td></tr><tr><td>{{의식의 우회}}</td><td>걱정·고민으로 의식이 다른 데로 흐름</td></tr><tr><td>{{의식수준의 저하}}</td><td>피로·단조로운 작업으로 의식이 흐려짐</td></tr><tr><td>{{의식의 과잉}}</td><td>돌발 상황에 긴장해 한 점에만 집중(일점집중)</td></tr></table><b>의식수준 5단계 (하시모토)</b><table><tr><th>단계</th><th>상태</th><th>신뢰성</th></tr><tr><td>Phase 0</td><td>무의식, 실신</td><td>0</td></tr><tr><td>Phase I</td><td>의식 흐림 (피로, 단조로움, 졸음)</td><td>0.9 이하</td></tr><tr><td>Phase II</td><td>이완, 정상 (휴식·정상 작업)</td><td>0.99~0.99999</td></tr><tr><td>{{Phase III}}</td><td>명료, 적극 활동</td><td>{{0.999999 이상}}</td></tr><tr><td>Phase IV</td><td>과긴장, 일점집중, 판단 정지</td><td>0.9 이하</td></tr></table><b>부주의 원인별 대책</b><table><tr><th>원인</th><th>대책</th></tr><tr><td>외적: 작업·환경 조건 불량</td><td>환경 정비</td></tr><tr><td>외적: 작업 순서 부적당</td><td>작업 순서 정비</td></tr><tr><td>내적: 소질적 조건</td><td>적성 배치</td></tr><tr><td>내적: 의식의 우회</td><td>상담(카운슬링)</td></tr><tr><td>내적: 경험·미경험</td><td>교육</td></tr></table>',
+ ex:'<ul><li>가정 문제로 고민하다 신호를 놓침 → 의식의 우회 → 상담</li><li>야간 단조 작업 중 졸음 → 의식수준 저하(Phase I)</li></ul>',
+ cmp:'<table><tr><th>Phase I</th><th>Phase IV</th></tr><tr><td>의식이 너무 <b>낮음</b>(졸림)</td><td>의식이 너무 <b>높음</b>(공황)</td></tr><tr><td colspan="2">둘 다 신뢰성 0.9 이하</td></tr></table>',
+ exam:'<ul><li>주의 특성 3가지와 뜻 짝짓기</li><li>부주의 원인과 대책 짝짓기 (의식의 우회 → 상담)</li><li>가장 신뢰도 높은 의식수준 = Phase III</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'4-3. 집단관리와 리더십'},
+{id:'f11',title:'11. 리더십의 유형',
+ core:'{{권위형(독재)·민주형·자유방임형}} / 관리그리드 {{1.1 무관심·1.9 인기·9.1 과업·5.5 중도·9.9 팀}} / 권한 {{보상·강압·합법(조직)}} {{전문성·위임(개인)}}',
+ def:'<ul><li><b>리더십</b>: 집단 목표를 위해 구성원에게 영향을 미치는 과정</li></ul>',
+ why:'<ul><li>같은 지시도 리더 스타일에 따라 지켜지는 정도가 다릅니다. 상황(긴급·숙련도)에 맞는 리더십을 고르는 문제가 나옵니다.</li></ul>',
+ detail:'<b>의사결정 방식에 따른 유형</b><table><tr><th>유형</th><th>특징</th></tr><tr><td>{{권위형(전제·독재형)}}</td><td>리더가 혼자 결정, 지시·명령. 긴급 상황에 신속하나 불만·의존 증가</td></tr><tr><td>{{민주형}}</td><td>구성원 참여로 결정. 사기·창의성 높음, 결정이 느릴 수 있음</td></tr><tr><td>{{자유방임형}}</td><td>리더가 거의 관여하지 않음. 생산성·결속력 낮음</td></tr></table><b>관리 그리드 (블레이크 & 머튼)</b> — 가로축 생산(업적) 관심, 세로축 인간 관심<table><tr><th>형</th><th>좌표</th><th>특징</th></tr><tr><td>무관심형</td><td>(1, 1)</td><td>둘 다 낮음</td></tr><tr><td>인기형(컨트리클럽)</td><td>(1, 9)</td><td>인간 관심만 높음</td></tr><tr><td>과업형</td><td>(9, 1)</td><td>생산 관심만 높음</td></tr><tr><td>타협형(중도형)</td><td>(5, 5)</td><td>중간</td></tr><tr><td>{{이상형(팀형)}}</td><td>(9, 9)</td><td>둘 다 높음 — 가장 바람직</td></tr></table><b>리더의 권한 (파워)</b><table><tr><th>조직이 부여</th><th>리더 자신이 만듦</th></tr><tr><td>보상적 권한, 강압적 권한, 합법적 권한</td><td>전문성의 권한, 위임된(준거적) 권한</td></tr></table><b>기타 이론</b>: 특성이론(리더의 자질), 행동이론(오하이오 구조주도·배려, 미시간 직무중심·종업원중심), 상황이론(피들러 LPC, 허시-블랜차드: 성숙도에 따라 지시형→설득형→참여형→위임형)',
+ ex:'<ul><li>화재 대피 상황 → 권위형이 효과적</li><li>숙련된 팀의 작업 개선 회의 → 민주형·위임형</li></ul>',
+ cmp:'<table><tr><th>(1,9)</th><th>(9,1)</th></tr><tr><td>인간만 챙김 = 인기형</td><td>일만 챙김 = 과업형</td></tr></table>',
+ exam:'<ul><li>관리그리드 좌표와 유형 짝짓기 — 좌표 (<b>생산, 인간</b>) 순서 주의</li><li>권한 중 조직이 부여하는 것 vs 리더 자신의 것</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f12',title:'12. 리더십과 헤드십',
+ core:'헤드십 = {{임명된 지위}}, 권한 {{공식·법적}}, 간격 {{넓음}}, {{권위주의}} / 리더십 = {{구성원이 인정}}, 권한 {{개인 능력}}, 간격 {{좁음}}, {{민주주의}}',
+ def:'<ul><li><b>헤드십(headship)</b>: 조직이 공식적으로 임명한 지위에서 나오는 권한으로 지휘하는 것</li><li><b>리더십(leadership)</b>: 구성원이 자발적으로 따르게 만드는 개인적 영향력</li></ul>',
+ detail:'<table><tr><th>구분</th><th>{{헤드십}}</th><th>{{리더십}}</th></tr><tr><td>권한 부여</td><td>위에서 <b>임명</b></td><td>아래에서 <b>동의·선출</b>(자연발생)</td></tr><tr><td>권한 근거</td><td>공식적·법적</td><td>개인의 능력·인격</td></tr><tr><td>상사-부하 관계</td><td>지배적</td><td>개인적 영향</td></tr><tr><td>상사-부하 간격</td><td>넓음</td><td>좁음</td></tr><tr><td>지휘 형태</td><td>권위주의적</td><td>민주주의적</td></tr><tr><td>책임 귀속</td><td>상사</td><td>상사와 부하 모두</td></tr></table>',
+ ex:'<ul><li>새로 발령받은 팀장이 직급으로만 지시 → 헤드십 / 경험 많은 반장을 모두가 자연스럽게 따름 → 리더십</li></ul>',
+ exam:'<ul><li>헤드십의 특징 고르기 (특히 "간격이 넓다", "책임은 상사에게")</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f13',title:'13. 사기와 집단역학',
+ core:'집단역학 = {{레빈}} / {{소시오메트리}}(모레노) — 선호신분지수 = {{선호 총계 ÷ (구성원 수 − 1)}} / 사기 조사 {{통계·사례연구·관찰·실험·태도조사}}',
+ def:'<ul><li><b>사기(morale)</b>: 집단 구성원이 목표를 향해 함께 노력하려는 의욕과 만족 상태</li><li><b>집단역학(group dynamics)</b>: 집단 안에서 일어나는 상호작용과 힘의 작용을 연구 (레빈)</li><li><b>소시오메트리</b>: 구성원끼리 서로 좋아하고 싫어하는 관계를 측정하는 방법 (모레노)</li></ul>',
+ why:'<ul><li>사기가 높고 응집력이 좋은 집단은 안전 규칙도 잘 지킵니다. 집단 내 관계를 측정해 고립된 사람·비공식 리더를 찾아낼 수 있습니다.</li></ul>',
+ detail:'<b>소시오메트리</b><ul><li>질문(같이 일하고 싶은 사람 등)으로 선호·거부를 조사해 <b>소시오그램</b>(관계도)으로 표현</li><li>선호신분지수 = 선호 총계 ÷ (구성원 수 − 1) → 클수록 인기 있는 사람</li></ul><b>집단의 기능</b>: 응집력, 행동의 규범, 집단 목표<br><b>집단 효과</b>: 동조 효과, 시너지 효과, 견물 효과(남이 보면 자극받아 행동)<br><b>사기 조사(모랄 서베이) 방법</b><ul><li>통계에 의한 방법: 사고율, 결근율, 이직률, 생산성 등</li><li>사례연구법, 관찰법, 실험연구법</li><li>태도조사법: 질문지법, 면접법, 집단토의법, 투사법</li></ul>',
+ calc:'구성원 6명 집단에서 A가 3명에게 선호 받음 → 선호신분지수 = 3 ÷ (6 − 1) = <b>0.6</b>',
+ ex:'<ul><li>이직률이 갑자기 오른 팀 → 통계에 의한 사기 조사 신호</li></ul>',
+ exam:'<ul><li>소시오메트리 창시자(모레노)와 선호신분지수 계산</li><li>사기 조사 방법 중 "통계"에 해당하는 지표</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'4-4. 생체리듬과 피로'},
+{id:'f14',title:'14. 피로의 증상 및 대책',
+ core:'피로 3특징 {{능률 저하·생체 기능 변화·피로감 자각}} / 대책 {{충분한 휴식·작업부하 경감·동적 작업·짧게 자주 쉬기}}',
+ def:'<ul><li><b>피로</b>: 작업을 계속하면서 작업 능력이 떨어지고 피로감을 느끼는 상태</li></ul>',
+ why:'<ul><li>피로하면 의식수준이 떨어져(Phase I) 착오·실수가 늘어납니다. 그래서 피로는 측정하고 관리해야 하는 재해 요인입니다.</li></ul>',
+ detail:'<b>피로의 3가지 특징</b>: 작업 능률 저하, 생체의 타각적 기능 변화, 피로감 자각<br><b>피로의 종류</b><ul><li>정신적 피로: 긴장감 해이, 주의력 감소, 판단력 저하</li><li>육체적 피로: 감각 기능 저하, 근력 감소, 작업 효율 저하</li><li>급성 피로(휴식으로 회복) / 만성 피로(축적, 회복 어려움)</li></ul><b>피로의 원인</b><ul><li>기계적 요인: 기계 종류, 조작 부분 배치, 조작 부분 감촉, 기계 이해 용이성, 기계 색채</li><li>인간적 요인: 생체리듬, 정신·신체 상태, 작업 내용·시간·환경, 수면</li></ul><b>대책</b><ul><li>충분한 수면·휴식, 영양 섭취</li><li>작업 부하·작업 속도 조절, 작업 전환</li><li><b>정적 작업보다 동적 작업</b> (같은 자세 오래 유지 금지)</li><li>휴식은 <b>짧게 자주</b> (긴 휴식 한 번보다 효과적)</li><li>온열·조명·소음 등 작업환경 개선</li></ul>',
+ ex:'<ul><li>모니터 감시 업무 → 1시간마다 짧은 휴식과 스트레칭</li></ul>',
+ exam:'<ul><li>피로 대책으로 <b>틀린</b> 것 (예: "정적 작업으로 바꾼다", "휴식은 한 번에 길게")</li></ul>',
+ law:'법령 근거 없음(이론). 휴게시간은 근로기준법.'},
+
+{id:'f15',title:'15. 피로의 측정법',
+ core:'생리학적 {{근전도·뇌파·심전도·플리커(CFF)·산소소비량·GSR}} / 생화학적 {{혈액·소변(요단백)·부신피질}} / 심리학적 {{변별역치·동작분석·연속반응시간·정신작업·자각증상}}',
+ def:'<ul><li>피로 정도를 객관적으로 알아내는 방법. 무엇을 측정하는지에 따라 세 가지로 나눕니다.</li></ul>',
+ detail:'<table><tr><th>방법</th><th>측정 항목</th></tr><tr><td>{{생리학적}}</td><td>근전도(EMG), 뇌파(EEG), 심전도(ECG), 안전도(EOG), <b>플리커 검사(점멸융합주파수 CFF)</b>, 산소소비량, 에너지대사율, 피부전기반사(GSR), 호흡수·맥박</td></tr><tr><td>{{생화학적}}</td><td>혈액 농도·혈색소, 요단백·요전해질, 부신피질 기능</td></tr><tr><td>{{심리학적}}</td><td>변별역치, 피부(전위)저항, 동작분석, 연속반응시간, 정신작업, 집중력 유지, 자각증상 조사</td></tr></table><b>플리커 검사(CFF)</b><ul><li>깜빡이는 빛이 연속광으로 보이기 시작하는 주파수를 측정</li><li>피로하면 CFF 값이 <b>낮아짐</b> (깜빡임을 덜 구분)</li><li>정신적 피로 측정에 대표적으로 쓰임</li></ul>',
+ ex:'<ul><li>야간 근무 전후 CFF 비교 → 근무 후 값이 떨어지면 정신 피로 누적</li></ul>',
+ cmp:'<table><tr><th>생리학적</th><th>생화학적</th></tr><tr><td>전기 신호·호흡 (몸의 반응)</td><td>혈액·소변 (몸속 물질)</td></tr></table>',
+ exam:'<ul><li>측정 항목이 어느 방법에 속하는가 (특히 플리커 = 생리학적, 요단백 = 생화학적)</li><li>피로하면 CFF가 낮아짐</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f16',title:'16. 작업강도와 피로',
+ core:'RMR = {{(작업 시 소비에너지 − 안정 시 소비에너지) ÷ 기초대사량}} / 경 {{0~2}}·중(中) {{2~4}}·중(重) {{4~7}}·초중 {{7 이상}} / 휴식시간 R = {{60(E − 5) ÷ (E − 1.5)}}',
+ def:'<ul><li><b>에너지대사율(RMR)</b>: 작업에 쓴 에너지가 기초대사량의 몇 배인지 나타낸 작업강도 지표</li><li><b>기초대사량</b>: 생명 유지에 필요한 최소 에너지</li></ul>',
+ why:'<ul><li>작업강도를 숫자로 알면 적정 휴식시간을 계산하고, 무리한 작업을 재설계할 수 있습니다. 계산 문제가 자주 나옵니다.</li></ul>',
+ detail:'<b>에너지대사율</b><ul><li>RMR = (작업 시 소비에너지 − 안정 시 소비에너지) ÷ 기초대사량 = <b>작업대사량 ÷ 기초대사량</b></li></ul><table><tr><th>작업 구분</th><th>RMR</th></tr><tr><td>경(輕)작업</td><td>{{0~2}}</td></tr><tr><td>중(中)작업</td><td>{{2~4}}</td></tr><tr><td>중(重)작업</td><td>{{4~7}}</td></tr><tr><td>초중(超重)작업</td><td>{{7 이상}}</td></tr></table><b>휴식시간 계산 (머렐 Murrell)</b><ul><li>R = 60 × (E − 5) ÷ (E − 1.5)</li><li>R: 1시간 작업 중 필요한 휴식시간(분), E: 작업 시 평균 에너지소비량(kcal/분)</li><li>5: 표준 에너지소비량(kcal/분), 1.5: 휴식 중 에너지소비량(kcal/분)</li></ul>',
+ calc:'① 작업 시 소비 9kcal/분, 안정 시 1kcal/분, 기초대사 2kcal/분 → RMR = (9 − 1) ÷ 2 = <b>4</b> → 중(中)작업과 중(重)작업의 경계<br>② E = 6kcal/분 → R = 60 × (6 − 5) ÷ (6 − 1.5) = 60 ÷ 4.5 ≈ <b>13.3분</b>',
+ ex:'<ul><li>삽질·중량물 운반 등 E가 큰 작업 → 휴식시간을 계산해 순환 근무</li></ul>',
+ exam:'<ul><li>RMR 공식에서 분모가 <b>기초대사량</b> (안정 시 아님)</li><li>머렐 공식 계산 (E − 5, E − 1.5)</li><li>작업강도 구간</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f17',title:'17. 생체리듬',
+ core:'육체 {{P 23일 청색 실선}} / 감성 {{S 28일 적색 점선}} / 지성 {{I 33일 녹색 일점쇄선}} / 야간: 체온·혈압·맥박 {{저하}}, 혈액 수분·염분 {{증가}}',
+ def:'<ul><li><b>생체리듬(바이오리듬)</b>: 사람의 신체·감정·지성 상태가 일정한 주기로 좋아졌다 나빠졌다를 반복한다는 이론</li><li><b>서카디안 리듬</b>: 약 24시간 주기의 생리 변화</li></ul>',
+ detail:'<b>바이오리듬 3종류</b><table><tr><th>리듬</th><th>기호</th><th>주기</th><th>표시</th><th>관련</th></tr><tr><td>{{육체적}} 리듬</td><td>P (Physical)</td><td>{{23일}}</td><td>청색 실선</td><td>식욕, 활동력, 지구력</td></tr><tr><td>{{감성적}} 리듬</td><td>S (Sensitivity)</td><td>{{28일}}</td><td>적색 점선</td><td>감정, 주의력, 창조력</td></tr><tr><td>{{지성적}} 리듬</td><td>I (Intellectual)</td><td>{{33일}}</td><td>녹색 일점쇄선</td><td>사고력, 판단력, 기억력</td></tr></table><b>하루 중 생리 변화 (서카디안 리듬)</b><ul><li>체온·혈압·맥박: 주간 상승, <b>야간 저하</b></li><li>혈액의 수분·염분량: 주간 감소, <b>야간 증가</b></li><li>야간에는 체중 감소, 말초운동 기능 저하, 피로 자각 증상 증가</li><li>사고는 졸음이 오는 새벽 시간대와 점심 식사 후 시간대에 많아짐</li></ul>',
+ ex:'<ul><li>야간 교대 근무 새벽 3~5시 → 체온 최저, 졸음 → 위험 작업 배치 자제</li></ul>',
+ cmp:'<table><tr><th>23일</th><th>28일</th><th>33일</th></tr><tr><td>육체(P)</td><td>감성(S)</td><td>지성(I)</td></tr><tr><td colspan="3">5일씩 늘어남</td></tr></table>',
+ exam:'<ul><li>리듬별 주기 (23·28·33)와 선 표시</li><li>야간 생리 변화 방향 (혈액 수분·염분은 야간 <b>증가</b>)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f18',title:'18. 위험일',
+ core:'리듬 곡선이 {{(+) ↔ (−)}}로 바뀌는 {{영(0)점 교차일}} / 한 달에 약 {{6일}}',
+ def:'<ul><li><b>위험일</b>: 바이오리듬 곡선이 기준선(0)을 지나 플러스에서 마이너스로, 또는 마이너스에서 플러스로 바뀌는 날. 상태가 불안정해 사고 위험이 높다고 봄</li></ul>',
+ detail:'<ul><li>리듬이 (+) 구간: 활동기 / (−) 구간: 휴식·저조기</li><li>(+) → (−) 또는 (−) → (+)로 <b>바뀌는 날</b>이 위험일 (마이너스 구간 전체가 아님)</li><li>세 리듬 각각의 교차일을 합치면 한 달에 약 <b>6일</b> 정도</li><li>두 개 이상의 리듬이 같은 날 교차하면 더 위험한 날로 봄</li></ul>',
+ ex:'<ul><li>바이오리듬표에서 P와 S가 같은 날 0선을 지남 → 그날 고위험 작업 배치 주의</li></ul>',
+ cmp:'<table><tr><th>위험일</th><th>저조기</th></tr><tr><td>0선을 <b>지나는 날</b></td><td>(−) 구간 전체</td></tr></table>',
+ exam:'<ul><li>위험일 정의 ("마이너스 구간" → 틀림, "교차하는 날" → 맞음)</li><li>월 약 6일</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f19',title:'키워드 카드 — 주요항목 4 짝짓기',tag:'암기',
+ core:'호손 = {{인간관계}} / 매슬로 {{5단계}} / 허츠버그 {{2요인}} / Phase {{III}} 최고 / 23·28·33 {{P·S·I}}',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>호손 실험</td><td>{{메이요, 인간관계·비공식 조직}}</td></tr><tr><td>분업</td><td>{{협력}}</td></tr><tr><td>타협·통합</td><td>{{융합}}</td></tr><tr><td>동일화·투사·모방·암시</td><td>{{인간관계 메커니즘}}</td></tr><tr><td>패닉</td><td>{{통제 없는 방어적 집단행동}}</td></tr><tr><td>유행</td><td>{{통제 있는 집단행동}}</td></tr><tr><td>지름길 반응</td><td>{{간결성 원리}}</td></tr><tr><td>기계설비 결함으로 반복 재해</td><td>{{상황성 누발자}}</td></tr><tr><td>작업 자체가 위험</td><td>{{기회설}}</td></tr><tr><td>사회적 → 존경</td><td>{{매슬로 3 → 4단계}}</td></tr><tr><td>임금·작업조건</td><td>{{허츠버그 위생요인}}</td></tr><tr><td>상황 × 태도</td><td>{{데이비스 동기유발}}</td></tr><tr><td>의식의 우회</td><td>{{상담}}</td></tr><tr><td>Phase III</td><td>{{명료, 신뢰도 최고}}</td></tr><tr><td>(9, 9)</td><td>{{팀형(이상형)}}</td></tr><tr><td>(1, 9)</td><td>{{인기형}}</td></tr><tr><td>임명·공식·간격 넓음</td><td>{{헤드십}}</td></tr><tr><td>모레노</td><td>{{소시오메트리}}</td></tr><tr><td>플리커(CFF)</td><td>{{생리학적 피로 측정, 피로하면 낮아짐}}</td></tr><tr><td>요단백</td><td>{{생화학적 측정}}</td></tr><tr><td>RMR 4~7</td><td>{{중(重)작업}}</td></tr><tr><td>60(E−5)/(E−1.5)</td><td>{{머렐 휴식시간}}</td></tr><tr><td>23 · 28 · 33일</td><td>{{육체 · 감성 · 지성}}</td></tr><tr><td>0선 교차일</td><td>{{위험일}}(월 약 6일)</td></tr></table>'}
+];
+
+var MN={
+f1:[
+ {k:'호손 = 사람',s:'"<b>호손</b> 공장에서 조명을 바꿨더니 → 밝게 해도 어둡게 해도 생산성↑ → 이유는 \'누가 나를 지켜봐 준다\'는 <b>관심</b>" — 호(好)손 = 좋은 손님 대접',m:'호손 실험 → {{인간관계·비공식 조직이 생산성 좌우}}'}],
+f2:[
+ {k:'협·대·도·융',s:'"<b>협대도융</b> → \'협곡 대도(大盜)가 융단 위로 도망\'" — 함께하거나(협력) 싸우거나(대립) 피하거나(도피) 섞이거나(융합)',m:'{{협력(조력·분업)}} · {{대립(공격·경쟁)}} · {{도피(고립·정신병·자살)}} · {{융합(강제·타협·통합)}}'}],
+f3:[
+ {k:'동·투·커·모·암',s:'"<b>동투</b>(동시 투자) <b>커</b>뮤니티에서 <b>모</b>두 <b>암</b>시에 걸렸다" — 남 따라 투자하는 개미들',m:'{{동일화}} · {{투사}} · {{커뮤니케이션}} · {{모방}} · {{암시}}'}],
+f4:[
+ {k:'통제 有 관·제·유 / 無 군·모·패·심',s:'"<b>관제</b>탑이 <b>유</b>도하면 질서 있고, 관제탑이 꺼지면 <b>군</b>중이 <b>모</b>여 <b>패</b>닉에 <b>심</b>장이 뛴다"',m:'통제 있음 {{관습·제도적 행동·유행}} / 없음 {{군중·모브·패닉·심리적 전염}}'},
+ {k:'모브 공격 · 패닉 도망',s:'"<b>모브</b>는 몹(mob) — 몰려가 <b>때리고</b>, <b>패닉</b>은 겁나서 <b>도망</b>"',m:'모브 {{공격적}} / 패닉 {{방어적}}'}],
+f5:[
+ {k:'간·일·리·억',s:'"<b>간</b>단히 <b>일</b>찍 끝내려고 <b>리</b>스크를 <b>억</b>지로 감수" — 사람은 원래 편한 길을 고른다',m:'{{간결성 원리}} · {{주의 일점집중}} · {{리스크 테이킹}} · {{억측판단}}'}],
+f8:[
+ {k:'기·암·빈',s:'"<b>기</b>차 <b>암</b>표상이 <b>빈</b>번하다" — 기회(작업이 위험), 암시(한 번 다치면 겁), 빈발경향(타고남)',m:'{{기회설}} · {{암시설}} · {{빈발경향자설}}'},
+ {k:'미·상·습·소',s:'"<b>미상</b>(未詳)의 <b>습</b>격 <b>소</b>식" — 서툴러서(미숙), 상황이 나빠서(상황), 겁먹어서(습관), 타고나서(소질)',m:'{{미숙성}} · {{상황성}} · {{습관성}} · {{소질성}} 누발자'}],
+f9:[
+ {k:'생·안·사·존·자',s:'"<b>생</b>선 <b>안</b>주에 <b>사</b>람들 모여 <b>존</b>경받다 <b>자</b>서전 쓴다" — 배부르고 → 안전하고 → 친구 생기고 → 인정받고 → 꿈을 이룸',m:'{{생리}} → {{안전}} → {{사회적}} → {{존경}} → {{자아실현}}'},
+ {k:'위생 = 불만 / 동기 = 만족',s:'"<b>위생</b>은 화장실 청소 — 더러우면 불만이지만 깨끗하다고 신나진 않는다 / <b>동기</b>는 칭찬 — 있으면 신난다"',m:'위생요인 {{임금·작업조건·감독·대인관계}} / 동기요인 {{성취·인정·책임·성장}}'},
+ {k:'X = 채찍 / Y = 자율',s:'"<b>X</b>는 가위표 — 믿지 못해 감시 / <b>Y</b>는 두 팔 벌린 사람 — 믿고 맡김"',m:'X이론 {{명령·통제, 저차원 욕구}} / Y이론 {{자율·참여, 고차원 욕구}}'},
+ {k:'지×기=능 / 상×태=동',s:'"<b>지기</b>(知己)는 능력, <b>상태</b>(狀態)는 동기" — 지식×기능=능력, 상황×태도=동기유발',m:'{{능력 = 지식 × 기능}} / {{동기유발 = 상황 × 태도}} / 성과 = 능력 × 동기유발'}],
+f10:[
+ {k:'선·방·변',s:'"<b>선방</b>(善防)하다 <b>변</b>심한 골키퍼" — 골키퍼는 공 하나만 보고(선택), 공 쪽만 보고(방향), 집중력이 오르내린다(변동)',m:'{{선택성}} · {{방향성}} · {{변동성}}'},
+ {k:'단·우·저·과',s:'"<b>단우</b>(短雨, 소나기) 맞아 <b>저</b>체온, <b>과</b>열" — 끊기고(단절), 딴생각(우회), 흐려지고(저하), 과열(과잉)',m:'의식의 {{단절}} · {{우회}} · {{수준 저하}} · {{과잉}}'},
+ {k:'Phase 0~IV',s:'"<b>0</b> 기절 · <b>1</b> 졸림 · <b>2</b> 쉬는 중 · <b>3</b> 쌩쌩 · <b>4</b> 패닉" — 가운데보다 하나 위(III)가 최고, 양 끝 I·IV는 둘 다 0.9 이하',m:'최고 신뢰도 {{Phase III(명료)}}'}],
+f11:[
+ {k:'권·민·자',s:'"<b>권</b>투 선수, <b>민</b>주 시민, <b>자</b>유인" — 혼자 정함, 같이 정함, 안 정함',m:'{{권위형}} · {{민주형}} · {{자유방임형}}'},
+ {k:'(생산, 인간)',s:'"좌표는 <b>일 먼저, 사람 나중</b> — (9,1)은 일만 하는 일벌레 = 과업형, (1,9)는 사람만 좋아하는 골프장 사장 = 인기형(컨트리클럽)"',m:'(9,9) {{팀형}} · (9,1) {{과업형}} · (1,9) {{인기형}} · (5,5) {{중도형}} · (1,1) {{무관심형}}'},
+ {k:'조직 = 보·강·합 / 개인 = 전·위',s:'"회사가 주는 <b>보강합</b>(보강 합판) 무기 vs 내가 가진 <b>전위</b>(前衛) 실력"',m:'조직 부여 {{보상·강압·합법}} / 리더 자신 {{전문성·위임(준거)}}'}],
+f12:[
+ {k:'헤드 = 머리 위에서',s:'"<b>헤드</b>십은 위에서 <b>머리</b>에 꽂아 준 감투 — 임명, 공식, 거리 멀고, 책임은 상사 / <b>리더</b>십은 사람들이 <b>따라</b>와서 생김"',m:'헤드십 {{임명·공식·간격 넓음·권위주의}} / 리더십 {{동의·개인능력·간격 좁음·민주주의}}'}],
+f13:[
+ {k:'모레노 = 소시오',s:'"<b>모레노</b>(모래놀이)에서 <b>누가 누구랑</b> 놀고 싶은지 조사" — 소시오그램',m:'소시오메트리 {{모레노}} / 선호신분지수 {{선호 총계 ÷ (n − 1)}}'}],
+f14:[
+ {k:'능·생·자',s:'"피로하면 <b>능</b>률 떨어지고 <b>생</b>체가 변하고 <b>자</b>각(피곤함)한다"',m:'{{능률 저하}} · {{생체 기능 변화}} · {{피로감 자각}}'},
+ {k:'짧게 자주 · 움직이며',s:'"피로는 <b>스낵</b>처럼 — 쉬는 것도 조금씩 자주, 가만히 서 있는 것보다 걷는 게 덜 지친다"',m:'휴식 {{짧게 자주}} / {{정적 작업보다 동적 작업}}'}],
+f15:[
+ {k:'생리 = 전기 · 생화학 = 액체 · 심리 = 반응',s:'"<b>몸의 전기</b>(근전도·뇌파·심전도·플리커)는 생리, <b>몸의 물</b>(피·오줌)은 생화학, <b>머리의 반응</b>(반응시간·변별)은 심리"',m:'{{생리학적}} · {{생화학적}} · {{심리학적}}'},
+ {k:'CFF ↓ = 피로',s:'"피곤하면 <b>깜빡임을 못 알아챈다</b> → 깜빡이는 빛이 더 낮은 주파수에서도 이어져 보임"',m:'피로하면 {{점멸융합주파수가 낮아짐}}'}],
+f16:[
+ {k:'(작업 − 안정) ÷ 기초',s:'"<b>일할 때</b>에서 <b>쉴 때</b>를 빼고, <b>살아 있는 데 드는 양</b>(기초대사)으로 나눈다"',m:'RMR = {{(작업 시 − 안정 시) ÷ 기초대사량}}'},
+ {k:'2 · 4 · 7',s:'"<b>이</b>(2)·<b>사</b>(4)·<b>칠</b>(7) — \'이사칠\' 이사 갈 때 짐 무게 단계: 가벼운 박스, 보통 박스, 무거운 장롱, 7 넘으면 피아노"',m:'경 {{0~2}} · 중(中) {{2~4}} · 중(重) {{4~7}} · 초중 {{7 이상}}'},
+ {k:'60(E − 5) ÷ (E − 1.5)',s:'"한 시간(<b>60</b>분) 중, 기준 <b>5</b> 넘은 만큼을, 쉴 때 <b>1.5</b>로 회복" — 5와 1.5만 기억하면 공식 완성',m:'머렐 R = {{60 × (E − 5) ÷ (E − 1.5)}}'}],
+f17:[
+ {k:'23 · 28 · 33 = P · S · I',s:'"<b>몸</b>(P)이 먼저 지치고(23), 5일 뒤 <b>마음</b>(S)이(28), 또 5일 뒤 <b>머리</b>(I)가(33)" — 몸 → 마음 → 머리, 5일씩',m:'육체 {{23일}} · 감성 {{28일}} · 지성 {{33일}}'},
+ {k:'청 실 · 적 점 · 녹 일점쇄',s:'"<b>몸</b>은 파란 혈관처럼 쭉 이어진 <b>실선</b>, <b>감정</b>은 빨갛게 들쑥날쑥 <b>점선</b>, <b>지성</b>은 초록 칠판에 쓴 <b>일점쇄선</b>"',m:'P {{청색 실선}} · S {{적색 점선}} · I {{녹색 일점쇄선}}'}],
+f18:[
+ {k:'0선 교차 · 월 6일',s:'"기차가 <b>건널목(0선)</b>을 지날 때가 제일 위험 — 한 달에 건널목 약 <b>6</b>번"',m:'위험일 = {{(+)↔(−) 바뀌는 날}}, 월 약 {{6일}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

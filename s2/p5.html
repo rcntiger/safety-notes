@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2과목 5. 유해요인 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 2과목 · 인간공학 및 위험성 평가·관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 5. 유해요인 관리 · 세세항목 9개 → 학습단위 10개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">2과목 목차</a><a href="p4.html">◀ 이전</a><a href="p6.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s2-p5-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'5-1. 물리적 유해요인 관리'},
+{id:'e1',title:'1. 물리적 유해요인 파악',
+ core:'{{소음·진동·고열·한랭·이상기압·전리방사선·비전리방사선·조명}} / 국소진동 → {{레이노}}, 전신진동 → {{요통}} / 고기압 → {{감압병}}',
+ def:'<ul><li><b>물리적 유해요인</b>: 에너지 형태로 인체에 영향을 주는 요인 (소리, 떨림, 열, 압력, 빛·방사선 등)</li></ul>',
+ detail:'<table><tr><th>요인</th><th>대표 건강 영향</th></tr><tr><td>{{소음}}</td><td>소음성 난청 (4,000Hz 부근에서 먼저 저하, C<sub>5</sub>-dip), 수면·대화 방해</td></tr><tr><td>{{국소진동}}</td><td>레이노 증후군(백색수지), 뼈·관절 장해 — 착암기·그라인더</td></tr><tr><td>{{전신진동}}</td><td>요통, 척추 장해, 위장 장해 — 중장비·차량 운전</td></tr><tr><td>{{고열}}</td><td>열사병(가장 위험, 체온조절 중추 장해), 열탈진(열피로), 열경련(염분 손실), 열발진(땀띠)</td></tr><tr><td>{{한랭}}</td><td>동상, 참호족(침수족), 저체온증</td></tr><tr><td>{{이상기압}}</td><td>고기압(잠수·잠함): {{감압병}}(잠함병, 질소 기포), 질소마취 / 저기압(고소): 고산병</td></tr><tr><td>{{전리방사선}}</td><td>α·β·γ선, X선, 중성자선 → 백혈병·암·피부 장해</td></tr><tr><td>{{비전리방사선}}</td><td>자외선(전기성 안염·피부암), 적외선(백내장), 레이저(망막), 마이크로파(발열)</td></tr><tr><td>조명</td><td>눈 피로, 근시, 사고 (6장 빛)</td></tr></table>',
+ ex:'<ul><li>아크용접 후 눈이 따갑고 모래 들어간 느낌 → 자외선에 의한 전기성 안염</li></ul>',
+ cmp:'<table><tr><th>열사병</th><th>열경련</th></tr><tr><td>체온조절 실패, 의식 장해 → 응급</td><td>땀으로 염분 손실 → 근육 경련</td></tr></table>',
+ exam:'<ul><li>유해요인과 질환 짝짓기 (진동-레이노, 고기압-감압병)</li><li>고열 장해 중 가장 위험한 것 = 열사병</li></ul>',
+ law:'산업안전보건기준에 관한 규칙 제4편(보건기준) 제4장 소음·진동, 제5장 이상기압, 제6장 온도·습도, 제8장 방사선.'},
+
+{id:'e2',title:'2. 물리적 유해요인 노출기준',
+ core:'소음 {{8시간 90dB(A)}}, {{5dB}} 증가마다 시간 {{절반}}, {{115dB}} 초과 금지 / 충격소음 {{140dB}} 초과 금지 / 소음작업 {{85dB}} 이상 → 청력보존 / WBGT 옥외 {{0.7 습구 + 0.2 흑구 + 0.1 건구}}',
+ def:'<ul><li><b>노출기준</b>: 거의 모든 근로자가 건강상 나쁜 영향을 받지 않는다고 판단되는 수준 (고용노동부 고시 「화학물질 및 물리적 인자의 노출기준」)</li></ul>',
+ detail:'<b>소음 노출기준 (5dB 교환율)</b><table><tr><th>1일 노출시간</th><th>소음강도 dB(A)</th></tr><tr><td>8</td><td>{{90}}</td></tr><tr><td>4</td><td>95</td></tr><tr><td>2</td><td>100</td></tr><tr><td>1</td><td>105</td></tr><tr><td>1/2</td><td>110</td></tr><tr><td>1/4</td><td>115</td></tr></table><ul><li>{{115dB(A)}}를 초과하는 소음에는 노출 금지</li></ul><b>충격소음 노출기준</b><table><tr><th>1일 노출 횟수</th><th>소음강도 dB(A)</th></tr><tr><td>100</td><td>140</td></tr><tr><td>1,000</td><td>130</td></tr><tr><td>10,000</td><td>120</td></tr></table><ul><li>최대 음압 {{140dB(A)}} 초과 충격소음 노출 금지</li></ul><b>소음작업 관리 (안전보건기준규칙)</b><ul><li>소음작업: 1일 8시간 기준 {{85dB}} 이상 소음 발생 작업</li><li>노출기준 초과 또는 소음성 난청 발생 사업장 → {{청력보존프로그램}} 시행</li></ul><b>고열 — WBGT(습구흑구온도지수)</b><ul><li>옥외(태양광선 있음): WBGT = 0.7 × 자연습구온도 + 0.2 × 흑구온도 + 0.1 × 건구온도</li><li>옥내 또는 태양광선 없는 옥외: WBGT = 0.7 × 자연습구온도 + 0.3 × 흑구온도</li><li>작업강도(경·중등·중)와 작업·휴식 비율에 따라 노출기준이 정해짐</li></ul><span style="color:var(--sub);font-size:13px">※ 소음 수치는 고시 기준, 고열 노출기준표와 방사선 선량한도는 교재로 확인.</span>',
+ calc:'① 95dB(A)에 노출 가능한 시간 = 8시간의 절반 = <b>4시간</b><br>② 옥외 자연습구 25℃, 흑구 35℃, 건구 30℃ → WBGT = 17.5 + 7 + 3 = <b>27.5℃</b>',
+ ex:'<ul><li>100dB 작업장 → 하루 2시간까지만, 귀마개·작업 순환 필요</li></ul>',
+ cmp:'<table><tr><th>85dB</th><th>90dB</th></tr><tr><td>소음작업 (관리 시작)</td><td>8시간 노출기준</td></tr></table>',
+ exam:'<ul><li>소음 시간-강도 표 (5dB마다 절반)</li><li>WBGT 계수 (0.7·0.2·0.1 / 0.7·0.3)</li></ul>',
+ law:'고용노동부 고시 「화학물질 및 물리적 인자의 노출기준」, 안전보건기준규칙 제512조(정의)·제517조(청력보존프로그램).'},
+
+{id:'e3',title:'3. 물리적 유해요인 관리대책 수립',
+ core:'소음 {{발생원(저소음·방진·밀폐) → 전파경로(차음·흡음·거리) → 수음자(보호구·노출시간)}} / 진동 {{방진·공구 개선·휴식·방진장갑}} / 고열 {{차열·환기·휴식·수분·염분}}',
+ def:'<ul><li>물리적 유해요인도 제거·대체 → 공학적 → 관리적 → 보호구 순서로 대책을 세웁니다.</li></ul>',
+ detail:'<b>소음 대책</b><table><tr><th>단계</th><th>대책</th></tr><tr><td>{{발생원}}</td><td>저소음 기계로 교체, 방진(진동 차단), 소음기, 밀폐(방음 커버), 운전 방법 개선</td></tr><tr><td>{{전파 경로}}</td><td>차음벽, 흡음재, 거리 감쇠(거리 2배 → 약 6dB 감소), 방향 전환</td></tr><tr><td>{{수음자}}</td><td>귀마개·귀덮개, 방음 감시실, 노출시간 단축(작업 순환), 청력검사</td></tr></table><b>진동 대책</b>: 저진동 공구, 방진 손잡이, 공구 무게 지지, 연속 사용시간 제한·휴식, 방진장갑, 보온(한랭 시 레이노 악화)<br><b>고열 대책</b>: 열원 차폐(차열판), 국소냉방·환기, 작업·휴식 시간 조정, 물·염분 섭취, 휴게시설, 열 순응(서서히 적응), 방열복<br><b>한랭 대책</b>: 방한복·장갑, 따뜻한 휴게실, 젖은 옷 교체<br><b>방사선 대책</b>: 시간(짧게), 거리(멀리, 거리 제곱에 반비례), 차폐(납·콘크리트) — 외부피폭 방어 3원칙<br><b>이상기압</b>: 가압·감압 속도 준수, 작업시간 제한',
+ ex:'<ul><li>그라인더 작업장: 저소음 공구 + 흡음 패널 + 귀마개 + 2시간마다 순환</li></ul>',
+ exam:'<ul><li>소음 대책을 발생원·경로·수음자로 분류</li><li>방사선 외부피폭 방어 3원칙 (시간·거리·차폐)</li></ul>',
+ law:'안전보건기준규칙 제4편 각 장.'},
+
+{grp:'5-2. 화학적 유해요인 관리'},
+{id:'e4',title:'4. 화학적 유해요인 파악',
+ core:'형태 {{가스·증기 / 입자상(분진·흄·미스트·섬유)}} / 흡수경로 {{호흡기(가장 중요)·피부·소화기}} / 분류 {{금지·허가대상·관리대상·특별관리물질}}',
+ def:'<ul><li><b>화학적 유해요인</b>: 화학물질이 호흡·피부 접촉·섭취로 몸에 들어와 중독·암·직업병을 일으키는 요인</li></ul>',
+ detail:'<b>물리적 형태</b><table><tr><th>형태</th><th>뜻</th><th>예</th></tr><tr><td>가스</td><td>상온에서 기체</td><td>일산화탄소, 염소, 황화수소</td></tr><tr><td>증기</td><td>액체·고체가 증발한 기체</td><td>톨루엔, 벤젠 증기</td></tr><tr><td>분진</td><td>고체가 기계적으로 부서진 입자</td><td>석면, 유리규산, 목분진</td></tr><tr><td>{{흄(fume)}}</td><td>금속이 녹아 증발했다가 응축된 미세 입자</td><td>용접흄, 납흄</td></tr><tr><td>미스트</td><td>액체 방울</td><td>도장 미스트, 산 미스트</td></tr><tr><td>섬유</td><td>길이가 긴 입자</td><td>석면 섬유</td></tr></table><b>흡수 경로</b>: {{호흡기}}(가장 많고 중요) &gt; 피부(유기용제) &gt; 소화기<br><b>법적 분류</b><ul><li>제조 등 금지물질 (석면 등)</li><li>허가대상 유해물질 (벤지딘 등)</li><li>관리대상 유해물질 (유기화합물, 금속류, 산·알칼리, 가스상 물질)</li><li>특별관리물질 (발암성·생식세포 변이원성·생식독성 CMR 물질 등)</li></ul><b>대표 중독</b>: 벤젠(백혈병), 납(빈혈·신경), 수은(신경·신장), 카드뮴(신장·폐), 크롬(비중격천공), 망간(파킨슨 유사), 노말헥산(말초신경), 유리규산(규폐증), 석면(석면폐·중피종)',
+ ex:'<ul><li>스테인리스 용접 → 용접흄 속 6가크롬</li></ul>',
+ exam:'<ul><li>흄의 정의</li><li>물질-질환 짝짓기 (크롬-비중격천공, 벤젠-백혈병)</li></ul>',
+ law:'산업안전보건법 제117조~제118조(금지·허가), 안전보건기준규칙 제3편 제1장(관리대상 유해물질).'},
+
+{id:'e5',title:'5. 화학적 유해요인 노출기준',
+ core:'{{TWA}} 8시간 시간가중평균 / {{STEL}} 15분 단시간 (1일 {{4회}} 이하, 간격 {{60분}} 이상) / {{C}} 최고노출기준(순간도 초과 금지) / 혼합물 {{C₁/T₁ + C₂/T₂ + … > 1}}이면 초과',
+ def:'<ul><li>화학물질 노출기준은 노출 시간 형태에 따라 세 가지로 나뉩니다 (고용노동부 고시).</li></ul>',
+ detail:'<table><tr><th>기준</th><th>뜻</th></tr><tr><td>{{TWA}}(시간가중평균노출기준)</td><td>1일 8시간 작업 기준으로 유해인자 측정치에 발생시간을 곱해 8시간으로 나눈 값<br>TWA = (C<sub>1</sub>T<sub>1</sub> + C<sub>2</sub>T<sub>2</sub> + … + C<sub>n</sub>T<sub>n</sub>) ÷ 8</td></tr><tr><td>{{STEL}}(단시간노출기준)</td><td>15분간의 시간가중평균. STEL 이하라도 TWA 초과 시 1회 노출 15분 미만, 1일 4회 이하, 노출 간격 60분 이상</td></tr><tr><td>{{C}}(최고노출기준, Ceiling)</td><td>1일 작업시간 동안 잠시라도 넘으면 안 되는 기준</td></tr></table><b>혼합물 노출지수</b><ul><li>EI = C<sub>1</sub>/T<sub>1</sub> + C<sub>2</sub>/T<sub>2</sub> + … (C: 측정농도, T: 노출기준)</li><li>EI가 <b>1을 초과</b>하면 노출기준 초과 (상가작용 가정)</li></ul><b>단위</b>: 가스·증기 ppm, 분진·흄 mg/m³, 석면 개/cm³<br><b>허용농도 개념</b>: 노출기준은 안전과 위험의 명확한 경계가 아님 → 가능한 한 낮게 유지',
+ calc:'① 100ppm 4시간 + 50ppm 4시간 → TWA = (400 + 200) ÷ 8 = <b>75ppm</b><br>② 톨루엔 30ppm(기준 50), 크실렌 60ppm(기준 100) → EI = 0.6 + 0.6 = <b>1.2</b> → 초과',
+ cmp:'<table><tr><th>TWA</th><th>STEL</th><th>C</th></tr><tr><td>하루 평균</td><td>15분 평균</td><td>순간 최고</td></tr></table>',
+ exam:'<ul><li>TWA·혼합물 계산 (자주 출제)</li><li>STEL 조건 (15분, 4회, 60분)</li></ul>',
+ law:'고용노동부 고시 「화학물질 및 물리적 인자의 노출기준」.'},
+
+{id:'e6',title:'6. 화학적 유해요인 관리대책 수립',
+ core:'{{대체 → 격리·밀폐 → 환기(국소배기 우선) → 관리 → 보호구}} / 국소배기 {{후드 → 덕트 → 공기정화장치 → 송풍기 → 배기구}} / 측정 {{6개월}}·특수건강진단 / {{MSDS}}',
+ def:'<ul><li>화학물질 노출을 줄이는 대책. 작업환경측정과 특수건강진단으로 효과를 확인합니다.</li></ul>',
+ detail:'<b>대책 순서</b><table><tr><th>대책</th><th>예</th></tr><tr><td>{{대체}}</td><td>독성 낮은 물질로 (벤젠 → 톨루엔), 공정 변경(분무 → 담금), 습식 작업(분진)</td></tr><tr><td>{{격리·밀폐}}</td><td>밀폐 설비, 원격 조작, 격리된 장소</td></tr><tr><td>{{환기}}</td><td><b>국소배기</b>(발생원에서 바로 흡입, 우선) / 전체환기(희석, 독성 낮고 발생량 적을 때)</td></tr><tr><td>관리</td><td>작업시간 단축, 교육, MSDS 게시·비치, 경고표지, 위생시설</td></tr><tr><td>보호구</td><td>방독·방진마스크, 송기마스크, 화학물질용 장갑·보호복</td></tr></table><b>국소배기장치 구성 (공기 흐름 순서)</b>: 후드 → 덕트 → 공기정화장치 → 송풍기 → 배기구<ul><li>후드는 발생원에 가깝게, 포위식이 가장 효과적, 외부식은 제어풍속 확보</li><li>송풍기는 공기정화장치 <b>뒤</b>(오염되지 않은 공기)에 설치</li></ul><b>확인·관리</b>: 작업환경측정(6개월에 1회), 특수건강진단, MSDS 교육, 작업환경측정 결과 근로자 공개',
+ ex:'<ul><li>도장 부스: 수성 도료(대체) + 부스 밀폐 + 국소배기 + 방독마스크</li></ul>',
+ cmp:'<table><tr><th>국소배기</th><th>전체환기</th></tr><tr><td>발생원에서 잡음, 효과 큼</td><td>희석, 저독성·소량일 때</td></tr></table>',
+ exam:'<ul><li>국소배기장치 구성 순서</li><li>전체환기 적용 조건</li></ul>',
+ law:'안전보건기준규칙 제3편 제1장(관리대상 유해물질), 제72조~제79조(후드·덕트·송풍기 등), 산업안전보건법 제110조~제114조(MSDS).'},
+
+{grp:'5-3. 생물학적 유해요인 관리'},
+{id:'e7',title:'7. 생물학적 유해요인 파악',
+ core:'{{혈액매개}}(B형·C형 간염, HIV, 매독) / {{공기매개}}(결핵·수두·홍역) / {{곤충·동물매개}}(쯔쯔가무시·렙토스피라·신증후군출혈열·브루셀라)',
+ def:'<ul><li><b>생물학적 유해요인</b>: 세균·바이러스·곰팡이·기생충 등 살아 있는 병원체와 그 독소가 감염·알레르기를 일으키는 요인</li></ul>',
+ detail:'<table><tr><th>분류</th><th>질병</th><th>주요 작업</th></tr><tr><td>{{혈액매개 감염병}}</td><td>B형간염, C형간염, HIV(에이즈), 매독</td><td>의료, 간호, 검사, 폐기물 처리 (주사침 찔림)</td></tr><tr><td>{{공기매개 감염병}}</td><td>결핵, 수두, 홍역</td><td>의료기관, 밀집 시설</td></tr><tr><td>{{곤충·동물매개 감염병}}</td><td>쯔쯔가무시증(진드기), 렙토스피라증(쥐 오줌), 신증후군출혈열(쥐), 브루셀라증(가축)</td><td>농림업, 축산업, 야외 작업</td></tr><tr><td>기타</td><td>레지오넬라(냉각탑), 곰팡이 알레르기</td><td>설비 관리, 폐기물</td></tr></table>',
+ ex:'<ul><li>가을철 벌초·산림 작업 후 고열·검은 딱지 → 쯔쯔가무시</li></ul>',
+ exam:'<ul><li>감염병과 매개 경로 짝짓기</li></ul>',
+ law:'안전보건기준규칙 제4편 제11장(병원체에 의한 건강장해의 예방, 제591조~).'},
+
+{id:'e8',title:'8. 생물학적 유해요인 노출기준',
+ core:'정량적 노출기준 {{없음}}(대부분) → {{위험군 분류}}·{{감염 위험 평가}}로 관리',
+ def:'<ul><li>병원체는 극히 적은 양으로도 감염될 수 있고 사람마다 감수성이 달라, 화학물질처럼 ppm 같은 정량 노출기준을 두지 않는 것이 일반적입니다.</li></ul>',
+ detail:'<ul><li>병원체의 위험군(1~4군) 분류와 생물안전등급(BL1~BL4) 시설 기준으로 관리</li><li>노출 가능성 평가: 작업 내용, 접촉 빈도, 혈액·체액 노출 여부, 예방접종 여부</li><li>공기 중 세균·곰팡이는 실내공기질 관리 기준 등 참고 수준으로 관리</li></ul>',
+ exam:'<ul><li>생물학적 인자에 정량 노출기준이 없는 이유</li></ul>',
+ law:'안전보건기준규칙 제4편 제11장. <span style="color:var(--sub)">출제 빈도 낮음.</span>'},
+
+{id:'e9',title:'9. 생물학적 유해요인 관리대책 수립',
+ core:'{{예방접종·보호구·손씻기·주사침 뚜껑 다시 씌우지 않기·전용 용기 폐기}} / 노출 시 {{즉시 보고·응급조치·검사·치료}} / 야외 {{긴팔·기피제·작업 후 샤워}}',
+ def:'<ul><li>감염을 막기 위한 공학적·관리적 대책과 노출 후 조치</li></ul>',
+ detail:'<b>혈액매개 감염 예방 (안전보건기준규칙)</b><ul><li>혈액 노출 우려 작업 근로자에게 B형간염 예방접종</li><li>사용한 주사침은 바늘을 구부리거나 <b>뚜껑을 다시 씌우지 않고</b> 전용 용기에 폐기</li><li>보호장갑·보호안경·보호마스크 등 보호구 지급</li><li>혈액 노출 시: 즉시 상처 세척 → 보고 → 노출 원인 조사, 혈액검사·감염 예방 조치, 기록 보존</li></ul><b>공기매개 감염 예방</b>: 환자 격리, 환기, N95 등 호흡보호구, 예방접종<br><b>곤충·동물매개 감염 예방</b>: 긴소매·장화, 기피제, 풀밭에 눕지 않기, 작업 후 샤워·옷 세탁, 쥐 방제<br><b>공통</b>: 손 씻기, 교육, 감염성 폐기물 분리 처리, 건강 관찰',
+ ex:'<ul><li>간호사가 사용한 주사바늘에 찔림 → 즉시 세척·보고·검사</li></ul>',
+ exam:'<ul><li>주사침 처리 방법 (뚜껑 다시 씌우지 않기)</li></ul>',
+ law:'안전보건기준규칙 제594조~제604조(혈액매개·공기매개·곤충 및 동물매개 감염 노출 위험작업).'},
+
+{id:'e10',title:'키워드 카드 — 2과목 주요항목 5',tag:'암기',
+ core:'90dB {{8h}} / 5dB {{절반}} / 115·140 {{금지}} / TWA·STEL·C / 후드→덕트→정화→송풍→배기',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>4,000Hz 청력 저하</td><td>{{소음성 난청 (C5-dip)}}</td></tr><tr><td>국소진동</td><td>{{레이노}}</td></tr><tr><td>체온조절 중추 장해</td><td>{{열사병}}</td></tr><tr><td>질소 기포</td><td>{{감압병(잠함병)}}</td></tr><tr><td>자외선 눈</td><td>{{전기성 안염}}</td></tr><tr><td>90dB(A)</td><td>{{8시간 노출기준}}</td></tr><tr><td>85dB</td><td>{{소음작업}}</td></tr><tr><td>0.7·0.2·0.1</td><td>{{옥외 WBGT}}</td></tr><tr><td>시간·거리·차폐</td><td>{{외부피폭 방어}}</td></tr><tr><td>금속 증발 후 응축</td><td>{{흄}}</td></tr><tr><td>15분, 4회, 60분</td><td>{{STEL}}</td></tr><tr><td>순간도 초과 금지</td><td>{{C(최고노출기준)}}</td></tr><tr><td>노출지수 &gt; 1</td><td>{{혼합물 노출기준 초과}}</td></tr><tr><td>크롬</td><td>{{비중격천공}}</td></tr><tr><td>진드기</td><td>{{쯔쯔가무시}}</td></tr><tr><td>쥐 오줌</td><td>{{렙토스피라}}</td></tr></table>'}
+];
+
+var MN={
+e1:[
+ {k:'국소 = 손 / 전신 = 허리',s:'"<b>착암기</b>를 쥔 손은 하얗게(레이노), <b>트럭</b>에 앉은 허리는 아프다(요통)"',m:'국소진동 {{레이노}} / 전신진동 {{요통}}'},
+ {k:'열사 > 열탈진 > 열경련 > 열발진',s:'"<b>사</b>(死)자가 붙은 <b>열사병</b>이 제일 위험 — 뇌의 온도조절이 고장"',m:'가장 위험 {{열사병(체온조절 중추 장해)}}'}],
+e2:[
+ {k:'90 · 5 · 115 · 140',s:'"<b>구십</b>(90) 할머니도 8시간은 버틴다, <b>다섯</b>(5) 올라갈 때마다 시간은 반, <b>115</b>는 소리 금지선, 쾅(충격)은 <b>140</b>까지"',m:'{{90dB 8h}} · {{5dB마다 절반}} · {{115dB 초과 금지}} · 충격 {{140dB 초과 금지}}'},
+ {k:'WBGT 7 · 2 · 1',s:'"햇빛 아래는 <b>칠이일</b>(7·2·1) — 습구 7, 흑구 2, 건구 1 / 실내는 <b>칠삼</b>(7·3)"',m:'옥외 {{0.7 습 + 0.2 흑 + 0.1 건}} / 옥내 {{0.7 습 + 0.3 흑}}'}],
+e3:[
+ {k:'원 · 경 · 수',s:'"<b>원경수</b> → 소음은 <b>원</b>천(발생원)에서, <b>경</b>로에서, <b>수</b>신자(귀)에서 막는다 — 앞쪽일수록 효과 큼"',m:'{{발생원}} → {{전파경로}} → {{수음자}}'},
+ {k:'시 · 거 · 차',s:'"<b>시거차</b> → \'시간은 짧게, 거리는 멀리, 차폐는 두껍게\' — 난로에서 멀어지는 원리"',m:'방사선 방어 {{시간}} · {{거리}} · {{차폐}}'}],
+e4:[
+ {k:'흄 = 녹았다 굳은 금속',s:'"<b>흄</b>은 용접할 때 피어오르는 <b>은빛 연기</b> — 금속이 녹아 날아갔다가 공기 중에서 다시 굳은 가루"',m:'흄 = {{금속 증기의 응축 입자}}'},
+ {k:'호 > 피 > 소',s:'"<b>숨</b>은 하루 2만 번 — 그래서 호흡기가 1등 경로"',m:'{{호흡기}} > {{피부}} > {{소화기}}'}],
+e5:[
+ {k:'T · S · C',s:'"<b>T</b>ime(하루 평균) · <b>S</b>hort(15분) · <b>C</b>eiling(천장, 절대 넘으면 안 됨)"',m:'{{TWA 8시간}} · {{STEL 15분}} · {{C 최고}}'},
+ {k:'15 · 4 · 60',s:'"STEL은 <b>15분</b>짜리 <b>4쿼터</b>, 쿼터 사이 쉬는 시간 <b>1시간</b> — 농구 경기처럼"',m:'{{15분}} 이하 · {{1일 4회}} 이하 · 간격 {{60분}} 이상'}],
+e6:[
+ {k:'후 · 덕 · 정 · 송 · 배',s:'"<b>후덕</b>한 <b>정송배</b>(정씨 송씨 배씨) — 흡입구 → 관 → 걸러내기 → 팬 → 굴뚝"',m:'{{후드}} → {{덕트}} → {{공기정화장치}} → {{송풍기}} → {{배기구}}'}],
+e7:[
+ {k:'혈 · 공 · 곤',s:'"<b>피</b>(주사바늘)로, <b>숨</b>(기침)으로, <b>벌레·쥐</b>로" — B·C형간염·HIV / 결핵 / 쯔쯔가무시',m:'{{혈액매개}} · {{공기매개}} · {{곤충·동물매개}}'}],
+e9:[
+ {k:'바늘 뚜껑 금지',s:'"쓴 바늘에 <b>뚜껑을 다시 씌우려다</b> 찔린다 — 그냥 전용 통에 버려라"',m:'{{리캡핑 금지, 전용 용기 폐기}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

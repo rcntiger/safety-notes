@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6과목 4. 건설현장 안전시설 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 6과목 · 건설공사 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 4. 건설현장 안전시설 관리 · 세세항목 5개 → 학습단위 6개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">6과목 목차</a><a href="p3.html">◀ 이전</a><a href="p5.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s6-p4-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'4-1. 안전시설 설치 및 관리'},
+{id:'d1',title:'1. 추락 방지용 안전시설',
+ core:'추락 위험 높이 {{2m 이상}} → {{작업발판·안전난간·추락방호망·개구부 덮개·안전대 부착설비}} / 추락방호망 {{작업면에서 10m 이내·처짐 짧은 변 12% 이상·내민 길이 3m 이상}} / 안전난간 {{상부 90cm 이상·발끝막이판 10cm 이상·100kg}}',
+ def:'<ul><li>건설업 사망 재해 1위인 떨어짐을 막는 시설. 높이 2m 이상에서 추락 위험이 있으면 설치합니다.</li></ul>',
+ why:'<ul><li>안전대는 사람이 걸어야 효과가 있지만, 작업발판·난간·방호망은 사람이 잊어도 막아 줍니다. 그래서 시설이 우선, 안전대는 보완입니다.</li></ul>',
+ detail:'<b>추락 방지 순서 (안전보건기준규칙 제42조)</b><ol><li>높이 2m 이상 장소에서 추락 위험 → <b>작업발판</b> 설치</li><li>작업발판 설치가 곤란하면 <b>추락방호망</b></li><li>추락방호망도 곤란하면 근로자에게 <b>안전대</b> 착용 + 안전대 부착설비</li></ol><b>추락방호망 설치 기준</b><ul><li>가능하면 작업면에 가깝게, 작업면에서 망 설치 지점까지 수직거리 {{10m 이내}}</li><li>수평으로 설치, 망 처짐은 짧은 변 길이의 {{12% 이상}}</li><li>건축물 바깥쪽 설치 시 내민 길이는 벽면에서 {{3m 이상}} (그물코 20mm 이하면 낙하물방지망 겸용 가능)</li><li>안전인증 제품 사용</li></ul><b>방망 인장강도 (교재 기준)</b><table><tr><th>그물코</th><th>매듭 없는 방망 (신품 / 폐기)</th><th>매듭 방망 (신품 / 폐기)</th></tr><tr><td>10cm</td><td>240kg / 150kg</td><td>200kg / 135kg</td></tr><tr><td>5cm</td><td>—</td><td>110kg / 60kg</td></tr></table><b>안전난간 (제13조)</b>: 상부 난간대 90cm 이상(120cm 이상이면 중간 난간대 2단 이상, 간격 60cm 이하), 발끝막이판 10cm 이상, 난간기둥, 100kg 하중<br><b>개구부</b>: 덮개(뒤집히거나 떨어지지 않게 고정, "개구부 주의" 표시), 또는 안전난간·울타리<br><b>작업발판</b>: 폭 40cm 이상, 발판 틈 3cm 이하 (5장 비계)',
+ ex:'<ul><li>슬래브 단부 → 안전난간 / 엘리베이터 피트 → 개구부 덮개 + 수직 방호망</li></ul>',
+ exam:'<ul><li>추락방호망 기준 (10m·12%·3m)</li><li>추락 방지 조치 순서 (작업발판 → 방호망 → 안전대)</li></ul>',
+ law:'안전보건기준규칙 제13조(안전난간), 제42조(추락의 방지), 제43조(개구부 등의 방호 조치), 제44조(안전대의 부착설비). <span style="color:var(--sub)">방망 강도는 KS·고시로 확인.</span>'},
+
+{id:'d2',title:'2. 붕괴 방지용 안전시설',
+ core:'굴착면 기울기 {{모래 1:1.8 · 연암·풍화암 1:1.0 · 경암 1:0.5 · 그 밖의 흙 1:1.2}} / {{흙막이 지보공·사면 보호·배수·계측}} / 붕괴 원인 외적 {{기울기·높이 증가, 진동, 지표수·지하수 침투, 하중}} 내적 {{토질 강도 저하}}',
+ def:'<ul><li>굴착면·흙막이·구조물이 무너지는 것을 막는 시설과 조치</li></ul>',
+ detail:'<b>굴착면의 기울기 기준 (안전보건기준규칙 별표 11, 2023 개정)</b><table><tr><th>지반</th><th>기울기 (수직 : 수평)</th></tr><tr><td>{{모래}}</td><td>{{1 : 1.8}}</td></tr><tr><td>{{연암 및 풍화암}}</td><td>{{1 : 1.0}}</td></tr><tr><td>{{경암}}</td><td>{{1 : 0.5}}</td></tr><tr><td>{{그 밖의 흙}}</td><td>{{1 : 1.2}}</td></tr></table><b>토사·토석 붕괴 원인</b><table><tr><th>외적 원인</th><th>내적 원인</th></tr><tr><td>사면·법면의 경사·기울기 증가, 절토·성토 높이 증가, 공사에 의한 진동·반복 하중, 지표수·지하수 침투로 토사 중량 증가, 지진·차량·구조물 하중, 토사·암석의 혼합층 두께</td><td>절토 사면의 토질·암질, 성토 사면의 토질 구성·분포, 토석의 강도 저하</td></tr></table><b>붕괴 방지 시설·조치</b><ul><li>흙막이 지보공 (5장), 사면 보호(숏크리트·식생·네트), 배수로·지하수 처리</li><li>굴착면 상부에 자재·장비 적재 금지, 차량 통행 거리 확보</li><li>계측 관리 (경사계·지하수위계·하중계 등), 작업 전 점검 (균열·용수·부석)</li><li>작업장 출입 통제, 비 온 뒤 점검</li></ul>',
+ calc:'그 밖의 흙, 깊이 3m 굴착 → 수평 거리 = 3 × 1.2 = <b>3.6m</b> 만큼 비탈을 둠',
+ exam:'<ul><li>굴착면 기울기 기준 (2023 개정 수치)</li><li>붕괴 원인 외적·내적 구분</li></ul>',
+ law:'안전보건기준규칙 제338조(굴착작업 사전조사), 제339조(굴착면의 붕괴 등에 의한 위험방지), 별표 11. <span style="color:var(--sub)">옛 기준(습지 1:1~1:1.5 등)과 다름.</span>'},
+
+{id:'d3',title:'3. 낙하, 비래방지용 안전시설',
+ core:'낙하물방지망 {{높이 10m 이내마다 · 내민 길이 2m 이상 · 수평면과 20~30°}} / {{방호선반·수직보호망·출입금지구역·보호구}} / 3m 이상 높이에서 물체 투하 시 {{투하설비·감시인}}',
+ def:'<ul><li>높은 곳에서 떨어지거나 날아오는 물체로부터 아래 근로자와 통행인을 보호하는 시설</li></ul>',
+ detail:'<b>낙하물 방지 조치 (안전보건기준규칙 제14조)</b><ul><li>낙하물방지망, 수직보호망 또는 방호선반 설치, 출입금지구역 설정, 보호구 착용</li><li>낙하물방지망·방호선반 설치 기준<ul><li>높이 {{10m 이내마다}} 설치</li><li>내민 길이는 벽면으로부터 {{2m 이상}}</li><li>수평면과의 각도 {{20° 이상 30° 이하}}</li></ul></li><li>수직보호망: 비계 바깥쪽 전면에 설치, 틈이 없게</li><li>방호선반: 출입구·통로 상부에 견고한 지붕 형태</li></ul><b>물체 투하 (제15조)</b>: 높이 {{3m 이상}}에서 물체를 던질 때 투하설비 설치 또는 감시인 배치<br><b>기타</b>: 자재 정리·결속, 강풍 시 작업 중지, 공구 낙하 방지 끈',
+ ex:'<ul><li>고층 외벽 공사: 10m마다 낙하물방지망 + 출입구 방호선반</li></ul>',
+ cmp:'<table><tr><th>낙하물방지망</th><th>추락방호망</th></tr><tr><td>물건 받기 — 10m마다, 2m, 20~30°</td><td>사람 받기 — 작업면 10m 이내, 3m, 처짐 12%</td></tr></table>',
+ exam:'<ul><li>낙하물방지망 기준 (10m·2m·20~30°) — 추락방호망과 숫자 혼동 주의</li><li>투하설비 3m</li></ul>',
+ law:'안전보건기준규칙 제14조(낙하물에 의한 위험의 방지), 제15조(투하설비 등).'},
+
+{grp:'4-2. 건설공구 및 장비 안전수칙'},
+{id:'d4',title:'4. 건설공구의 종류 및 안전수칙',
+ core:'수공구 {{망치·정·렌치·드라이버}} / 전동공구 {{그라인더·드릴·전기톱·타정기}} / 수칙 {{용도에 맞게·사용 전 점검·접지 또는 이중절연·누전차단기·보안경·장갑 금지(회전체)·전원 차단 후 교체}}',
+ def:'<ul><li>건설 현장에서 흔히 쓰는 손공구·전동공구와 안전 수칙</li></ul>',
+ detail:'<b>수공구</b><ul><li>망치: 자루 고정 상태, 쐐기 확인, 타격면 변형 없는 것</li><li>정: 머리 부분 버섯 모양 변형 시 갈아서 사용, 보안경</li><li>렌치: 규격에 맞는 것, 파이프로 연장 금지</li><li>공구는 던지지 말고 공구 주머니에, 고소 작업 시 낙하 방지 끈</li></ul><b>전동공구</b><ul><li>접지 또는 이중절연 구조, 누전차단기 연결 (임시 배선)</li><li>사용 전 코드·플러그 손상 점검, 비에 젖지 않게</li><li>휴대용 그라인더: 덮개 부착, 숫돌 규격·최고 사용속도 확인, 작업 전 1분 시운전</li><li>날·비트 교체는 전원 차단 후</li><li>회전 공구 사용 시 면장갑 금지, 보안경·방진마스크</li><li>타정총(네일건): 사람을 향하지 않기, 안전장치 해제 금지</li></ul>',
+ exam:'<ul><li>전동공구 감전 방지 조치</li></ul>',
+ law:'안전보건기준규칙 제2편 제1장·제3장.'},
+
+{id:'d5',title:'5. 건설장비의 종류 및 안전수칙',
+ core:'차량계 건설기계 {{불도저·굴착기·로더·스크레이퍼·모터그레이더·롤러·덤프트럭·항타기·천공기}} / 수칙 {{작업계획서·유도자·제한속도(10km/h 초과 기계)·전도 방지·헤드가드·운전석 이탈 시 버킷 내리고 시동 끔·주용도 외 사용 금지}} / 항타기 {{버팀대·버팀줄 3개 이상·권상 와이어로프 안전계수 5}}',
+ def:'<ul><li><b>차량계 건설기계</b>: 동력원으로 스스로 이동하며 굴착·운반·다짐 등을 하는 건설기계</li></ul>',
+ detail:'<b>주요 장비와 용도</b><table><tr><th>장비</th><th>용도</th></tr><tr><td>불도저</td><td>굴착·운반·정지(땅 고르기)</td></tr><tr><td>굴착기(백호)</td><td>지면보다 낮은 곳 굴착 (파워셔블은 높은 곳)</td></tr><tr><td>로더</td><td>적재</td></tr><tr><td>스크레이퍼</td><td>굴착·적재·운반·하역 일괄</td></tr><tr><td>모터그레이더</td><td>노면 정지 (마무리)</td></tr><tr><td>롤러</td><td>다짐 (탠덤·타이어·진동)</td></tr><tr><td>항타기·항발기</td><td>말뚝 박기·뽑기</td></tr></table><b>차량계 건설기계 안전수칙</b><ul><li>작업계획서 작성 (기계 종류·성능, 운행경로, 작업방법)</li><li>최고속도 10km/h를 넘는 기계는 지형·지반에 맞는 제한속도 지정</li><li>전도·전락 방지: 유도자 배치, 지반 부동침하 방지, 갓길 붕괴 방지, 도로 폭 유지</li><li>접촉 방지: 작업 반경 내 출입 금지, 유도자 신호</li><li>낙석 위험 장소: 견고한 헤드가드</li><li>주용도 외 사용 금지 (굴착기로 인양 금지 — 예외 조건 충족 시만)</li><li>운전자 이탈 시: 버킷·디퍼를 지면에 내리고, 원동기 정지·브레이크, 키 분리</li><li>붐·암 아래에서 수리 시 안전지주·안전블록</li></ul><b>항타기·항발기</b><ul><li>무너짐 방지: 버팀대만으로 상단 고정 시 버팀대 3개 이상, 버팀줄만으로 고정 시 버팀줄 3개 이상, 연약 지반은 깔판·받침목</li><li>권상용 와이어로프: 안전계수 5 이상, 드럼에 적어도 2회 감긴 상태로 남을 길이</li></ul><b>타워크레인 풍속 기준</b>: 순간풍속 10m/s 초과 시 설치·수리·점검·해체 중지, 20m/s 초과 시 운전 중지',
+ exam:'<ul><li>장비와 용도 짝짓기</li><li>항타기 버팀대·버팀줄 3개, 와이어로프 안전계수 5</li><li>타워크레인 풍속 10·20m/s</li></ul>',
+ law:'안전보건기준규칙 제196조~제221조(차량계 건설기계), 제207조~제221조(항타기·항발기), 제37조(악천후 및 강풍 시 작업 중지).'},
+
+{id:'d6',title:'키워드 카드 — 6과목 주요항목 4',tag:'암기',
+ core:'2m / 방호망 10·12%·3m / 낙하물망 10·2m·20~30° / 1.8·1.0·0.5·1.2 / 3개·5',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>추락 방지 첫 순서</td><td>{{작업발판}}</td></tr><tr><td>추락방호망 처짐</td><td>{{짧은 변 12% 이상}}</td></tr><tr><td>추락방호망 내민 길이</td><td>{{3m 이상}}</td></tr><tr><td>낙하물방지망 각도</td><td>{{20~30°}}</td></tr><tr><td>낙하물방지망 내민 길이</td><td>{{2m 이상}}</td></tr><tr><td>모래 굴착면</td><td>{{1 : 1.8}}</td></tr><tr><td>경암</td><td>{{1 : 0.5}}</td></tr><tr><td>그 밖의 흙</td><td>{{1 : 1.2}}</td></tr><tr><td>지표수·지하수 침투</td><td>{{외적 붕괴 원인}}</td></tr><tr><td>투하설비</td><td>{{3m 이상}}</td></tr><tr><td>노면 마무리</td><td>{{모터그레이더}}</td></tr><tr><td>제한속도 지정</td><td>{{최고속도 10km/h 초과 기계}}</td></tr><tr><td>항타기 버팀줄</td><td>{{3개 이상}}</td></tr><tr><td>타워크레인 운전 중지</td><td>{{순간풍속 20m/s 초과}}</td></tr></table>'}
+];
+
+var MN={
+d1:[
+ {k:'발판 → 방호망 → 안전대',s:'"<b>바닥</b>을 깔고, 안 되면 <b>그물</b>을 치고, 그것도 안 되면 <b>밧줄</b>을 맨다"',m:'{{작업발판}} → {{추락방호망}} → {{안전대}}'},
+ {k:'사람 그물 10 · 12 · 3',s:'"<b>사람</b> 받는 그물: <b>10</b>m 안에서, <b>12</b>% 출렁이게, <b>3</b>m 내밀어"',m:'{{10m 이내}} · {{처짐 12%}} · {{내민 3m}}'}],
+d2:[
+ {k:'모 1.8 · 연 1.0 · 경 0.5 · 흙 1.2',s:'"<b>모래</b>는 잘 무너지니 <b>가장 완만</b>(1.8), <b>단단한 바위</b>는 <b>가장 가파르게</b>(0.5), 무른 바위 1.0, 나머지 흙 1.2"',m:'모래 {{1:1.8}} · 연암·풍화암 {{1:1.0}} · 경암 {{1:0.5}} · 그 밖의 흙 {{1:1.2}}'}],
+d3:[
+ {k:'물건 그물 10 · 2 · 20~30',s:'"<b>물건</b> 받는 그물: <b>10</b>m마다, <b>2</b>m 내밀어, <b>20~30°</b> 비스듬히 (물건이 굴러 안쪽으로)"',m:'{{10m마다}} · {{내민 2m}} · {{20~30°}}'}],
+d5:[
+ {k:'3개 · 5 · 2회',s:'"항타기는 <b>삼발이</b>(버팀대·버팀줄 3개), 로프는 <b>5배</b> 튼튼, 드럼에 <b>2바퀴</b> 남게"',m:'{{버팀대·버팀줄 3개 이상}} · {{안전계수 5}} · {{2회 감김}}'},
+ {k:'10 · 20m/s',s:'"바람 <b>10</b>이면 조립·해체 멈추고, <b>20</b>이면 운전도 멈춘다"',m:'{{10m/s 초과 설치·해체 중지}} / {{20m/s 초과 운전 중지}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

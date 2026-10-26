@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6과목 2. 건설공사 위험성</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 6과목 · 건설공사 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 2. 건설공사 위험성 · 세세항목 5개 → 학습단위 6개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">6과목 목차</a><a href="p1.html">◀ 이전</a><a href="p3.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s6-p2-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'2-1. 건설공사 유해·위험요인 파악'},
+{id:'b1',title:'1. 유해·위험요인 선정',
+ core:'공종별 {{가설·토공·기초·골조·철골·마감·해체}} / 위험 {{추락·낙하·붕괴·협착·충돌·감전·화재·질식}} / 방법 {{작업 분해 → 단계별 위험 파악 → 근로자 참여·아차사고 반영}}',
+ def:'<ul><li>건설공사 위험성평가의 첫 단계로, 공종과 작업 단위별로 사고를 일으킬 수 있는 요인을 찾는 것</li></ul>',
+ detail:'<b>공종별 주요 유해·위험요인</b><table><tr><th>공종</th><th>요인</th></tr><tr><td>가설공사</td><td>비계·작업발판 추락, 비계 붕괴</td></tr><tr><td>토공·굴착</td><td>굴착면 붕괴, 장비 충돌·전도, 매설물(가스·전기) 손상</td></tr><tr><td>기초(항타)</td><td>항타기 전도, 소음·진동</td></tr><tr><td>철근콘크리트</td><td>거푸집·동바리 붕괴, 철근 찔림, 펌프카 붐 접촉</td></tr><tr><td>철골</td><td>고소 추락, 부재 낙하, 양중 중 충돌</td></tr><tr><td>마감·설비</td><td>사다리·말비계 추락, 유기용제 중독·화재, 감전</td></tr><tr><td>해체</td><td>구조물 붕괴, 파편 비래, 분진(석면)</td></tr></table><b>선정 방법</b><ul><li>작업을 단위 작업·단계로 분해</li><li>4M(사람·기계·작업방법·관리), 공종별 체크리스트 활용</li><li>근로자 면담, 아차사고·재해 사례 반영</li><li>기상(폭염·강풍·강우)·야간 등 조건 고려</li></ul>',
+ exam:'<ul><li>공종별 위험 요인 짝짓기</li></ul>',
+ law:'산업안전보건법 제36조(위험성평가), 건설업 위험성평가 KOSHA GUIDE.'},
+
+{id:'b2',title:'2. 안전보건자료',
+ core:'{{설계안전보건대장·공사안전보건대장 / MSDS / 작업계획서 / 지반조사·매설물·주변 현황 / 기상 정보 / 장비 사양·검사 서류 / 재해 사례}}',
+ def:'<ul><li>위험성평가와 안전 계획에 쓰는 기초 자료</li></ul>',
+ detail:'<ul><li>발주자가 넘겨준 설계·공사 안전보건대장 (위험 요인과 저감 대책)</li><li>설계도서, 시방서, 구조계산서, 지반조사 보고서</li><li>지하 매설물 도면, 인접 건물·도로·고압선 현황</li><li>사용 화학물질 MSDS</li><li>작업계획서 (차량계 건설기계, 굴착, 거푸집, 해체, 타워크레인 등)</li><li>건설기계·양중기 안전검사·인증 서류</li><li>기상 예보 (강풍·폭우·폭염)</li><li>과거 재해·아차사고 기록, 협력업체 안전 실적</li></ul>',
+ exam:'<ul><li>위험성평가에 쓰이는 안전보건자료</li></ul>',
+ law:'산업안전보건법 제67조, 안전보건기준규칙 제38조(작업계획서).'},
+
+{id:'b3',title:'3. 유해위험방지계획서 (건설)',
+ core:'대상 {{지상 31m 이상·연면적 3만㎡ 이상·5천㎡ 이상 특정시설·교량 지간 50m 이상·터널·댐 2천만톤·굴착 10m 이상}} / 제출 {{착공 전날까지 공단 2부}} / 작성 시 {{건설안전 자격자 의견}} / 확인 {{6개월마다}}',
+ def:'<ul><li>대규모·고위험 건설공사를 시작하기 전에 작업별 위험과 방지 대책을 정리해 공단 심사를 받는 계획서 (1과목 6장과 연결)</li></ul>',
+ detail:'<b>제출 대상 건설공사 (시행령 제42조)</b><ul><li>지상높이 31m 이상 건축물·인공구조물</li><li>연면적 3만㎡ 이상 건축물</li><li>연면적 5천㎡ 이상 문화·집회시설(전시장·동물원·식물원 제외), 판매시설, 운수시설(고속철도 역사·집배송시설 제외), 종교시설, 의료시설 중 종합병원, 숙박시설 중 관광숙박시설, 지하도상가, 냉동·냉장 창고시설의 건설·개조·해체</li><li>연면적 5천㎡ 이상 냉동·냉장 창고시설의 설비공사·단열공사</li><li>최대 지간길이 50m 이상 다리</li><li>터널 건설 등</li><li>다목적댐·발전용댐, 저수용량 2천만 톤 이상 용수 전용댐·지방상수도 전용댐</li><li>깊이 10m 이상 굴착공사</li></ul><b>제출·심사</b><ul><li>공사 착공 전날까지 한국산업안전보건공단에 2부</li><li>건설안전기술사 등 자격자의 의견을 들어 작성</li><li>공단 심사 결과: 적정 / 조건부 적정 / 부적정(공사 착공 중지 또는 계획 변경)</li><li>공사 중 6개월마다 공단의 확인 (자체심사·확인업체는 자체 확인)</li></ul><b>주요 첨부 내용</b>: 공사 개요, 안전보건관리계획(산안비 사용계획, 안전관리조직, 재해 발생 위험 시 연락·대피방법 등), 작업 공종별 유해위험방지계획',
+ exam:'<ul><li>대상 숫자 (31m·3만·5천·50m·10m)</li><li>제출 기한·확인 주기</li></ul>',
+ law:'산업안전보건법 제42조·제43조, 시행령 제42조, 시행규칙 제42조~제47조.'},
+
+{grp:'2-2. 건설공사 위험성 추정·결정'},
+{id:'b4',title:'4. 위험성 추정 및 평가 방법',
+ core:'{{가능성(빈도) × 중대성(강도)}} 곱셈·조합(매트릭스) / {{3단계 판단법(상·중·하)}} / {{체크리스트}} / {{OPS(핵심요인 기술)}} / 2023 지침 개정 {{"추정" 단계 삭제 — 간편 방법 허용}}',
+ def:'<ul><li>파악한 유해·위험요인이 얼마나 위험한지 수준을 정하는 방법 (1과목 6장·2과목 2장과 연결)</li></ul>',
+ detail:'<b>방법</b><table><tr><th>방법</th><th>내용</th></tr><tr><td>곱셈법</td><td>가능성(1~5) × 중대성(1~4) = 위험성 점수</td></tr><tr><td>조합법(매트릭스)</td><td>가능성과 중대성을 표에서 교차해 등급</td></tr><tr><td>{{3단계 판단법}}</td><td>상·중·하로 바로 판단 (소규모 사업장에 적합)</td></tr><tr><td>{{체크리스트법}}</td><td>공종별 점검표로 적합·부적합 판단</td></tr><tr><td>{{OPS}}(핵심요인 기술법)</td><td>한 장(One Point Sheet)에 핵심 위험과 대책을 기술</td></tr></table><ul><li>출제기준 문구는 "위험성 추정"이지만, 2023년 개정 지침에서는 "유해·위험요인 파악 → 위험성 결정"으로 바뀌어 추정 단계가 공식적으로 삭제됨</li><li>건설업은 공정이 계속 바뀌므로 작업 전 수시평가·TBM 공유가 중요 (상시평가)</li></ul>',
+ calc:'가능성 4(자주), 중대성 3(중상) → 위험성 = 4 × 3 = <b>12</b> → 사업장 기준표에서 "높음"이면 즉시 개선',
+ exam:'<ul><li>위험성 계산, 평가 방법 종류</li></ul>',
+ law:'고시 「사업장 위험성평가에 관한 지침」(2023 전부개정).'},
+
+{id:'b5',title:'5. 위험성 결정 관련 지침 활용',
+ core:'{{사업장 위험성평가에 관한 지침}}(고시) / {{KOSHA GUIDE}} 건설업 위험성평가 / 허용 기준 {{사전에 실시 규정으로 정함}} → 허용 불가면 {{감소대책}}',
+ def:'<ul><li>위험성 수준이 허용 가능한지 판단할 때 기준이 되는 지침들</li></ul>',
+ detail:'<ul><li>고시: 위험성 결정 기준을 사업장이 위험성평가 실시 규정에 미리 정하도록 함</li><li>허용 가능 여부 판단 → 허용 불가 위험은 감소대책 (제거 → 대체 → 공학 → 관리 → 보호구, 2과목 3장)</li><li>KOSHA GUIDE: 건설업 공종별 위험성평가 기법 지침, 표준 위험요인 목록</li><li>건설공사 안전보건대장의 위험 요인 반영</li><li>결과는 근로자와 공유, 기록 3년 보존</li></ul>',
+ exam:'<ul><li>위험성 결정 기준을 정하는 주체 (사업장 실시 규정)</li></ul>',
+ law:'고시 「사업장 위험성평가에 관한 지침」, KOSHA GUIDE.'},
+
+{id:'b6',title:'키워드 카드 — 6과목 주요항목 2',tag:'암기',
+ core:'31m·3만·5천·50m·10m / 착공 전날·2부 / 6개월 확인 / 곱셈·3단계·OPS',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>지상 31m</td><td>{{유해위험방지계획서 대상}}</td></tr><tr><td>굴착 10m</td><td>{{유해위험방지계획서 대상}}</td></tr><tr><td>교량 지간 50m</td><td>{{유해위험방지계획서 대상}}</td></tr><tr><td>건설 계획서 제출</td><td>{{착공 전날까지}}</td></tr><tr><td>공단 확인</td><td>{{6개월마다}}</td></tr><tr><td>한 장 기술</td><td>{{OPS}}</td></tr><tr><td>상·중·하</td><td>{{3단계 판단법}}</td></tr></table>'}
+];
+
+var MN={
+b3:[
+ {k:'31 · 3만 · 5천 · 50 · 2천만 · 10',s:'"<b>10층 빌딩</b>(31m), <b>축구장 4개</b>(3만㎡), <b>사람 모이는 곳</b> 5천㎡, <b>다리 50m</b>, <b>댐 2천만 톤</b>, <b>땅 10m</b>"',m:'{{31m}} · {{3만㎡}} · {{5천㎡}} · {{50m}} · {{2천만 톤}} · {{10m}}'},
+ {k:'전날 · 2부 · 6개월',s:'"공사 <b>전날</b>까지 <b>두 권</b>, 공사 중 <b>반년마다</b> 확인"',m:'{{착공 전날}} · {{2부}} · {{6개월마다 확인}}'}],
+b4:[
+ {k:'곱 · 조 · 3 · 체 · O',s:'"<b>곱</b>하거나 <b>표</b>로 보거나, <b>상중하</b>로 찍거나, <b>체크</b>하거나, <b>한 장</b>(OPS)에 쓰거나"',m:'{{곱셈}} · {{조합}} · {{3단계}} · {{체크리스트}} · {{OPS}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

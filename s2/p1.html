@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2과목 1. 안전과 인간공학</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 2과목 · 인간공학 및 위험성 평가·관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 1. 안전과 인간공학 · 세세항목 16개 → 학습단위 12개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">2과목 목차</a><span class="dis">◀ 이전</span><a href="p2.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s2-p1-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'1-1. 인간공학의 정의'},
+{id:'a1',title:'1. 정의 및 목적',
+ core:'인간공학 = 기계·작업·환경을 {{인간의 특성·능력·한계}}에 맞게 설계 / 목적 {{안전성 향상·능률(생산성) 향상·쾌적성}} / 차파니스 정의',
+ def:'<ul><li><b>인간공학(Ergonomics, Human Factors)</b>: 인간이 사용하는 물건·기계·작업·환경을 인간의 신체적·정신적 특성과 한계에 맞도록 설계하는 학문</li><li><b>차파니스(Chapanis)</b>의 정의: 기계와 그 조작 및 환경 조건을 인간의 특성·능력·한계에 잘 조화하도록 설계하기 위한 수법을 연구하는 학문</li></ul>',
+ why:'<ul><li>사람을 기계에 맞추면(훈련·선발) 한계가 있지만, 기계를 사람에 맞추면 누구나 실수 없이 쓸 수 있습니다. 그래서 인간공학의 기본 방향은 <b>"기계를 사람에 맞춘다"</b>입니다.</li></ul>',
+ detail:'<b>인간공학의 목적</b><ol><li>{{안전성}} 향상과 사고 방지</li><li>기계 조작의 {{능률}}과 {{생산성}} 향상</li><li>작업환경의 {{쾌적성}} 향상 (피로 감소, 만족도)</li></ol><b>연구 대상</b>: 인간-기계 인터페이스, 작업공간, 작업방법, 작업환경, 조직<br><b>접근 방법</b>: 인간의 신체 치수(인체계측), 감각·지각, 정보처리, 생리적 부하를 측정해 설계 기준으로 사용',
+ ex:'<ul><li>비상정지 버튼을 크고 빨갛게, 손 닿는 위치에 → 인간 특성에 맞춘 설계</li></ul>',
+ cmp:'<table><tr><th>인간을 기계에 맞춤</th><th>기계를 인간에 맞춤 (인간공학)</th></tr><tr><td>선발·훈련으로 해결</td><td>설계로 해결 — 근본적</td></tr></table>',
+ exam:'<ul><li>인간공학 목적에 해당하지 <b>않는</b> 것 (예: "기계의 성능을 최우선")</li><li>차파니스의 정의 문장</li></ul>',
+ law:'법령 근거 없음(이론). 근골격계 관련 법정 의무는 4장.'},
+
+{id:'a2',title:'2. 배경 및 필요성',
+ core:'발달 {{기계 중심 → 인간 고려(2차 대전) → 급성장 → 확산}} / 필요성 {{인간 실수 감소·재해 예방·생산성·삶의 질}}',
+ def:'<ul><li>기계가 복잡해지면서 사람이 감당하지 못하는 실수가 늘어나, 기계를 사람에 맞추는 학문이 필요해졌습니다.</li></ul>',
+ detail:'<b>발달 과정</b><table><tr><th>시기</th><th>특징</th></tr><tr><td>초기 (1940년 이전)</td><td>기계 중심 설계, 테일러 시간연구·길브레스 동작연구 — 사람을 기계에 맞춤</td></tr><tr><td>체계 수립기 (1945~1960)</td><td>2차 대전 중 조종사 실수 연구 → 기계를 인간에 맞추는 설계</td></tr><tr><td>급성장기 (1960~1980)</td><td>우주·산업 분야로 확대</td></tr><tr><td>개발기 (1980 이후)</td><td>컴퓨터·소비자 제품·작업장 전반으로 확산</td></tr></table><b>필요성</b><ul><li>휴먼에러 감소와 산업재해 예방</li><li>작업 능률·생산성 향상, 품질 향상</li><li>근골격계질환 등 직업병 예방</li><li>사용자 만족도·삶의 질 향상, 법적 요구(근골격계 유해요인조사)</li></ul>',
+ ex:'<ul><li>2차 대전 때 비행기 계기판 모양이 기종마다 달라 조종 실수 → 표준화 연구 시작</li></ul>',
+ exam:'<ul><li>인간공학이 본격 발전한 계기 (2차 대전, 군사 장비)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a3',title:'3. 작업관리와 인간공학 · 4. 사업장 적용분야',
+ core:'작업관리 = {{방법연구}} + {{작업측정}} / 적용 {{작업공간·인터페이스·작업방법·작업환경·근골격계 예방·제품설계}}',
+ def:'<ul><li><b>작업관리</b>: 작업을 더 안전하고 효율적으로 만들기 위해 작업 방법을 분석·개선하고, 표준시간을 정하는 활동</li></ul>',
+ detail:'<b>작업관리의 구성</b><table><tr><th>구분</th><th>내용</th></tr><tr><td>{{방법연구}}</td><td>공정분석, 작업분석, 동작분석으로 더 좋은 방법을 찾음</td></tr><tr><td>{{작업측정}}</td><td>시간연구, 워크샘플링, PTS(MTM·WF)로 표준시간 설정</td></tr></table>→ 자세한 내용은 4장(근골격계 유해요인 관리)과 6장(작업측정)<br><b>사업장 적용분야</b><ul><li>작업공간·작업대·의자 설계 (인체계측 활용)</li><li>표시장치·조종장치 등 인간-기계 인터페이스 설계</li><li>작업방법·작업순서 개선, 휴식 설계</li><li>조명·소음·온열·진동 등 작업환경 개선</li><li>근골격계 부담작업 유해요인조사와 개선</li><li>공구(수공구)·장비·제품 설계, 안전표지·경고 설계</li></ul>',
+ ex:'<ul><li>조립 라인 작업대 높이를 작업자 팔꿈치 높이에 맞춤 → 작업공간 설계</li></ul>',
+ exam:'<ul><li>작업관리 구성요소 (방법연구·작업측정)</li></ul>',
+ law:'근골격계 유해요인조사: 산업안전보건기준에 관한 규칙 제657조(4장).'},
+
+{grp:'1-2. 인간-기계체계'},
+{id:'a4',title:'4. 인간-기계 시스템의 정의 및 유형',
+ core:'유형 {{수동·기계화(반자동)·자동}} / 기본기능 {{감지 → 정보보관 → 정보처리·의사결정 → 행동}} / 인간 {{귀납·융통성·예외 감지}} vs 기계 {{연역·반복·신속·정확}}',
+ def:'<ul><li><b>인간-기계 시스템</b>: 인간과 기계가 정보와 동작을 주고받으며 하나의 목적을 수행하는 결합 체계</li></ul>',
+ why:'<ul><li>무엇을 사람에게, 무엇을 기계에게 맡길지(기능 할당)를 정하려면 각자의 장점을 알아야 합니다.</li></ul>',
+ detail:'<b>시스템 유형</b><table><tr><th>유형</th><th>동력</th><th>제어</th><th>인간의 역할</th></tr><tr><td>{{수동 시스템}}</td><td>인간</td><td>인간</td><td>수공구 사용, 직접 동력 제공</td></tr><tr><td>{{기계화(반자동) 시스템}}</td><td>기계</td><td>인간</td><td>표시장치를 보고 조종장치로 제어 (운전)</td></tr><tr><td>{{자동 시스템}}</td><td>기계</td><td>기계</td><td>감시(monitoring), 프로그램 작성, 정비·유지</td></tr></table><b>인간-기계 시스템의 기본 기능</b><ol><li>{{감지}}(정보의 수용)</li><li>{{정보 보관}}(기억)</li><li>{{정보 처리 및 의사결정}}</li><li>{{행동}} 기능 (조종·통신)</li></ol><b>인간과 기계의 장점</b><table><tr><th>인간이 우수</th><th>기계가 우수</th></tr><tr><td>예기치 못한 사건 감지, 다양한 경험으로 판단, <b>귀납적</b> 추리, 융통성, 주관적 추산·평가, 과부하 상황에서 중요한 것 선택, 원칙 적용해 다양한 문제 해결</td><td>인간이 감지 못하는 자극(초음파 등) 감지, <b>연역적</b> 추리, 반복 작업의 신뢰성, 신속·정확한 계산, 여러 작업 동시 수행, 장시간 일관된 작업, 큰 힘</td></tr></table>',
+ ex:'<ul><li>지게차 운전 → 기계화 / 무인 반송차(AGV) 라인 → 자동, 사람은 감시</li></ul>',
+ cmp:'<table><tr><th>귀납적</th><th>연역적</th></tr><tr><td>여러 경험 → 일반 원리 (인간)</td><td>원리 → 개별 결론 (기계)</td></tr></table>',
+ exam:'<ul><li>인간이 기계보다 우수한 기능 고르기 (귀납적 추리, 예기치 못한 사건 감지)</li><li>자동 시스템에서 인간의 역할 = 감시</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a5',title:'5. 시스템의 특성',
+ core:'{{목적성·구성요소(하위시스템)·입력·처리·출력·피드백(되먹임)·환경}} / 체계 기준 요건 {{적절성·무오염성·신뢰성·민감도}}',
+ def:'<ul><li><b>시스템(체계)</b>: 공동 목적을 위해 상호작용하는 요소들의 집합</li></ul>',
+ detail:'<b>시스템의 특성</b><ul><li>목적성: 분명한 목적을 가짐</li><li>구성요소: 여러 하위 시스템으로 구성, 서로 상호작용</li><li>입력 → 처리 → 출력, <b>피드백(되먹임)</b>으로 오차를 수정</li><li>시스템 밖의 환경과 경계를 가짐</li></ul><b>인간공학 연구 기준(체계 기준)의 요건</b><table><tr><th>요건</th><th>뜻</th></tr><tr><td>{{적절성}}</td><td>기준이 평가하려는 목적을 잘 반영</td></tr><tr><td>{{무오염성}}</td><td>측정하려는 변수 외의 다른 변수 영향을 받지 않음</td></tr><tr><td>{{신뢰성}}</td><td>반복 측정 시 일관된 결과</td></tr><tr><td>{{민감도}}</td><td>작은 차이도 구별할 수 있는 정도</td></tr></table><ul><li>연구 기준의 종류: 시스템 기준(체계 성능), 작업 성능 기준, 인간 기준(생리·주관적 반응·사고 빈도)</li></ul>',
+ ex:'<ul><li>운전 시뮬레이터 평가 기준에 운전자 경력 차이가 섞임 → 무오염성 부족</li></ul>',
+ exam:'<ul><li>체계 기준 요건 4가지 (적·무·신·민)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'1-3. 체계설계와 인간요소'},
+{id:'a6',title:'6. 체계설계 과정 (목표·성능명세 ~ 시험·평가)',
+ core:'{{목표·성능명세 결정 → 시스템 정의 → 기본설계 → 계면설계 → 촉진물설계 → 시험·평가}} / 기본설계 = {{기능 할당·인간 성능요건·직무분석·작업설계}}',
+ def:'<ul><li>인간-기계 체계를 개발할 때 거치는 단계별 설계 과정. 각 단계에서 인간요소를 반영합니다.</li></ul>',
+ why:'<ul><li>설계 초기에 인간요소를 반영할수록 나중에 고치는 비용이 적습니다.</li></ul>',
+ detail:'<table><tr><th>단계</th><th>주요 활동</th></tr><tr><td>1. {{목표 및 성능명세 결정}}</td><td>체계의 목적과 요구 성능 정의, 사용자 특성 파악</td></tr><tr><td>2. {{체계(시스템)의 정의}}</td><td>목적 달성에 필요한 기능 결정</td></tr><tr><td>3. {{기본설계}}</td><td>기능 할당(인간·기계·소프트웨어), 인간 성능 요건 명세, 직무분석, 작업설계</td></tr><tr><td>4. {{계면(인터페이스) 설계}}</td><td>작업공간, 표시장치, 조종장치, 콘솔, 컴퓨터 대화 설계</td></tr><tr><td>5. {{촉진물 설계}}</td><td>사용자 성능을 돕는 것: 지시수첩(매뉴얼), 성능보조자료, 훈련 도구·프로그램</td></tr><tr><td>6. {{시험 및 평가}}</td><td>체계 기준(적절성·무오염성·신뢰성·민감도)에 따라 성능 평가, 개선</td></tr></table>',
+ ex:'<ul><li>새 크레인 개발: 성능 결정 → 기능 할당(자동 과부하 차단은 기계, 신호 판단은 인간) → 운전석 계기·레버 배치(계면) → 운전 매뉴얼·시뮬레이터(촉진물) → 시운전 평가</li></ul>',
+ cmp:'<table><tr><th>계면설계</th><th>촉진물설계</th></tr><tr><td>인간과 기계가 <b>만나는 곳</b> (계기·레버)</td><td>인간을 <b>돕는 것</b> (매뉴얼·훈련)</td></tr></table>',
+ exam:'<ul><li>단계 순서, 각 단계 활동 짝짓기 (특히 "기능 할당" = 기본설계, "매뉴얼" = 촉진물)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a7',title:'7. 감성공학',
+ core:'인간의 {{감성(이미지·느낌)}}을 {{정량화}}해 제품 설계에 반영 / {{SD법(의미미분법)}}으로 감성 측정',
+ def:'<ul><li><b>감성공학</b>: 사람이 제품에서 느끼는 감성(편안함, 고급스러움 등)을 측정·분석해 설계 요소로 바꾸는 공학</li></ul>',
+ detail:'<ul><li>절차: 감성 어휘 수집 → 감성 평가(설문) → 통계 분석 → 디자인 요소와 연결 → 설계 반영</li><li>측정 방법: <b>SD법(Semantic Differential, 의미미분법)</b> — "부드러운-딱딱한" 같은 반대 형용사 쌍으로 척도 평가</li><li>생리 측정(뇌파·심박), 주관적 평가를 함께 사용</li><li>접근: 감성 어휘 → 물리적 설계 요소로 번역(1류), 개인 특성 고려(2류), 공학적 모델·인공지능 활용(3류)</li></ul>',
+ ex:'<ul><li>자동차 문 닫히는 소리를 "묵직하고 고급스럽게" 설계</li></ul>',
+ exam:'<ul><li>감성공학의 정의, SD법</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'1-4. 인간요소와 휴먼에러'},
+{id:'a8',title:'8. 인간실수의 분류',
+ core:'스웨인(심리적) {{생략·실행·순서·시간·불필요}} / 라스무센(행동수준) {{숙련·규칙·지식 기반}} / 리즌 {{실수(slip)·망각(lapse)·착오(mistake)·위반}} / 원인 수준 {{1차·2차·지시}} 에러',
+ def:'<ul><li><b>휴먼에러</b>: 시스템이 요구하는 수준에서 벗어난 인간의 행동 — 의도와 다른 결과를 만드는 행위</li></ul>',
+ why:'<ul><li>에러 종류마다 대책이 다릅니다. 생략 에러는 체크리스트로, 순서 에러는 인터록으로, 지식 기반 착오는 교육으로 줄입니다.</li></ul>',
+ detail:'<b>스웨인(Swain)의 심리적 분류 (독립행동)</b><table><tr><th>에러</th><th>뜻</th><th>예</th></tr><tr><td>{{생략 에러}}(omission)</td><td>필요한 작업·단계를 하지 않음</td><td>밸브 잠그기 누락</td></tr><tr><td>{{실행 에러}}(commission)</td><td>작업을 했지만 잘못 수행</td><td>다른 스위치를 누름</td></tr><tr><td>{{순서 에러}}(sequential)</td><td>순서를 잘못</td><td>전원 차단 전 커버 개방</td></tr><tr><td>{{시간 에러}}(time)</td><td>너무 빠르거나 늦게</td><td>경보 후 늦은 조치</td></tr><tr><td>{{불필요한 행동 에러}}(extraneous)</td><td>해서는 안 될 행동을 추가</td><td>작업 중 장난</td></tr></table><b>라스무센(Rasmussen)의 행동 수준</b><ul><li>숙련 기반(skill-based): 습관적 행동 중 실수(slip·lapse)</li><li>규칙 기반(rule-based): 규칙을 잘못 적용</li><li>지식 기반(knowledge-based): 처음 겪는 상황에서 지식 부족·판단 착오</li></ul><b>리즌(Reason)의 분류</b><ul><li>의도하지 않은 행동: 실수(slip, 실행 오류), 망각(lapse, 기억 오류)</li><li>의도한 행동: 착오(mistake, 판단 오류), 위반(violation, 고의로 규칙 어김)</li></ul><b>원인 수준에 따른 분류</b><ul><li>1차 에러(primary): 작업자 자신이 일으킨 에러</li><li>2차 에러(secondary): 작업 조건·형태 문제로 생긴 에러</li><li>지시 에러(command): 요구된 것을 할 수 없는 상황(정보·에너지 공급 문제)에서 생긴 에러</li></ul>',
+ ex:'<ul><li>정비 후 볼트 하나를 안 조임 → 생략 / 비슷한 버튼 두 개 중 옆 버튼 누름 → 실행(slip)</li></ul>',
+ cmp:'<table><tr><th>slip</th><th>mistake</th><th>violation</th></tr><tr><td>의도 O, 실행 X</td><td>의도 자체가 틀림</td><td>알면서 어김</td></tr></table>',
+ exam:'<ul><li>사례를 주고 스웨인 분류 고르기 (가장 많이 출제)</li><li>리즌 분류에서 위반은 "의도적 행동"</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a9',title:'9. 휴먼에러의 형태적 특성',
+ core:'에러 배후요인 {{4M(Man·Machine·Media·Management)}} / 에러 발생 조건 {{과부하·저부하·정보 부족·모호한 표시·피로}}',
+ def:'<ul><li>휴먼에러가 어떤 모습으로, 어떤 조건에서 잘 일어나는지에 관한 특성</li></ul>',
+ detail:'<ul><li>에러는 대부분 개인 탓만이 아니라 <b>시스템(설계·환경·관리) 조건</b>이 유발함 → 4M으로 분석</li><li>잘 일어나는 조건<ul><li>정보 과부하 또는 단조로운 저부하</li><li>표시장치·조종장치가 모호하거나 양립성(기대와 일치)이 낮음</li><li>시간 압박, 피로, 야간, 소음·고온 환경</li><li>절차 복잡, 교육 부족, 의사소통 문제</li></ul></li><li>에러의 특성: 반복 가능, 상황 의존적, 같은 사람도 조건에 따라 달라짐</li><li>인간 신뢰도에 영향을 주는 요인(PSF, 수행형태요인): 작업 복잡도, 스트레스, 경험, 인터페이스 품질 등</li></ul>',
+ ex:'<ul><li>야간·혼자·급한 정비 → 에러 확률 증가 조건이 겹침</li></ul>',
+ exam:'<ul><li>4M의 Media(작업정보·방법·환경)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a10',title:'10. 인간실수 확률 추정 기법',
+ core:'HEP = {{실수 횟수 ÷ 실수 기회 수}} / 인간 신뢰도 R = {{1 − HEP}} / {{THERP}}(사건나무 기반 확률 추정) · {{OAT}} · {{CIT}}',
+ def:'<ul><li><b>인간 실수 확률(HEP, Human Error Probability)</b>: 특정 작업에서 실수가 일어날 확률</li><li><b>인간 신뢰도 분석(HRA)</b>: 인간의 실수 확률을 추정해 시스템 신뢰도에 반영하는 분석</li></ul>',
+ detail:'<b>기본 식</b><ul><li>HEP = 실제 발생한 실수 횟수 ÷ 실수가 일어날 수 있는 전체 기회 수</li><li>인간 신뢰도 R = 1 − HEP</li><li>연속 작업의 신뢰도 R(t) = e<sup>−λt</sup> (λ: 실수율)</li></ul><b>추정 기법</b><table><tr><th>기법</th><th>내용</th></tr><tr><td>{{THERP}}</td><td>인간 실수율 예측 기법 — 작업을 단계로 나눠 <b>사건나무(확률나무)</b>로 실수 확률을 계산</td></tr><tr><td>{{OAT}} (조작자 행동나무)</td><td>감지·진단·반응 단계별 성공·실패 경로를 나무로 분석</td></tr><tr><td>{{CIT}} (위급사건기법)</td><td>사고·아차사고 경험을 면접·조사해 위험 요인 파악</td></tr><tr><td>직무 위급도 분석</td><td>인간 실수의 영향을 위급도로 평가</td></tr><tr><td>FMEA·FTA</td><td>기계 분석 기법에 인간 실수를 사건으로 포함 (2장)</td></tr></table>',
+ calc:'① 10,000번 조작 중 5번 실수 → HEP = 5 ÷ 10,000 = <b>0.0005</b>, 신뢰도 = 1 − 0.0005 = <b>0.9995</b><br>② 실수율 λ = 0.01/시간, 8시간 작업 → R = e<sup>−0.08</sup> ≈ <b>0.923</b>',
+ ex:'<ul><li>정비 절차 20단계를 사건나무로 그려 단계별 HEP를 곱해 전체 성공 확률 계산 → THERP</li></ul>',
+ exam:'<ul><li>HEP 계산, 신뢰도 = 1 − HEP</li><li>THERP 설명 고르기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a11',title:'11. 인간실수 예방기법',
+ core:'{{Fool proof}}(실수해도 사고 안 남) / {{Fail safe}}(고장 나도 안전 쪽) / {{Tamper proof}}(임의 해제 방지) / 설계 원칙 {{배타설계 → 보호설계 → 안전설계}}',
+ def:'<ul><li>사람의 실수 자체를 막거나, 실수해도 사고로 이어지지 않게 하는 설계·관리 기법</li></ul>',
+ why:'<ul><li>사람은 반드시 실수하므로, "실수하지 마라"보다 "실수할 수 없게" 또는 "실수해도 괜찮게" 만드는 것이 근본 대책입니다.</li></ul>',
+ detail:'<b>설계적 대책</b><table><tr><th>기법</th><th>뜻</th><th>예</th></tr><tr><td>{{풀 프루프(Fool proof)}}</td><td>사람이 실수(잘못 조작)해도 사고로 이어지지 않게 하는 설계</td><td>프레스 양수조작식, 가드 열면 정지(인터록), 방향이 맞아야 꽂히는 커넥터</td></tr><tr><td>{{페일 세이프(Fail safe)}}</td><td>기계가 <b>고장</b> 나도 안전한 쪽으로 작동</td><td>정전 시 브레이크 작동, 신호 고장 시 정지 신호</td></tr><tr><td>{{탬퍼 프루프(Tamper proof)}}</td><td>작업자가 안전장치를 임의로 제거·해제하면 작동하지 않게 함</td><td>방호장치 떼면 기계가 안 움직임</td></tr></table><b>에러 방지 설계 원칙 (우선순위)</b><ol><li>{{배타설계}}(exclusion design): 에러 가능성 자체를 <b>제거</b></li><li>{{보호설계}}(prevention design): 에러가 나도 막을 수 있게 (풀 프루프)</li><li>{{안전설계}}(fail-safe design): 에러·고장이 나도 피해 최소화</li></ol><b>관리적 대책</b>: 교육·훈련, 작업 표준화, 체크리스트, 지적확인, 작업환경 개선, 적정 인원·휴식',
+ ex:'<ul><li>USB-C처럼 위아래 상관없이 꽂히게 → 에러 가능성 제거(배타설계)</li></ul>',
+ cmp:'<table><tr><th>Fool proof</th><th>Fail safe</th></tr><tr><td>사람의 <b>실수</b>에 대비</td><td>기계의 <b>고장</b>에 대비</td></tr></table>',
+ exam:'<ul><li>Fool proof vs Fail safe 사례 구분 (3과목 기계에서도 출제)</li><li>설계 원칙 우선순위</li></ul>',
+ law:'법령 근거 없음(이론). 방호장치 기준은 3과목.'},
+
+{id:'a12',title:'키워드 카드 — 2과목 주요항목 1',tag:'암기',
+ core:'수동·기계화·{{자동}} / 감지→보관→{{처리}}→행동 / 생략·{{실행}}·순서·시간·불필요 / Fool·{{Fail}}·Tamper',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>차파니스</td><td>{{인간공학 정의}}</td></tr><tr><td>안전·능률·쾌적</td><td>{{인간공학 목적}}</td></tr><tr><td>방법연구 + 작업측정</td><td>{{작업관리}}</td></tr><tr><td>동력 기계, 제어 인간</td><td>{{기계화(반자동) 시스템}}</td></tr><tr><td>인간 역할 = 감시</td><td>{{자동 시스템}}</td></tr><tr><td>귀납적 추리</td><td>{{인간이 우수}}</td></tr><tr><td>연역적 추리·반복</td><td>{{기계가 우수}}</td></tr><tr><td>적절성·무오염성·신뢰성·민감도</td><td>{{체계 기준 요건}}</td></tr><tr><td>기능 할당</td><td>{{기본설계}}</td></tr><tr><td>매뉴얼·훈련 도구</td><td>{{촉진물 설계}}</td></tr><tr><td>표시장치·조종장치 설계</td><td>{{계면설계}}</td></tr><tr><td>SD법</td><td>{{감성공학}}</td></tr><tr><td>해야 할 것을 안 함</td><td>{{생략 에러(omission)}}</td></tr><tr><td>했지만 잘못 함</td><td>{{실행 에러(commission)}}</td></tr><tr><td>숙련·규칙·지식</td><td>{{라스무센}}</td></tr><tr><td>알면서 어김</td><td>{{위반(violation)}}</td></tr><tr><td>사건나무로 HEP</td><td>{{THERP}}</td></tr><tr><td>실수해도 안전</td><td>{{Fool proof}}</td></tr><tr><td>고장 나도 안전</td><td>{{Fail safe}}</td></tr><tr><td>임의 해제 방지</td><td>{{Tamper proof}}</td></tr></table>'}
+];
+
+var MN={
+a1:[
+ {k:'안·능·쾌',s:'"<b>안능쾌</b> → \'안 놓고 쾌속\'" — 인간공학은 안전하게(안), 일 잘 되게(능), 기분 좋게(쾌)',m:'{{안전성}} · {{능률·생산성}} · {{쾌적성}}'}],
+a4:[
+ {k:'수 · 기 · 자',s:'"<b>수</b>레(손으로 끔) → <b>기</b>차(엔진, 사람이 운전) → <b>자</b>율주행(사람은 지켜봄)"',m:'{{수동}} → {{기계화(반자동)}} → {{자동}}'},
+ {k:'감·보·처·행',s:'"<b>감보처행</b> → 눈으로 <b>감</b>지하고, 머리에 <b>보</b>관하고, <b>처</b>리해서, 손으로 <b>행</b>동" — 사람의 정보처리 순서',m:'{{감지}} → {{정보보관}} → {{정보처리·의사결정}} → {{행동}}'},
+ {k:'인간 = 귀납 / 기계 = 연역',s:'"<b>귀</b>신같이 눈치 빠른 <b>인간</b>(경험에서 법칙 찾음) / <b>연</b>산 잘하는 <b>기계</b>(법칙대로 계산)"',m:'인간 {{귀납적·융통성·예외 감지}} / 기계 {{연역적·반복·신속 정확}}'}],
+a5:[
+ {k:'적·무·신·민',s:'"<b>적무</b>(적당한 무)는 <b>신민</b>(신선한 민물)에" — 맞게, 섞임 없이, 늘 같게, 예민하게',m:'{{적절성}} · {{무오염성}} · {{신뢰성}} · {{민감도}}'}],
+a6:[
+ {k:'목·정·기·계·촉·시',s:'"<b>목</b>수가 <b>정</b>하고 <b>기</b>초 공사 후 <b>계</b>단 놓고 <b>촉</b>(손잡이) 달고 <b>시</b>험" — 집 짓는 순서',m:'{{목표·성능명세}} → {{체계 정의}} → {{기본설계}} → {{계면설계}} → {{촉진물설계}} → {{시험·평가}}'}],
+a8:[
+ {k:'생·실·순·시·불',s:'"<b>생실</b>(생일) <b>순시</b>(순서·시간) <b>불</b>(불필요)" — 생일 파티: 케이크 안 삼(생략), 잘못 삼(실행), 순서 틀림, 늦게 옴(시간), 쓸데없는 짓(불필요)',m:'{{생략}} · {{실행}} · {{순서}} · {{시간}} · {{불필요}} 에러'},
+ {k:'숙 · 규 · 지',s:'"<b>숙</b>제는 습관으로, <b>규</b>칙은 외워서, <b>지</b>식은 생각해서" — 라스무센 3단계',m:'{{숙련 기반}} · {{규칙 기반}} · {{지식 기반}}'},
+ {k:'slip·lapse·mistake·violation',s:'"<b>미끄러지고</b>(slip) <b>깜빡하고</b>(lapse) <b>잘못 알고</b>(mistake) <b>일부러 어기고</b>(violation)"',m:'실수 · 망각 · 착오 · {{위반(의도적)}}'}],
+a10:[
+ {k:'HEP = 실수 ÷ 기회',s:'"<b>야구 타율</b>의 반대 — 실수한 수를 기회 수로 나눔, 신뢰도 = 1 − 실수율"',m:'HEP = {{실수 횟수 ÷ 기회 수}} / R = {{1 − HEP}}'},
+ {k:'THERP = 나무',s:'"<b>THERP</b>는 <b>Tree</b>(나무)로 시작 — 사건나무로 확률 계산"',m:'THERP = {{사건나무 기반 인간실수율 예측}}'}],
+a11:[
+ {k:'Fool · Fail · Tamper',s:'"<b>Fool</b>(바보)가 만져도 안전 / <b>Fail</b>(고장) 나도 안전 / <b>Tamper</b>(손대기) 하면 멈춤"',m:'{{Fool proof 실수 대비}} · {{Fail safe 고장 대비}} · {{Tamper proof 해제 방지}}'},
+ {k:'배 → 보 → 안',s:'"<b>배보안</b> → 배(boat)는 보안 검색 — 아예 못 타게(배타), 타도 막고(보호), 사고 나도 구명조끼(안전)"',m:'{{배타설계}} → {{보호설계}} → {{안전설계}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

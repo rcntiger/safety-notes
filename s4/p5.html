@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4과목 5. 전기설비 위험요인 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 4과목 · 전기설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 5. 전기설비 위험요인 관리 · 세세항목 12개 → 학습단위 8개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">4과목 목차</a><a href="p4.html">◀ 이전</a><a href="../s5/index.html">5과목 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s4-p5-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'5-1. 전기설비 위험요인 파악'},
+{id:'e1',title:'1. 단락 · 지락 · 누전',
+ core:'{{단락(합선)}} = 두 전선이 저항 없이 직접 닿음 → 큰 전류·아크 / {{지락}} = 전선이 {{대지(땅)}}와 연결 / {{누전}} = 절연 불량으로 {{정해진 경로 밖}}으로 전류가 샘',
+ def:'<ul><li>전기 화재·감전의 대표 원인이 되는 세 가지 고장 상태</li></ul>',
+ detail:'<table><tr><th>현상</th><th>뜻</th><th>위험</th><th>대책</th></tr><tr><td>{{단락}}(합선)</td><td>전위차가 있는 두 전선이 부하 없이 직접 접촉</td><td>매우 큰 단락전류 → 아크·발열·화재, 전선 용융</td><td>과전류차단기(배선용 차단기·퓨즈), 전선 피복 보호</td></tr><tr><td>{{지락}}</td><td>전선·충전부가 대지(땅이나 접지된 금속)와 연결</td><td>지락전류 → 감전·화재</td><td>누전(지락)차단기, 접지</td></tr><tr><td>{{누전}}</td><td>절연이 나빠져 전류가 원래 경로가 아닌 건물·외함 등으로 샘</td><td>감전, 누전 화재(작은 전류라도 장시간 발열)</td><td>누전차단기, 절연저항 관리</td></tr></table><ul><li>누전 화재 3요소: 누전점(전류가 새는 곳), 출화점(발화한 곳), 접지점(전류가 빠져나간 곳)</li><li>단락 원인: 피복 손상, 전선 꺾임, 쥐 갉음, 진동으로 피복 마모</li></ul>',
+ cmp:'<table><tr><th>단락</th><th>지락</th></tr><tr><td>선 ↔ 선</td><td>선 ↔ 땅</td></tr><tr><td>과전류차단기</td><td>누전차단기</td></tr></table>',
+ exam:'<ul><li>단락·지락·누전 정의 구분</li><li>누전 화재 3요소</li></ul>',
+ law:'안전보건기준규칙 제304조·제305조.'},
+
+{id:'e2',title:'2. 과전류 · 스파크 · 접촉부 과열',
+ core:'{{과전류}} 허용전류 초과 → 전선 발열 (과부하·단락) / {{스파크}} 개폐 시 불꽃 → 인화성 가스 착화 / {{접촉부 과열}} 접속 불량 → 접촉저항↑ → 국부 발열 (아산화동 증식)',
+ def:'<ul><li>정상 운전 중에도 생길 수 있는 전기 화재 원인들</li></ul>',
+ detail:'<b>과전류</b><ul><li>전선의 허용전류보다 큰 전류 → 줄열(I²R) 발열 → 피복 손상·화재</li><li>원인: 문어발 콘센트(과부하), 단락, 전동기 구속</li><li>대책: 정격에 맞는 차단기, 전선 굵기 적정</li></ul><b>스파크(전기 불꽃)</b><ul><li>스위치·접점 개폐, 모터 브러시, 플러그 뽑을 때 생기는 불꽃</li><li>인화성 가스·분진이 있으면 착화원 → 방폭기기</li></ul><b>접촉부 과열</b><ul><li>나사 풀림·접속 불량으로 접촉 면적이 줄면 접촉저항 증가 → 국부 발열</li><li>{{아산화동 증식 발열}}: 구리 접속부가 산화되어 생긴 아산화동이 반도체처럼 저항이 커지며 계속 발열</li><li>대책: 접속부 조임 관리, 열화상 점검</li></ul>',
+ exam:'<ul><li>접촉부 과열 원인 (아산화동)</li></ul>',
+ law:'안전보건기준규칙 제2편 제3장.'},
+
+{id:'e3',title:'3. 절연열화에 의한 발열 (트래킹)',
+ core:'절연열화 원인 {{열·습기·자외선·기계적 손상·화학물질·시간}} / {{트래킹}} = 절연물 표면에 먼지·습기 → 미세 방전 → {{탄화 도전로}} → 발화 / {{흑연화(가네하라) 현상}}',
+ def:'<ul><li><b>절연열화</b>: 시간과 환경 때문에 절연물의 절연 성능이 떨어지는 현상</li></ul>',
+ detail:'<ul><li>원인: 열(과열 반복), 습기, 자외선, 기계적 손상(진동·압박), 화학물질(기름·약품), 오랜 사용</li><li>{{트래킹(tracking)}}: 플러그·콘센트 등 절연물 표면에 먼지·습기가 쌓임 → 미세한 방전 반복 → 표면이 탄화되어 도전 경로 형성 → 발화</li><li>흑연화(가네하라) 현상: 유기 절연물이 열·불꽃으로 탄화되어 흑연처럼 전기가 통하게 되는 현상</li><li>대책: 콘센트 먼지 청소, 사용하지 않는 플러그 뽑기, 절연저항 정기 측정, 열화된 전선 교체</li></ul>',
+ exam:'<ul><li>트래킹 정의</li></ul>',
+ law:'교재 기준.'},
+
+{id:'e4',title:'4. 낙뢰 · 정전기',
+ core:'피뢰설비 {{수뢰부 → 인하도선 → 접지극}} / {{피뢰기(LA)}} 이상전압을 대지로 방류 — 구비조건 {{충격방전개시전압·제한전압 낮을 것, 속류 차단, 반복 동작}} / {{서지보호장치(SPD)}} / 정전기 → 3장',
+ def:'<ul><li><b>낙뢰</b>: 번개가 건물·설비에 떨어지는 것. 직접 맞는 직격뢰와 근처 낙뢰로 선로에 생기는 유도뢰(서지)가 있습니다.</li></ul>',
+ detail:'<b>피뢰시스템</b><ul><li>외부 피뢰: 수뢰부(피뢰침·도체) → 인하도선 → 접지극 — 번개를 안전하게 땅으로</li><li>내부 피뢰: 등전위 본딩, 서지보호장치(SPD)</li><li>KEC: 지상 20m 이상 건축물·구조물, 위험물 저장소 등에 설치</li></ul><b>피뢰기(LA, Lightning Arrester)</b>: 선로에 들어온 이상전압(뇌·개폐 서지)을 대지로 방전해 기기를 보호하고, 정상 전압이 되면 전류(속류)를 차단<ul><li>구비조건: 충격방전 개시전압이 낮을 것, 제한전압이 낮을 것, 상용주파 방전개시전압이 높을 것, 속류 차단 능력, 반복 동작, 방전 내량이 클 것</li></ul><b>정전기</b>: 3장 참고 (방폭·화재 관점)',
+ exam:'<ul><li>피뢰기 구비조건</li><li>피뢰설비 구성 순서</li></ul>',
+ law:'한국전기설비규정(KEC) 150(피뢰시스템), 건축물의 설비기준 등에 관한 규칙.'},
+
+{grp:'5-2. 전기설비 위험요인 점검 및 개선'},
+{id:'e5',title:'5. 유해위험기계기구 종류 및 특성 (전기)',
+ core:'안전인증 {{절연용 방호구·활선작업용 기구·방폭구조 전기기계기구}} / 자율안전확인 {{교류아크용접기 자동전격방지기}} / 용접기 {{자동전격방지기: 무부하 전압 25V 이하, 1초 이내}}',
+ def:'<ul><li>전기와 관련해 안전인증·자율안전확인을 받는 기구와 방호장치</li></ul>',
+ detail:'<ul><li>안전인증 대상 방호장치: 절연용 방호구 및 활선작업용 기구, 방폭구조 전기기계·기구 및 부품</li><li>자율안전확인 대상 방호장치: 교류아크용접기용 자동전격방지기</li></ul><b>교류아크용접기 자동전격방지기</b><ul><li>용접을 하지 않을 때(무부하) 용접봉 홀더의 전압을 안전전압 이하로 낮춤</li><li>아크가 끊어지면 약 1초 이내에 2차 무부하 전압을 25V 이하로 (교재 기준)</li><li>설치 대상: 선박 이중 선체 내부 등 도전체에 둘러싸인 좁은 장소, 추락 위험이 있는 높이 2m 이상 장소에서 철골 등 도전성 높은 물체에 닿을 우려가 있는 곳, 근로자가 물·땀 등으로 젖은 상태</li></ul><b>이동형·휴대형 전기기계</b>: 접지 또는 이중절연, 누전차단기, 코드 손상 점검',
+ exam:'<ul><li>자동전격방지기 성능(25V, 1초)</li></ul>',
+ law:'안전보건기준규칙 제306조(교류아크용접기 등), 시행령 제74조·제77조.'},
+
+{id:'e6',title:'6. 안전보건표지 설치기준 (전기)',
+ core:'{{고압전기 경고}}(노란 삼각형) / {{출입금지}} / 변전실·분전반 {{관계자 외 출입금지·조작 금지}} 표지 / 정전작업 중 {{꼬리표(Tag)}}',
+ def:'<ul><li>전기 위험 장소에 설치하는 표지 (1과목 2장 표지와 연결)</li></ul>',
+ detail:'<ul><li>고압 이상 충전부, 변전실, 배전반: {{고압전기 경고}} 표지</li><li>변전실·전기실: 관계자 외 출입금지, 잠금</li><li>정전 작업 중 차단기: "작업 중 투입 금지" 꼬리표 + 잠금장치 (LOTO)</li><li>방폭지역: 위험장소 표시, 화기 금지</li><li>표지는 잘 보이는 곳, 견고하게, 야간 식별 가능하게</li></ul>',
+ exam:'<ul><li>고압전기 표지 분류 = 경고표지</li></ul>',
+ law:'산업안전보건법 시행규칙 별표 6, 안전보건기준규칙 제319조.'},
+
+{id:'e7',title:'7. 접지 및 피뢰 설비 점검',
+ core:'접지 목적 {{감전 방지·기기 보호·이상전압 억제·정전기 방지}} / KEC 접지 {{계통접지(TN·TT·IT)·보호접지·피뢰시스템 접지}} / 접지 방식 {{단독·공통·통합}} / 점검 {{접지저항·접속 상태·피뢰기 동작}}',
+ def:'<ul><li><b>접지</b>: 전기 설비를 대지와 전기적으로 연결하는 것</li></ul>',
+ why:'<ul><li>누전된 외함을 접지하면 사람보다 저항이 훨씬 작은 접지선으로 전류가 흘러, 사람에게 흐르는 전류가 줄고 누전차단기가 작동합니다.</li></ul>',
+ detail:'<b>접지의 목적</b>: 누전 시 감전 방지, 기기 손상 방지, 이상전압(낙뢰·혼촉) 억제, 지락 시 보호계전기 확실한 동작, 정전기 축적 방지<br><b>KEC 접지시스템 (2021~)</b><table><tr><th>구분</th><th>내용</th></tr><tr><td>계통접지</td><td>전원 측 중성점 접지 방식 — TN(TN-S, TN-C, TN-C-S), TT, IT</td></tr><tr><td>보호접지</td><td>감전 보호를 위해 기기 외함 등 노출 도전부를 접지</td></tr><tr><td>피뢰시스템 접지</td><td>낙뢰 전류를 대지로</td></tr></table><ul><li>접지 방식: 단독접지, 공통접지(고압·저압 공용), 통합접지(전기·통신·피뢰 통합)</li><li>옛 1종·2종·3종·특별3종 접지 구분은 KEC 시행으로 폐지</li></ul><b>접지 대상 (안전보건기준규칙 제302조)</b>: 전기기계·기구의 금속제 외함, 고정 설치된 기계의 노출 금속체 등 — 이중절연 기기, 비접지 전원(절연 변압기), 누전차단기로 보호된 일부 기기는 예외<br><b>점검</b>: 접지저항 측정, 접지선 단선·부식, 접속부 조임, 피뢰기 외관·동작 카운터, 서지보호장치 상태',
+ exam:'<ul><li>접지 목적</li><li>KEC 접지 종류 (계통·보호·피뢰)</li></ul>',
+ law:'안전보건기준규칙 제302조(전기 기계·기구의 접지), KEC 140(접지시스템).'},
+
+{id:'e8',title:'키워드 카드 — 4과목 주요항목 5',tag:'암기',
+ core:'단락 {{선↔선}} / 지락 {{선↔땅}} / 트래킹 / 피뢰기 / 25V·1초 / TN·TT·IT',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>합선</td><td>{{단락}}</td></tr><tr><td>누전점·출화점·접지점</td><td>{{누전 화재 3요소}}</td></tr><tr><td>아산화동</td><td>{{접촉부 과열}}</td></tr><tr><td>표면 탄화 도전로</td><td>{{트래킹}}</td></tr><tr><td>수뢰부 → 인하도선 → 접지극</td><td>{{외부 피뢰}}</td></tr><tr><td>이상전압 대지 방류</td><td>{{피뢰기}}</td></tr><tr><td>무부하 25V, 1초</td><td>{{자동전격방지기}}</td></tr><tr><td>고압전기</td><td>{{경고표지}}</td></tr><tr><td>TN · TT · IT</td><td>{{계통접지}}</td></tr><tr><td>외함 접지</td><td>{{보호접지}}</td></tr></table>'}
+];
+
+var MN={
+e1:[
+ {k:'단락 = 선끼리 / 지락 = 땅으로',s:'"<b>단</b>짝 두 전선이 <b>바로</b> 붙으면 단락, <b>땅</b>(地)에 닿으면 지락"',m:'단락 {{선 ↔ 선}} / 지락 {{선 ↔ 대지}}'},
+ {k:'누 · 출 · 접',s:'"<b>누출접</b> → 새고(누전점), 불나고(출화점), 빠져나감(접지점)"',m:'{{누전점}} · {{출화점}} · {{접지점}}'}],
+e3:[
+ {k:'트래킹 = 먼지 길',s:'"콘센트에 쌓인 <b>먼지 + 습기</b>가 <b>숯 길(트랙)</b>을 만든다"',m:'트래킹 {{표면 탄화 도전로 → 발화}}'}],
+e4:[
+ {k:'수 → 인 → 접',s:'"<b>수인접</b> → 받고(수뢰부) 내리고(인하도선) 묻는다(접지극)"',m:'{{수뢰부}} → {{인하도선}} → {{접지극}}'}],
+e5:[
+ {k:'25V · 1초',s:'"용접 안 할 땐 <b>1초</b> 안에 <b>이십오</b>(25V)로 낮춘다"',m:'자동전격방지기 {{1초 이내 25V 이하}}'}],
+e7:[
+ {k:'계 · 보 · 피',s:'"<b>계보피</b> → 전원 계통, 기기 보호, 번개 피뢰"',m:'{{계통접지}} · {{보호접지}} · {{피뢰시스템 접지}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

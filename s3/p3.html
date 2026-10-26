@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3과목 3. 기계설비 위험요인 분석</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 3과목 · 기계·기구 및 설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 3. 기계설비 위험요인 분석 · 세세항목 16개 → 학습단위 16개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">3과목 목차</a><a href="p2.html">◀ 이전</a><a href="p4.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s3-p3-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'3-1. 공작기계의 안전'},
+{id:'c1',title:'1. 절삭가공기계 (선반·밀링·드릴·셰이퍼) 및 방호장치',
+ core:'선반 {{칩브레이커·척 커버·방진구(길이 > 지름 12배)}} / 밀링 {{하향절삭이 안전·칩은 브러시}} / 드릴 {{장갑 금지·공작물 바이스 고정}} / 셰이퍼 {{램 행정 끝 방책·칩받이}} / 공통 {{장갑 금지}}',
+ def:'<ul><li>회전하는 공작물이나 공구로 금속을 깎는 기계. 회전체에 말리는 재해와 칩(부스러기) 비래가 대표 위험입니다.</li></ul>',
+ detail:'<b>선반</b><ul><li>{{칩브레이커}}: 길게 이어지는 칩을 짧게 끊어 말림·베임 방지</li><li>척 커버, 실드(칩 비산 방지), 브레이크</li><li>가공물 길이가 지름의 12배 이상이면 {{방진구}}로 지지 (떨림 방지)</li><li>척 핸들은 사용 후 반드시 빼기, 바이트는 짧게 물리기</li><li>회전 중 측정·청소 금지, <b>장갑 착용 금지</b></li></ul><b>밀링</b><ul><li>{{하향절삭}}(커터 회전 방향과 이송 방향이 같음)이 공작물을 눌러 줘 안정적, 상향절삭은 공작물이 들림</li><li>칩은 손 대신 <b>브러시</b>로 제거, 커터 덮개, 장갑 금지</li></ul><b>드릴</b><ul><li>공작물은 바이스·지그로 단단히 고정 (손으로 잡지 않음)</li><li>구멍이 관통될 때 이송을 줄임, 장갑 착용 금지</li><li>드릴 교체·척 조임은 정지 후, 척 키 빼기</li></ul><b>셰이퍼·플레이너</b><ul><li>램(바이트 왕복부) 행정 끝에 방책(울), 칩받이, 운전 중 정면에 서지 않기 (셰이퍼는 측면에서)</li></ul>',
+ ex:'<ul><li>선반 작업 중 장갑이 회전하는 공작물에 말려 손가락 골절 → 장갑 금지</li></ul>',
+ cmp:'<table><tr><th>하향절삭</th><th>상향절삭</th></tr><tr><td>공작물을 누름, 안정</td><td>공작물이 들림, 백래시 영향 적음</td></tr></table>',
+ exam:'<ul><li>선반 칩브레이커 역할, 방진구 기준(12배)</li><li>회전 기계 작업 시 장갑 금지</li></ul>',
+ law:'안전보건기준규칙 제2편 제1장(공작기계 관련 조문).'},
+
+{id:'c2',title:'2. 연삭기',
+ core:'덮개 노출각 {{탁상용 90° 이내}} · {{휴대용·원통 180° 이내}} · {{평면·절단 150° 이내}} / 시운전 {{작업 전 1분·교체 후 3분}} / 받침대 간격 {{3mm 이하}} / 플랜지 {{숫돌 지름 1/3 이상}} / 원주속도 V = {{πDN ÷ 1,000}}',
+ def:'<ul><li>고속 회전하는 숫돌로 갈아 내는 기계. 숫돌이 깨지면 파편이 총알처럼 날아가므로 덮개가 핵심입니다.</li></ul>',
+ detail:'<b>연삭숫돌 덮개 노출각도 (교재 기준값)</b><table><tr><th>연삭기</th><th>노출각</th></tr><tr><td>{{탁상용}} 연삭기</td><td>90° 이내 (숫돌 주축 수평면 위로 65° 이내)</td></tr><tr><td>휴대용·원통·만능·센터리스</td><td>180° 이내</td></tr><tr><td>평면·절단 연삭기</td><td>150° 이내</td></tr></table><b>안전 기준 (안전보건기준규칙 제122조)</b><ul><li>지름 5cm 이상 숫돌에는 덮개 설치</li><li>작업 시작 전 {{1분 이상}}, 숫돌 교체 후 {{3분 이상}} 시운전으로 이상 확인</li><li>최고 사용 원주속도 초과 사용 금지</li><li>측면 사용 금지 (측면 사용 목적 숫돌 제외)</li></ul><b>기타</b><ul><li>워크레스트(받침대)와 숫돌 간격 {{3mm 이하}}</li><li>덮개 조정편과 숫돌 간격 약 3~10mm</li><li>플랜지 지름은 숫돌 지름의 {{1/3 이상}}, 양쪽 같은 크기</li><li>숫돌 정면에 서지 말고 측면에서 작업</li><li>숫돌 파괴 원인: 회전속도 과다, 측면 사용, 숫돌 균열, 플랜지 불량, 무리한 압력, 중심 불량</li></ul><b>원주속도</b>: V(m/min) = π × D(mm) × N(rpm) ÷ 1,000',
+ calc:'지름 200mm 숫돌, 3,000rpm → V = 3.14 × 200 × 3,000 ÷ 1,000 = <b>1,884m/min</b> (≈ 31.4m/s)',
+ exam:'<ul><li>시운전 시간 1분·3분 (자주 출제)</li><li>덮개 노출각, 플랜지 1/3, 받침대 3mm</li><li>원주속도 계산</li></ul>',
+ law:'안전보건기준규칙 제122조(연삭숫돌의 덮개 등). <span style="color:var(--sub)">노출각도는 방호장치 자율안전기준 고시·교재로 확인.</span>'},
+
+{id:'c3',title:'3. 소성가공 및 방호장치',
+ core:'소성가공 {{단조·압연·인발·압출·프레스(전단·굽힘·드로잉)}} / 위험 {{충격·협착·비산·고온}} / 단조 {{공구 점검·집게 사용·타격 신호}}',
+ def:'<ul><li><b>소성가공</b>: 금속에 큰 힘을 가해 영구 변형시켜 모양을 만드는 가공</li></ul>',
+ detail:'<table><tr><th>가공</th><th>방법</th><th>위험</th></tr><tr><td>단조</td><td>가열한 금속을 해머·프레스로 두드림</td><td>충격, 화상, 파편 비산</td></tr><tr><td>압연</td><td>회전 롤러 사이로 통과</td><td>물림점 말림 (롤러기)</td></tr><tr><td>인발</td><td>다이 구멍으로 잡아당김</td><td>와이어 튕김</td></tr><tr><td>압출</td><td>다이 구멍으로 밀어냄</td><td>고압</td></tr><tr><td>프레스 가공</td><td>전단, 굽힘, 드로잉</td><td>협착 (다음 카드)</td></tr></table><b>방호·안전</b><ul><li>단조: 공구(집게·정반) 점검, 손 대신 집게 사용, 타격 시 신호, 보안경·안전화·방열 장갑</li><li>압연: 롤러 급정지장치, 가드</li><li>공통: 금형·공구 고정 상태 확인, 작업 반경 출입 통제</li></ul>',
+ exam:'<ul><li>소성가공 종류</li></ul>',
+ law:'안전보건기준규칙 제2편 제1장.'},
+
+{grp:'3-2. 프레스 및 전단기의 안전'},
+{id:'c4',title:'4. 프레스 재해방지의 근본적인 대책',
+ core:'{{No-hand in die}}(금형 안에 손 안 넣게: 안전울·안전금형·자동 송급) 우선 / {{Hand in die}}면 방호장치 {{가드식·손쳐내기식·수인식·양수조작식·광전자식}} / 광전자식 안전거리 D = {{1,600 × (Tl + Ts)}} / 양수조작식 {{0.5초}} 이내 동시, 버튼 간격 {{300mm}} 이상',
+ def:'<ul><li>프레스 재해는 대부분 금형 사이에 손이 들어가 생기는 <b>협착</b>입니다. 근본 대책은 손을 넣을 필요가 없게 만드는 것입니다.</li></ul>',
+ why:'<ul><li>방호장치는 고장·해제될 수 있으므로, 손이 들어갈 필요 자체를 없애는 No-hand in die 방식이 우선입니다.</li></ul>',
+ detail:'<b>No-hand in die 방식 (근본 대책)</b><ul><li>안전울(방호울) 설치, 안전금형 사용(틈새 8mm 이하)</li><li>자동 송급·배출 장치(롤 피더, 슈트, 이젝터), 전용 프레스</li></ul><b>Hand in die 방식 — 방호장치</b><table><tr><th>방호장치</th><th>원리</th><th>조건·기준</th></tr><tr><td>{{가드식}}(게이트 가드)</td><td>가드가 닫혀야 작동</td><td>—</td></tr><tr><td>{{손쳐내기식}}</td><td>슬라이드와 연동된 막대가 손을 쳐냄</td><td>행정 40mm 이상, SPM 120 이하, 방호판 폭은 금형 폭의 1/2 이상</td></tr><tr><td>{{수인식}}</td><td>손목 끈으로 손을 당겨 빼냄</td><td>행정 40mm 이상, SPM 120 이하(교재 기준)</td></tr><tr><td>{{양수조작식}}</td><td>양손으로 동시에 눌러야 작동</td><td>두 버튼 동시(0.5초 이내) 조작, 버튼 내측 간격 300mm 이상, 한 손 떼면 정지</td></tr><tr><td>{{광전자식}}(감응식)</td><td>빛을 차단하면 슬라이드 정지</td><td>정지 성능이 있는 마찰 클러치 프레스에 적합</td></tr></table><b>안전거리</b><ul><li>광전자식: D(mm) = 1,600 × (Tl + Ts) — Tl: 손이 광선 차단 후 급정지기구 작동까지(초), Ts: 급정지 후 슬라이드 정지까지(초) (1.6m/s 손 속도)</li><li>양수조작식(급정지 기능 없는 확동식 클러치): D = 1.6 × Tm(ms), Tm = (1/클러치 맞물림 개소수 + 1/2) × 60,000/SPM</li></ul><b>작업시작 전 점검</b>: 클러치·브레이크, 크랭크축·플라이휠·슬라이드·연결봉 풀림, 1행정 1정지기구·급정지장치·비상정지장치, 슬라이드·칼날 이상, 금형·고정볼트, 방호장치, 전단기 칼날·테이블',
+ calc:'광전자식: Tl + Ts = 0.1초 → D = 1,600 × 0.1 = <b>160mm</b> 이상 떨어뜨려 설치',
+ ex:'<ul><li>소량 다품종 수동 투입 프레스 → 광전자식 + 금형 안전화</li></ul>',
+ cmp:'<table><tr><th>No-hand in die</th><th>Hand in die</th></tr><tr><td>손이 안 들어감 (근본)</td><td>들어가니 막음 (방호장치)</td></tr></table>',
+ exam:'<ul><li>광전자식 안전거리 계산 (자주 출제)</li><li>방호장치별 적용 조건 (손쳐내기식·수인식 행정·SPM)</li><li>프레스 작업 전 점검 항목</li></ul>',
+ law:'안전보건기준규칙 제103조~제104조, 별표 3(작업시작 전 점검), 방호장치 안전인증 고시. <span style="color:var(--sub)">방호장치 조건 수치는 고시로 확인.</span>'},
+
+{id:'c5',title:'5. 금형의 안전화',
+ core:'상·하형 틈새 {{8mm 이하}} / 금형 교체·조정 시 {{안전블록}} / {{가이드 포스트·스트리퍼}} / 금형 고정 {{볼트·클램프 확인}}',
+ def:'<ul><li>금형 자체를 손가락이 들어가지 않거나, 들어가도 다치지 않게 만드는 것 (No-hand in die의 핵심)</li></ul>',
+ detail:'<ul><li>상형과 하형 사이, 가이드 포스트와 부시 사이 틈새를 {{8mm 이하}}로 (손가락이 들어가지 않게)</li><li>금형 사이에 손이 들어갈 필요가 없는 송급·배출 구조</li><li>금형 교체·조정·청소 시 슬라이드 불시 하강을 막는 {{안전블록}} 사용, 전원 차단·잠금</li><li>스트리퍼(가공품을 떼어 내는 장치), 녹아웃 장치</li><li>금형 고정 볼트·클램프의 풀림 확인, 금형 중량에 맞는 운반 기구</li><li>금형에 맞는 다이 높이·셧하이트 확인</li></ul>',
+ exam:'<ul><li>금형 틈새 8mm, 안전블록</li></ul>',
+ law:'안전보건기준규칙 제104조(금형조정작업의 위험 방지).'},
+
+{grp:'3-3. 기타 산업용 기계 기구'},
+{id:'c6',title:'6. 롤러기',
+ core:'급정지장치 조작부 {{손 1.8m 이내 · 복부 0.8~1.1m · 무릎 0.4~0.6m}}(밑면 기준) / 급정지거리 {{30m/min 미만 원주 1/3}}, {{30 이상 1/2.5}} / 가드 개구 Y = {{6 + 0.15X}}',
+ def:'<ul><li>두 개 이상의 롤러가 맞물려 회전하며 재료를 압연·인쇄·이송하는 기계. 물림점에 손·옷이 말려 들어가는 재해가 대표적입니다.</li></ul>',
+ detail:'<b>급정지장치 조작부 위치 (밑면으로부터)</b><table><tr><th>종류</th><th>위치</th></tr><tr><td>손으로 조작</td><td>{{1.8m 이내}}</td></tr><tr><td>복부로 조작</td><td>{{0.8m 이상 1.1m 이내}}</td></tr><tr><td>무릎으로 조작</td><td>{{0.4m 이상 0.6m 이내}}</td></tr></table><b>급정지 거리 (무부하)</b><table><tr><th>앞면 롤러 표면속도</th><th>급정지 거리</th></tr><tr><td>30m/min 미만</td><td>앞면 롤러 원주의 {{1/3 이내}}</td></tr><tr><td>30m/min 이상</td><td>앞면 롤러 원주의 {{1/2.5 이내}}</td></tr></table><ul><li>표면속도 V(m/min) = π × D(mm) × N(rpm) ÷ 1,000</li></ul><b>가드 개구부 간격 (ILO 기준)</b><ul><li>Y = 6 + 0.15X (X &lt; 160mm) — Y: 개구부 간격(mm), X: 개구부에서 위험점까지 거리(mm)</li><li>X ≥ 160mm 이면 Y = 30mm</li></ul>',
+ calc:'① 롤러 지름 300mm, 30rpm → V = 3.14 × 300 × 30 ÷ 1,000 ≈ 28.3m/min (30 미만) → 급정지 거리 = π × 300 ÷ 3 ≈ <b>314mm 이내</b><br>② 위험점까지 100mm → 개구부 Y = 6 + 15 = <b>21mm</b>',
+ exam:'<ul><li>조작부 위치 (1.8 / 0.8~1.1 / 0.4~0.6)</li><li>급정지 거리 1/3·1/2.5, 개구부 간격 계산 (자주 출제)</li></ul>',
+ law:'안전보건기준규칙 제110조(롤러기 방호장치), 방호장치 자율안전기준 고시. <span style="color:var(--sub)">수치는 고시로 확인.</span>'},
+
+{id:'c7',title:'7. 원심기 · 고속회전체 · 사출성형기',
+ core:'원심기 {{덮개·정지 후 꺼내기·최고사용회전수 준수}} / 고속회전체 원주속도 {{25m/s 초과 → 전용 시설·지하}}에서 회전시험, {{120m/s 이상(축 중량 1톤 초과) → 비파괴검사}} / 사출성형기 {{게이트가드·양수조작식·인터록·가열부 덮개}}',
+ def:'<ul><li>원심력으로 분리하는 원심기, 터빈·발전기 로터 같은 고속회전체, 녹인 수지를 금형에 주입하는 사출성형기의 안전 기준</li></ul>',
+ detail:'<b>원심기</b><ul><li>회전체 접촉 방지 덮개</li><li>내용물을 꺼내거나 정비·청소할 때 <b>운전 정지</b></li><li>최고 사용 회전수 초과 금지, 내용물 편심(불균형) 주의</li></ul><b>고속회전체 회전시험</b><ul><li>원주속도 {{25m/s 초과}} 고속회전체(터빈 로터 등)의 회전시험: 전용 견고한 시설 또는 지하 등 격리 장소에서 (파괴 시 비산 방지)</li><li>원주속도 {{120m/s 이상}} + 회전축 중량 1톤 초과: 회전시험 전 회전축 재료·형상에 대한 {{비파괴검사}}</li></ul><b>사출성형기</b><ul><li>금형 사이 협착 방지: 게이트가드(문이 열리면 정지 — 인터록), 양수조작식 등</li><li>가열 실린더(히터) 부위 화상 방지 덮개, 노즐 퍼지 시 비산 주의</li><li>금형 교체 시 안전블록·전원 차단</li></ul>',
+ exam:'<ul><li>고속회전체 기준 25m/s·120m/s</li></ul>',
+ law:'안전보건기준규칙 제111조~제115조(원심기), 제114조(회전시험 중의 위험 방지), 제121조(사출성형기).'},
+
+{id:'c8',title:'8. 아세틸렌 용접장치 및 가스집합 용접장치',
+ core:'아세틸렌 사용압력 {{127kPa(1.3kgf/cm²) 초과 금지}} / {{안전기}}(역화 방지) 취관마다 / 발생기실 {{화기에서 3m 초과·옥외는 개구부에서 1.5m 이상}} / 동 {{70% 이상}} 합금 사용 금지 / 용기 {{40℃ 이하}}',
+ def:'<ul><li>아세틸렌·산소 등 가스로 금속을 용접·용단하는 장치. 역화·폭발·화재가 주요 위험입니다.</li></ul>',
+ detail:'<b>아세틸렌 용접장치</b><ul><li>게이지 압력 {{127kPa}} 초과 압력의 아세틸렌 발생·사용 금지 (분해 폭발 위험)</li><li>{{안전기}}: 취관마다 설치 (주관 및 취관에 가장 가까운 분기관마다) — 역화가 발생기로 들어가는 것 차단 (수봉식·건식)</li><li>발생기실: 전용 실, 건물 최상층, 화기 사용 설비로부터 3m 초과 거리, 옥외 설치 시 출입구 등 개구부에서 1.5m 이상</li><li>발생기실 벽은 불연성, 지붕·천장은 얇은 철판 등 가벼운 불연성 재료</li><li>아세틸렌 배관·부속에 <b>구리 함유량 70% 이상</b> 합금 사용 금지 (폭발성 아세틸라이드 생성)</li><li>용해 아세틸렌 용기는 40℃ 이하 보관, 세워서 사용</li></ul><b>가스집합 용접장치</b><ul><li>가스집합장치는 화기 사용 설비로부터 5m 이상 떨어진 곳</li><li>주관·분기관에 안전기, 하나의 취관에 안전기 2개 이상</li><li>가스장치실 설치, 관리자 지정</li></ul><b>역화 원인</b>: 토치 팁 과열, 팁 막힘, 가스 압력 부족, 팁과 모재 접촉',
+ exam:'<ul><li>127kPa, 구리 70%, 안전기 설치 위치</li></ul>',
+ law:'안전보건기준규칙 제285조~제300조(아세틸렌 용접장치·가스집합 용접장치). <span style="color:var(--sub)">거리 기준은 조문으로 확인.</span>'},
+
+{id:'c9',title:'9. 보일러 및 압력용기',
+ core:'보일러 방호장치 {{압력방출장치(안전밸브)·압력제한스위치·고저수위조절장치·화염검출기}} / 안전밸브 2개면 {{1개는 최고사용압력 이하, 1개는 1.05배 이하}} / {{매년 1회}} 토출압력 시험 후 납 봉인 / 이상 현상 {{프라이밍·포밍·캐리오버·수격작용}}',
+ def:'<ul><li>압력을 가진 증기·가스를 담는 설비. 압력이 한계를 넘으면 파열·폭발합니다.</li></ul>',
+ detail:'<b>보일러 방호장치</b><table><tr><th>장치</th><th>역할</th></tr><tr><td>{{압력방출장치}}(안전밸브)</td><td>최고사용압력 이하에서 작동해 압력 배출</td></tr><tr><td>{{압력제한스위치}}</td><td>상용 압력 이상이면 버너 연소 차단</td></tr><tr><td>{{고저수위 조절장치}}</td><td>수위 이상 시 경보·급수·연소 차단 (저수위 → 과열 파열)</td></tr><tr><td>{{화염검출기}}</td><td>불꽃 소멸 시 연료 차단 (미연가스 폭발 방지)</td></tr></table><b>압력방출장치 기준</b><ul><li>1개 이상 설치, 최고사용압력 이하에서 작동</li><li>2개 이상이면 1개는 최고사용압력 이하, 다른 것은 최고사용압력의 {{1.05배}} 이하에서 작동 가능</li><li>{{매년 1회 이상}} 토출압력 시험 후 납으로 봉인 (공정안전보고서 이행 우수 사업장은 4년마다)</li></ul><b>보일러 이상 현상</b><table><tr><th>현상</th><th>뜻</th></tr><tr><td>{{프라이밍}}(비수)</td><td>부하 급변·수위 과다로 물방울이 증기와 함께 튀어 오름</td></tr><tr><td>{{포밍}}</td><td>불순물로 수면에 거품이 생김</td></tr><tr><td>{{캐리오버}}</td><td>증기에 물방울·불순물이 섞여 배관으로 넘어감</td></tr><tr><td>{{수격작용}}(워터해머)</td><td>배관 내 응축수가 증기에 밀려 관을 세게 때림</td></tr></table><b>압력용기</b><ul><li>안전밸브 또는 {{파열판}}: 급격한 압력 상승, 독성 물질 누출 방지, 부식·막힘으로 안전밸브가 작동하지 않을 우려가 있으면 파열판</li><li>최고사용압력 표시, 안전검사</li></ul>',
+ exam:'<ul><li>보일러 방호장치 4가지</li><li>안전밸브 1.05배, 매년 1회</li><li>프라이밍·포밍·캐리오버 구분</li></ul>',
+ law:'안전보건기준규칙 제116조~제120조(보일러), 제261조~제263조(안전밸브·파열판).'},
+
+{id:'c10',title:'10. 산업용 로봇',
+ core:'운전 중 위험 방지 {{높이 1.8m 이상 울타리(방책)}} 또는 {{광전자식·매트 스위치}} / 교시 작업 {{작업지침·속도 제한·비상정지·표지·2인}} / 작업시작 전 {{외부 전선 피복·매니퓰레이터 작동·제동·비상정지}} 점검',
+ def:'<ul><li><b>산업용 로봇</b>: 매니퓰레이터(팔)가 프로그램에 따라 자동으로 움직이는 기계. 예상하지 못한 움직임에 부딪히거나 끼이는 재해가 많습니다.</li><li><b>교시(teaching)</b>: 로봇에게 동작을 가르치는 작업 — 사람이 로봇 가까이 들어가므로 가장 위험</li></ul>',
+ detail:'<b>운전 중 위험 방지</b><ul><li>로봇 운전 중 근로자가 접근하지 않도록 높이 {{1.8m 이상}}의 울타리(방책) 설치</li><li>컨베이어 시스템 등으로 울타리가 어려우면 안전매트, 광전자식 방호장치 등 감응형 방호장치</li><li>울타리 출입문에 인터록 (열면 정지)</li></ul><b>교시 등의 작업 시</b><ul><li>로봇 조작 방법·순서, 작업 중 매니퓰레이터 속도, 신호 방법, 이상 시 조치, 재가동 시 조치 등 <b>작업지침</b> 작성</li><li>작업 중 즉시 정지할 수 있는 조치 (비상정지 스위치), 기동 스위치에 "작업 중" 표지</li><li>작업자 외 다른 사람이 조작하지 못하게</li></ul><b>작업시작 전 점검 (교시 작업)</b>: 외부 전선의 피복·외장 손상, 매니퓰레이터 작동 이상, 제동장치·비상정지장치 기능',
+ exam:'<ul><li>울타리 높이 1.8m</li><li>교시 작업 전 점검 항목</li></ul>',
+ law:'안전보건기준규칙 제222조(교시 등), 제223조(운전 중 위험 방지), 별표 3.'},
+
+{id:'c11',title:'11. 목재 가공용 기계',
+ core:'둥근톱 {{반발예방장치(분할날)·날접촉예방장치(덮개)}} / 분할날 두께 {{톱 두께 1.1배 이상}}, 톱 뒷날과 간격 {{12mm 이내}} / 대패 {{칼날접촉방지장치}}, 덮개-테이블 간격 {{8mm 이하}}',
+ def:'<ul><li>둥근톱·띠톱·대패 등 목재를 자르고 깎는 기계. 가공재가 튕겨 나오는 반발과 날 접촉이 주요 위험입니다.</li></ul>',
+ detail:'<b>둥근톱 기계</b><ul><li>{{반발예방장치}}: 분할날(riving knife), 반발방지 기구(finger), 반발방지 롤 — 톱날 뒤쪽에서 목재가 다시 닫혀 톱날을 무는 것을 막아 반발 방지</li><li>분할날 두께: 톱 두께의 1.1배 이상, 치진폭(톱니 폭)보다 작게</li><li>분할날과 톱 뒷날 사이 간격 12mm 이내, 톱 후면 날의 2/3 이상 덮도록</li><li>{{날접촉예방장치}}: 톱날 덮개 (가동식·고정식)</li><li>목재 공급은 밀대 사용, 톱날 정면에 서지 않기</li></ul><b>띠톱 기계</b>: 톱날 절단 부위 외에는 덮개, 가동식 덮개 조정<br><b>동력식 수동대패</b><ul><li>{{칼날접촉방지장치}}(덮개) — 가동식·고정식</li><li>덮개와 송급 테이블 사이 간격 {{8mm 이하}}</li></ul><b>공통</b>: 목재가공용 기계 5대 이상 보유 시 특별교육 대상, 분진 국소배기, 소음',
+ exam:'<ul><li>둥근톱 방호장치 2가지와 분할날 기준</li><li>대패 덮개 간격 8mm</li></ul>',
+ law:'안전보건기준규칙 제105조~제110조, 방호장치 자율안전기준 고시. <span style="color:var(--sub)">수치는 고시로 확인.</span>'},
+
+{grp:'3-4. 운반기계 및 양중기'},
+{id:'c12',title:'12. 지게차',
+ core:'헤드가드 {{최대하중 2배(최대 4톤) 등분포 정하중}}, 개구 {{16cm 미만}}, 높이 {{좌석식 0.903m·입식 1.88m 이상}} / {{백레스트}} / 안정도 하역 전후 {{4%}}(5톤 이상 3.5%), 주행 전후 {{18%}}, 하역 좌우 {{6%}}, 주행 좌우 {{15 + 1.1V}}%',
+ def:'<ul><li>포크로 화물을 들어 올려 운반하는 차량. 전도, 충돌, 화물 낙하가 대표 재해입니다.</li></ul>',
+ detail:'<b>헤드가드</b> (위에서 떨어지는 화물로부터 운전자 보호)<ul><li>강도: 지게차 최대하중의 2배 값(4톤을 넘으면 4톤)의 등분포 정하중에 견딜 것</li><li>상부틀 각 개구의 폭 또는 길이 16cm 미만</li><li>운전자 좌석 윗면에서 헤드가드 상부틀 아랫면까지 높이: 좌석식 0.903m 이상, 입식 1.88m 이상</li></ul><b>백레스트</b>: 마스트 뒤로 화물이 떨어지지 않게 막는 장치<br><b>지게차 안정 조건</b>: W × a ≤ G × b (W: 화물 중량, a: 앞바퀴에서 화물 중심까지, G: 지게차 중량, b: 앞바퀴에서 지게차 중심까지)<br><b>안정도 기준</b><table><tr><th>상태</th><th>안정도</th></tr><tr><td>하역 작업 시 전후</td><td>4% 이내 (5톤 이상 3.5%)</td></tr><tr><td>주행 시 전후</td><td>18% 이내</td></tr><tr><td>하역 작업 시 좌우</td><td>6% 이내</td></tr><tr><td>주행 시 좌우</td><td>(15 + 1.1V)% 이내 (V: 최고속도 km/h), 최대 40%</td></tr></table><b>작업시작 전 점검</b>: 제동장치·조종장치, 하역장치·유압장치, 바퀴 이상, 전조등·후미등·방향지시기·경보장치<br><b>운전 수칙</b>: 포크에 사람 탑승 금지, 화물이 시야를 가리면 후진 또는 유도자, 경사로에서 화물은 오르막 쪽, 운전석 이탈 시 포크 바닥에 내리고 시동 끄고 키 빼기',
+ calc:'최고속도 10km/h → 주행 시 좌우 안정도 = 15 + 11 = <b>26%</b> 이내',
+ exam:'<ul><li>헤드가드 기준 (2배·4톤·16cm·0.903m·1.88m)</li><li>안정도 수치</li><li>안정 조건 식</li></ul>',
+ law:'안전보건기준규칙 제179조~제183조(지게차), 별표 3, 위험기계·기구 안전인증 고시. <span style="color:var(--sub)">안정도 수치는 교재로 확인.</span>'},
+
+{id:'c13',title:'13. 컨베이어',
+ core:'방호장치 {{이탈·역주행 방지장치·비상정지장치·덮개/울·건널다리}} / 점검 {{원동기·풀리 기능·이탈 방지·비상정지·덮개/울}}',
+ def:'<ul><li>재료·제품을 연속으로 운반하는 기계. 벨트와 풀리의 접선물림점, 화물 낙하, 역주행이 주요 위험입니다.</li></ul>',
+ detail:'<ul><li>{{이탈 및 역주행 방지장치}}: 정전·전압강하 시 화물·운반구 이탈과 역주행 방지 (경사 컨베이어)</li><li>{{비상정지장치}}: 근로자 신체가 말리는 등 위험 시 즉시 정지 (풀 코드 스위치 등)</li><li>화물 낙하 위험 → 덮개·울</li><li>컨베이어 위로 넘어가는 곳 → {{건널다리}} 설치</li><li>트롤리 컨베이어: 트롤리와 체인·행거가 쉽게 벗겨지지 않게</li><li>운전 중 컨베이어에 근로자 탑승 금지</li></ul><b>작업시작 전 점검</b>: 원동기 및 풀리 기능 이상, 이탈 등 방지장치 기능, 비상정지장치 기능, 원동기·회전축·기어·풀리 덮개 또는 울 이상',
+ exam:'<ul><li>컨베이어 방호장치·점검 항목</li></ul>',
+ law:'안전보건기준규칙 제191조~제195조(컨베이어), 별표 3.'},
+
+{id:'c14',title:'14. 양중기 (건설용 제외)',
+ core:'양중기 {{크레인·이동식 크레인·리프트·곤돌라·승강기}} / 방호장치 {{과부하방지·권과방지·비상정지·제동장치}} / 권과 간격 {{0.25m 이상}}(직동식 0.05m) / 와이어로프 안전계수 {{탑승 10·화물 5·훅 등 3·기타 4}} / 폐기 {{소선 10% 절단·지름 7% 감소·꼬임·변형·부식}}',
+ def:'<ul><li><b>양중기</b>: 화물이나 사람을 들어 올려 옮기는 기계</li></ul>',
+ detail:'<b>양중기 종류 (안전보건기준규칙 제132조)</b>: 크레인(호이스트 포함), 이동식 크레인, 리프트(이삿짐운반용은 적재하중 0.1톤 이상), 곤돌라, 승강기<br><b>방호장치</b><table><tr><th>장치</th><th>역할</th></tr><tr><td>{{과부하방지장치}}</td><td>정격하중 초과 시 작동 정지</td></tr><tr><td>{{권과방지장치}}</td><td>훅이 너무 올라가 드럼·시브와 부딪히는 것 방지 — 훅 윗면과 드럼 아랫면 간격 0.25m 이상(직동식 0.05m 이상)</td></tr><tr><td>{{비상정지장치}}</td><td>비상시 즉시 정지</td></tr><tr><td>{{제동장치}}</td><td>정지 상태 유지</td></tr><tr><td>훅 해지장치</td><td>와이어로프가 훅에서 벗겨지는 것 방지</td></tr></table><b>와이어로프 안전계수</b><table><tr><th>용도</th><th>안전계수</th></tr><tr><td>근로자가 탑승하는 운반구 지지</td><td>{{10 이상}}</td></tr><tr><td>화물 하중을 직접 지지하는 와이어로프·달기체인</td><td>{{5 이상}}</td></tr><tr><td>훅·샤클·클램프·리프팅빔</td><td>{{3 이상}}</td></tr><tr><td>그 밖의 경우</td><td>{{4 이상}}</td></tr></table><b>사용 금지 와이어로프</b><ul><li>이음매가 있는 것</li><li>와이어로프 한 꼬임(스트랜드)에서 끊어진 소선 수가 {{10% 이상}} (비자전로프는 별도)</li><li>지름 감소가 공칭지름의 {{7% 초과}}</li><li>꼬인 것, 심하게 변형·부식된 것, 열·전기 충격 손상</li></ul><b>사용 금지 달기체인</b>: 길이 증가가 제조 당시의 5% 초과, 링 단면 지름 감소 10% 초과, 균열<br><b>기타</b>: 정격하중 표시, 순간풍속 30m/s 초과 바람 후 작업 전 점검, 신호수 배치, 화물 아래 출입 금지',
+ exam:'<ul><li>와이어로프 안전계수 (10·5·3·4) — 자주 출제</li><li>폐기 기준 (10%·7%)</li><li>권과방지장치 간격</li></ul>',
+ law:'안전보건기준규칙 제132조~제170조(양중기), 제163조(와이어로프 안전계수), 제166조·제167조(사용 금지).'},
+
+{id:'c15',title:'15. 운반 기계 (구내운반차·화물자동차·고소작업대 등)',
+ core:'구내운반차 {{제동장치·경음기·전조등·후미등·방향지시기}} / 화물자동차 짐 윗면 {{2m 이상}}이면 {{승강설비}} / 고소작업대 {{과상승 방지·작업대 안전난간·안전대}}',
+ def:'<ul><li>사업장 안에서 화물을 옮기는 차량과 기계</li></ul>',
+ detail:'<b>구내운반차</b><ul><li>주행 제동, 정지 상태 유지 제동장치</li><li>경음기, 방향지시기, 전조등·후미등 (주행 중 조명이 충분한 곳 제외 가능)</li><li>운전석이 차 실내에 있으면 좌우에 한 개씩 방향지시기</li></ul><b>화물자동차</b><ul><li>바닥에서 짐 윗면까지 높이가 {{2m 이상}}인 화물 적재·하역 시 승강설비 설치</li><li>섬유로프 사용 시 꼬임 끊어짐·심한 손상 없는지 점검</li><li>짐을 내릴 때 쌓인 짐의 중간에서 빼내지 않기</li></ul><b>고소작업대</b><ul><li>작업대에 안전난간, 근로자 안전대 착용</li><li>과상승 방지장치, 비상정지장치, 경사 시 경보</li><li>작업대 이동 시 작업대를 가장 낮게 내림</li></ul><b>차량계 하역운반기계 공통</b>: 작업계획서, 유도자 배치, 운전자 이탈 시 원동기 정지·브레이크, 전도 방지',
+ exam:'<ul><li>화물자동차 승강설비 기준 2m</li></ul>',
+ law:'안전보건기준규칙 제171조~제190조(차량계 하역운반기계), 제184조~제190조(구내운반차·고소작업대·화물자동차).'},
+
+{id:'c16',title:'키워드 카드 — 3과목 주요항목 3',tag:'암기',
+ core:'1분·3분 {{연삭 시운전}} / 1,600 × T {{광전자식}} / 1/3·1/2.5 {{롤러}} / 10·5·3·4 {{와이어로프}}',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>칩을 짧게 끊음</td><td>{{칩브레이커}}</td></tr><tr><td>지름 12배 길이</td><td>{{방진구}}</td></tr><tr><td>탁상용 연삭기 노출각</td><td>{{90° 이내}}</td></tr><tr><td>받침대 간격</td><td>{{3mm 이하}}</td></tr><tr><td>플랜지</td><td>{{숫돌 지름 1/3 이상}}</td></tr><tr><td>금형 안에 손 안 넣게</td><td>{{No-hand in die}}</td></tr><tr><td>금형 틈새</td><td>{{8mm 이하}}</td></tr><tr><td>D = 1,600(Tl+Ts)</td><td>{{광전자식 안전거리}}</td></tr><tr><td>버튼 간격 300mm</td><td>{{양수조작식}}</td></tr><tr><td>손 1.8 / 복부 0.8~1.1 / 무릎 0.4~0.6</td><td>{{롤러기 급정지 조작부}}</td></tr><tr><td>6 + 0.15X</td><td>{{가드 개구부 간격}}</td></tr><tr><td>25m/s / 120m/s</td><td>{{고속회전체 시험 / 비파괴검사}}</td></tr><tr><td>127kPa</td><td>{{아세틸렌 사용압력 한계}}</td></tr><tr><td>구리 70%</td><td>{{아세틸렌 배관 사용 금지 합금}}</td></tr><tr><td>1.05배</td><td>{{두 번째 안전밸브}}</td></tr><tr><td>물방울이 증기와 튐</td><td>{{프라이밍}}</td></tr><tr><td>로봇 울타리</td><td>{{1.8m 이상}}</td></tr><tr><td>분할날</td><td>{{둥근톱 반발예방}}</td></tr><tr><td>16cm · 0.903m</td><td>{{지게차 헤드가드}}</td></tr><tr><td>건널다리</td><td>{{컨베이어}}</td></tr><tr><td>0.25m</td><td>{{권과방지 간격}}</td></tr><tr><td>소선 10% · 지름 7%</td><td>{{와이어로프 폐기}}</td></tr></table>'}
+];
+
+var MN={
+c1:[
+ {k:'회전 기계 = 맨손',s:'"<b>돌아가는 것</b> 앞에선 <b>장갑을 벗어라</b> — 장갑은 손을 끌고 들어간다"',m:'선반·밀링·드릴 {{장갑 착용 금지}}'},
+ {k:'12배 = 방진구',s:'"<b>열두 자</b> 막대는 가운데를 받쳐야 안 흔들린다"',m:'길이 > 지름 {{12배}} → {{방진구}}'}],
+c2:[
+ {k:'1분 · 3분',s:'"<b>매일 아침 1분</b> 몸풀기, <b>새 숫돌은 3분</b> 길들이기"',m:'작업 전 {{1분}} / 교체 후 {{3분}}'},
+ {k:'탁 90 · 휴 180 · 평 150',s:'"<b>탁</b>상용은 <b>직각</b>(90°)만 보이게, <b>휴</b>대용은 <b>반원</b>(180°), <b>평</b>면은 그 사이(150°)"',m:'탁상 {{90°}} · 휴대·원통 {{180°}} · 평면·절단 {{150°}}'},
+ {k:'3mm · 1/3',s:'"받침대는 <b>3mm</b>, 플랜지는 <b>3분의 1</b> — 숫돌은 3을 좋아한다"',m:'받침대 간격 {{3mm 이하}} / 플랜지 {{1/3 이상}}'}],
+c4:[
+ {k:'가 · 손 · 수 · 양 · 광',s:'"<b>가손수양광</b> → \'가(家)에서 손수 양광(羊光)\'" — 문 닫고, 쳐내고, 끌어당기고, 두 손으로, 빛으로',m:'{{가드식}} · {{손쳐내기식}} · {{수인식}} · {{양수조작식}} · {{광전자식}}'},
+ {k:'1,600 = 손 속도',s:'"손은 초당 <b>1.6m</b>로 움직인다 → 멈추는 시간 × 1,600mm 만큼 떨어져야"',m:'광전자식 D = {{1,600 × (Tl + Ts)}}'}],
+c5:[
+ {k:'8mm',s:'"<b>손가락 굵기</b>(약 10mm)보다 좁게 — <b>팔</b>(8)mm"',m:'금형 틈새 {{8mm 이하}}'}],
+c6:[
+ {k:'손 1.8 · 배 0.8~1.1 · 무릎 0.4~0.6',s:'"<b>손</b>은 머리 위까지(1.8m), <b>배</b>는 배꼽 높이(1m 안팎), <b>무릎</b>은 무릎 높이(0.5m 안팎) — 몸 부위 높이 그대로"',m:'손 {{1.8m 이내}} · 복부 {{0.8~1.1m}} · 무릎 {{0.4~0.6m}}'},
+ {k:'느리면 1/3 · 빠르면 1/2.5',s:'"<b>천천히</b>(30 미만) 돌면 <b>3분의 1</b> 바퀴 안에, <b>빠르면</b> 조금 더 봐줘서 <b>2.5분의 1</b>"',m:'30m/min 미만 {{1/3}} / 이상 {{1/2.5}}'}],
+c7:[
+ {k:'25 · 120',s:'"<b>25</b>m/s 넘으면 <b>지하실</b>에서 돌리고, <b>120</b>m/s 넘으면 <b>엑스레이</b>(비파괴검사)부터"',m:'{{25m/s 초과 격리 시험}} / {{120m/s 이상 비파괴검사}}'}],
+c8:[
+ {k:'127 · 70 · 40',s:'"아세틸렌은 <b>백이십칠</b>(127kPa)까지만, <b>구리 칠십</b>(70%)은 금지, 통은 <b>사십 도</b> 이하"',m:'{{127kPa}} · 구리 {{70% 이상 금지}} · 용기 {{40℃ 이하}}'}],
+c9:[
+ {k:'압 · 제 · 수 · 화',s:'"보일러 지킴이 넷: <b>압</b>력 빼고(안전밸브), <b>제</b>한하고(압력제한스위치), <b>수</b>위 지키고, <b>화</b>염 보고"',m:'{{압력방출장치}} · {{압력제한스위치}} · {{고저수위조절장치}} · {{화염검출기}}'},
+ {k:'프 · 포 · 캐 · 수',s:'"<b>프</b>라이팬 물 튀기(프라이밍) · <b>포</b>말 거품(포밍) · <b>캐</b>리어에 물 실려 감(캐리오버) · <b>수</b>도관 쾅(수격)"',m:'{{프라이밍}} · {{포밍}} · {{캐리오버}} · {{수격작용}}'}],
+c10:[
+ {k:'로봇 1.8m',s:'"<b>로봇 키보다 높게</b> — 사람 키(1.8m) 울타리"',m:'운전 중 {{1.8m 이상 울타리}}'}],
+c11:[
+ {k:'반발 · 날접촉',s:'"둥근톱은 <b>뒤로 튀고</b>(반발예방 = 분할날) <b>앞에서 베인다</b>(날접촉예방 = 덮개)"',m:'{{반발예방장치}} · {{날접촉예방장치}}'}],
+c12:[
+ {k:'2배 · 4톤 · 16cm',s:'"헤드가드는 <b>두 배</b> 버티고, 무거워도 <b>4톤</b>까지만, 구멍은 <b>16cm</b> 미만(벽돌이 못 빠지게)"',m:'{{최대하중 2배(최대 4톤)}} · 개구 {{16cm 미만}}'},
+ {k:'4 · 18 · 6 · 15+1.1V',s:'"하역은 <b>사</b>뿐히(전후 4%), 주행은 <b>십팔</b>(18%), 옆으로 짐 들면 <b>육</b>(6%), 달리며 옆은 <b>십오 + 속도</b>"',m:'하역 전후 {{4%}} · 주행 전후 {{18%}} · 하역 좌우 {{6%}} · 주행 좌우 {{15 + 1.1V}}%'}],
+c13:[
+ {k:'이 · 비 · 덮 · 건',s:'"<b>이비</b>인후과 <b>덮건</b>(덮개 건) — 이탈·역주행 방지, 비상정지, 덮개·울, 건널다리"',m:'{{이탈·역주행 방지}} · {{비상정지}} · {{덮개·울}} · {{건널다리}}'}],
+c14:[
+ {k:'10 · 5 · 3 · 4',s:'"<b>사람</b> 태우면 <b>10</b>, <b>짐</b> 매달면 <b>5</b>, <b>훅</b>은 <b>3</b>, 나머지 <b>4</b> — \'사람이 제일 귀하다\'"',m:'탑승 {{10}} · 화물 {{5}} · 훅·샤클 {{3}} · 기타 {{4}}'},
+ {k:'10% · 7%',s:'"소선이 <b>열 개 중 하나</b> 끊기거나, 굵기가 <b>칠</b>(7%) 줄면 버린다"',m:'소선 절단 {{10% 이상}} · 지름 감소 {{7% 초과}}'}],
+c15:[
+ {k:'짐 2m',s:'"짐 위가 <b>키보다 높으면</b>(2m) 사다리(승강설비)"',m:'화물자동차 {{2m 이상 → 승강설비}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

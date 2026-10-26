@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2과목 6. 작업환경 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 2과목 · 인간공학 및 위험성 평가·관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 6. 작업환경 관리 · 세세항목 24개 → 학습단위 18개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">2과목 목차</a><a href="p5.html">◀ 이전</a><a href="../s3/index.html">3과목 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s2-p6-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'6-1. 인체계측 및 체계제어'},
+{id:'f1',title:'1. 인체계측 및 응용원칙',
+ core:'{{극단치 설계}} 최대(95%ile)·최소(5%ile) / {{조절식 설계}} 5~95%ile / {{평균치 설계}} 최후 수단 / 측정 {{정적(구조적)·동적(기능적)}}',
+ def:'<ul><li><b>인체계측</b>: 사람 몸의 치수(키, 팔 길이, 앉은키 등)를 재는 것. 설계 기준값으로 사용합니다.</li><li><b>퍼센타일(%ile)</b>: 5%ile은 작은 쪽에서 5%, 95%ile은 큰 쪽에서 5%에 해당하는 치수</li></ul>',
+ why:'<ul><li>모든 사람에 맞추는 것은 불가능하므로, "누가 가장 불리한가"를 기준으로 정하면 대부분이 쓸 수 있습니다.</li></ul>',
+ detail:'<b>응용 3원칙</b><table><tr><th>원칙</th><th>기준</th><th>예</th></tr><tr><td>{{최대치(극단치) 설계}}</td><td>큰 사람 기준 95%ile (또는 99%ile)</td><td>출입문·통로 높이, 비상구, 탈출구, 그네·사다리 강도, 의자 폭</td></tr><tr><td>{{최소치(극단치) 설계}}</td><td>작은 사람 기준 5%ile (또는 1%ile)</td><td>조종장치까지 거리, 선반 높이, 버스 손잡이 높이, 조작에 필요한 힘</td></tr><tr><td>{{조절식 설계}}</td><td>5%ile ~ 95%ile 범위에서 조절</td><td>자동차 좌석, 사무용 의자, 책상 높이 — <b>가장 먼저 고려</b></td></tr><tr><td>{{평균치 설계}}</td><td>평균값</td><td>은행 창구, 공원 벤치, 슈퍼 계산대 — 조절도 극단치도 어려울 때 최후</td></tr></table><b>측정 방법</b><ul><li>{{정적(구조적) 인체계측}}: 고정 자세에서 표준 측정 (마틴식 측정기)</li><li>{{동적(기능적) 인체계측}}: 움직이며 작업할 때의 치수 — 실제 설계에 더 적합</li></ul><b>설계 순서</b>: 사용자 집단 정의 → 관련 치수 선택 → 퍼센타일 결정 → 수치 산출 → 여유(옷·신발) 반영 → 시제품 평가',
+ ex:'<ul><li>문 높이는 키 큰 사람(95%ile)도 지나가게, 비상정지 버튼은 팔 짧은 사람(5%ile)도 닿게</li></ul>',
+ cmp:'<table><tr><th>최대치 95%ile</th><th>최소치 5%ile</th></tr><tr><td>"통과·여유" (문, 통로)</td><td>"닿기·도달" (손 뻗기, 선반)</td></tr></table>',
+ exam:'<ul><li>설계 사례를 주고 원칙 고르기 (가장 많이 출제)</li><li>조절식이 우선, 평균치는 최후</li></ul>',
+ law:'법령 근거 없음(이론, KS 인체치수).'},
+
+{id:'f2',title:'2. 표시장치 및 제어장치',
+ core:'청각 표시 {{짧고 단순·즉각 행동·재참조 X·이동 중}} / 시각 표시 {{길고 복잡·재참조·위치 정보·소음 환경}} / 정량 {{동침형(추세)·동목형·계수형(정확)}} / 경보 {{500~3,000Hz}}, 장거리 {{1,000Hz 이하}}',
+ def:'<ul><li><b>표시장치</b>: 기계가 사람에게 정보를 주는 장치 (계기, 경보음)</li><li><b>조종(제어)장치</b>: 사람이 기계에 명령을 주는 장치 (버튼, 레버, 핸들)</li></ul>',
+ detail:'<b>청각 vs 시각 표시장치 선택</b><table><tr><th>청각이 유리</th><th>시각이 유리</th></tr><tr><td>메시지가 짧고 단순<br>나중에 다시 참조하지 않음<br>시간적 사건(지금 일어남)<br>즉각적 행동 요구<br>수신자가 이동 중<br>시각 계통 과부하, 조명 나쁨</td><td>메시지가 길고 복잡<br>나중에 다시 참조<br>공간적 위치 정보<br>즉각 행동 불필요<br>수신자가 한 곳에 머무름<br>청각 계통 과부하, 시끄러운 환경</td></tr></table><b>정량적 표시장치</b><table><tr><th>형태</th><th>특징</th></tr><tr><td>{{동침형}}(지침 이동, 눈금 고정)</td><td>변화 방향·추세 파악에 유리</td></tr><tr><td>{{동목형}}(눈금 이동, 지침 고정)</td><td>표시 범위가 넓을 때, 공간 절약</td></tr><tr><td>{{계수형}}(디지털)</td><td><b>정확한 값</b> 판독에 유리, 빠르게 변하면 읽기 어려움</td></tr></table><ul><li>정성적 표시장치: 정상·주의·위험 같은 상태 범위 표시 (색 구간)</li><li>상태 표시기: ON/OFF</li></ul><b>청각 신호 설계</b><ul><li>주파수 {{500~3,000Hz}} (귀가 가장 민감)</li><li>장거리(300m 이상) {{1,000Hz 이하}}, 장애물·칸막이 넘을 때 {{500Hz 이하}}</li><li>배경소음과 다른 주파수, 주의를 끌려면 변조(단속음·주파수 변화)</li></ul><b>조종장치 코드화</b>: 형상, 크기, 색, 촉감(표면), 위치, 작동 방법, 라벨 — 형상·크기·촉감은 보지 않고도 구별 가능',
+ ex:'<ul><li>화재 경보 → 청각(즉각 행동) / 공정 온도 추이 → 동침형 계기 / 정밀 계량 → 디지털</li></ul>',
+ cmp:'<table><tr><th>동침형</th><th>계수형</th></tr><tr><td>추세·변화 방향</td><td>정확한 수치</td></tr></table>',
+ exam:'<ul><li>청각 표시장치가 유리한 경우 고르기 (자주 출제)</li><li>경보 주파수 기준</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f3',title:'3. 통제표시비 (C/D비)',
+ core:'C/D비 = {{조종장치 이동거리 ÷ 표시장치 이동거리}} / 작으면 {{민감}}(이동↓·조정↑) / 크면 {{둔감}}(이동↑·조정↓) / 회전 = {{(각도/360 × 2πL) ÷ 표시 이동}}',
+ def:'<ul><li><b>통제표시비(Control-Display ratio)</b>: 조종장치를 움직인 양과 표시장치(지침·커서)가 움직인 양의 비율</li></ul>',
+ why:'<ul><li>너무 민감하면 목표를 지나치고, 너무 둔하면 오래 걸립니다. 이동시간과 조정시간의 합이 최소가 되는 값이 최적입니다.</li></ul>',
+ detail:'<ul><li>C/D비 = X(조종장치 이동거리) ÷ Y(표시장치 이동거리)</li><li>회전 손잡이(knob): C/D비 = (a/360 × 2πL) ÷ 표시장치 이동거리 (a: 회전 각도, L: 반경)</li></ul><table><tr><th>C/D비</th><th>성질</th><th>이동시간</th><th>조정시간</th></tr><tr><td>{{작다}}</td><td>민감 (조금 움직여도 많이 이동)</td><td>짧음</td><td>{{길다}}</td></tr><tr><td>{{크다}}</td><td>둔감</td><td>{{길다}}</td><td>짧음</td></tr></table><ul><li>최적 C/D비: 이동시간 + 조정시간이 최소인 지점 (교재: 대략 1.18~2.42 범위)</li><li>영향 요인: 계기 크기, 공차(허용 오차), 목측거리, 조작 시간 지연, 방향성</li></ul>',
+ calc:'반경 5cm 손잡이를 72° 돌렸더니 지침이 2cm 이동<br>조종 이동 = (72/360) × 2π × 5 = 0.2 × 31.4 = 6.28cm → C/D비 = 6.28 ÷ 2 ≈ <b>3.14</b>',
+ ex:'<ul><li>마우스 감도를 높이면 C/D비가 작아짐 → 빨리 가지만 정확히 멈추기 어려움</li></ul>',
+ exam:'<ul><li>회전 손잡이 C/D비 계산</li><li>C/D비가 작을 때의 특성</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f4',title:'4. 양립성',
+ core:'{{공간적}}(위치) · {{운동적}}(움직임 방향) · {{개념적}}(의미) · {{양식}}(감각 방식) 양립성',
+ def:'<ul><li><b>양립성(compatibility)</b>: 자극·반응·조종의 관계가 사람이 기대하는 것과 일치하는 정도. 양립성이 높을수록 반응이 빠르고 실수가 적습니다.</li></ul>',
+ detail:'<table><tr><th>종류</th><th>뜻</th><th>예</th></tr><tr><td>{{공간적 양립성}}</td><td>표시장치와 조종장치의 <b>배치</b>가 대응</td><td>가스레인지 손잡이 배치가 화구 배치와 같음</td></tr><tr><td>{{운동적 양립성}}</td><td>조종장치를 움직이는 <b>방향</b>과 표시·기계의 움직임이 일치</td><td>핸들을 오른쪽으로 돌리면 차가 오른쪽, 손잡이 시계방향 → 지침 증가</td></tr><tr><td>{{개념적 양립성}}</td><td>사람이 가진 <b>개념·의미</b>와 일치</td><td>빨강 = 정지·뜨거움, 파랑 = 차가움, 비행기 그림 = 공항</td></tr><tr><td>{{양식 양립성}}</td><td>자극과 반응의 <b>감각 양식</b>이 맞음</td><td>음성 지시 → 음성 응답, 시각 신호 → 손 조작</td></tr></table>',
+ ex:'<ul><li>수도꼭지 빨간 쪽이 온수 → 개념적 양립성</li></ul>',
+ exam:'<ul><li>사례를 주고 양립성 종류 고르기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f5',title:'5. 수공구',
+ core:'{{손목은 곧게 — 공구를 구부려라}} / {{손바닥 압박 피함}} / {{반복 손가락 동작 피함}} / 힘 쥐기 손잡이 직경 {{30~45mm}}, 정밀 {{5~12mm}}, 길이 {{100mm 이상}}',
+ def:'<ul><li>손으로 쓰는 공구(드라이버, 펜치, 망치 등)를 손·손목 부담이 적게 설계하는 원칙</li></ul>',
+ detail:'<ul><li>{{손목을 곧게}} 유지 — 손목을 꺾지 말고 손잡이를 구부림 (굽은 손잡이 펜치)</li><li>손바닥(손가락 밑 동맥·신경)에 <b>압박</b>을 주지 않도록 손잡이를 길고 넓게</li><li>한 손가락으로 반복 누르는 동작 피함 → 엄지·여러 손가락·손 전체 사용</li><li>양손 모두 쓸 수 있게 (왼손잡이 고려)</li><li>손잡이 직경: 힘을 주는 작업 30~45mm, 정밀 작업 5~12mm</li><li>손잡이 길이: 최소 100mm 이상 (손바닥 너비)</li><li>무게 중심이 손잡이 가까이, 무거우면 매달아 지지</li><li>진동·열 차단 재질, 미끄럼 방지 표면</li><li>공구 집는 힘(그립 스팬)이 적당하도록 스프링 복귀</li></ul>',
+ ex:'<ul><li>전선 작업용 펜치 손잡이를 구부려 손목을 펴고 작업</li></ul>',
+ exam:'<ul><li>수공구 설계 원칙에 <b>틀린</b> 것 (예: "손목을 구부려 공구를 곧게")</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'6-2. 신체활동의 생리학적 측정법'},
+{id:'f6',title:'6. 신체반응의 측정 · 신체역학',
+ core:'국소 근육 {{근전도(EMG)}} / 전신 {{산소소비량·심박수}} / 정신 {{점멸융합주파수·GSR}} / 근수축 {{등척성(정적)·등장성(동적)}}',
+ def:'<ul><li>작업 부하를 생리적 신호로 재는 방법과, 몸을 기계처럼 보아 힘·지레를 분석하는 신체역학</li></ul>',
+ detail:'<b>측정 지표와 용도</b><table><tr><th>작업 부하</th><th>측정</th></tr><tr><td>국소적 근육 활동 (정적 근력 작업)</td><td>{{근전도(EMG)}}</td></tr><tr><td>전신 육체 활동 (동적 작업)</td><td>{{산소소비량}}, 심박수, 에너지 소비량, 호흡량</td></tr><tr><td>정신적 부하·긴장</td><td>{{점멸융합주파수(CFF)}}, 피부전기반사(GSR), 뇌파(EEG), 심박변이도(부정맥 지수), 동공</td></tr></table><b>신체역학</b><ul><li>근육 수축: {{등척성}}(길이 변화 없이 힘 — 물건 들고 버티기, 정적), {{등장성}}(움직이며 힘 — 동적)</li><li>정적 작업은 혈류가 막혀 같은 힘이라도 더 빨리 피로 → 동적 작업으로 바꿈</li><li>인체 지레: 팔꿈치는 3종 지레(힘점이 받침점과 작용점 사이) → 힘은 손해, 속도·범위는 이득</li><li>근력은 자세·관절 각도에 따라 달라짐, 최대 근력의 15% 이하면 장시간 지속 가능 수준으로 봄</li></ul>',
+ ex:'<ul><li>모니터 감시 작업의 정신 피로 → CFF 측정</li></ul>',
+ exam:'<ul><li>작업 종류와 측정 지표 짝짓기 (국소 근육 = EMG)</li></ul>',
+ law:'법령 근거 없음(이론). 1과목 피로 측정과 연결.'},
+
+{id:'f7',title:'7. 신체활동의 에너지 소비',
+ core:'산소 {{1L ≈ 5kcal}} / 에너지소비량 = {{산소소비량 × 5}} / {{산소부채}} = 작업 후 추가 소비 / 휴식 R = {{60(E − 5) ÷ (E − 1.5)}}',
+ def:'<ul><li>몸이 일할 때 쓰는 에너지는 산소를 얼마나 썼는지로 추정합니다.</li></ul>',
+ detail:'<ul><li>산소 1L 소비 ≈ 5kcal 에너지 (평균 환산값)</li><li>에너지 소비량(kcal/분) = 산소 소비량(L/분) × 5</li><li>{{산소부채(oxygen debt)}}: 작업 초기 산소 공급이 수요를 못 따라가 생긴 부족분 → 작업 후에도 숨이 차서 갚음</li><li>{{기초대사량}}: 생명 유지 최소 에너지 (성인 남자 약 1,500~1,800kcal/일)</li><li>에너지대사율 RMR = (작업 시 − 안정 시) ÷ 기초대사량 (1과목 4장)</li><li>휴식시간(머렐): R = 60 × (E − 5) ÷ (E − 1.5) — E: 작업 중 에너지소비량(kcal/분), 5: 권장 평균(남), 1.5: 휴식 중</li><li>작업 효율 = 실제 한 일 ÷ 소비 에너지 (사람은 약 20~30% 수준)</li></ul>',
+ calc:'산소소비량 1.4L/분 → 에너지 = 1.4 × 5 = <b>7kcal/분</b> → 휴식 R = 60 × (7 − 5) ÷ (7 − 1.5) = 120 ÷ 5.5 ≈ <b>21.8분</b>',
+ exam:'<ul><li>산소소비량 → 에너지 환산 → 휴식시간 계산 (자주 출제)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f8',title:'8. 동작의 속도와 정확성',
+ core:'정보량 H = {{log₂ n}} (bit) / {{힉-하이만}} 반응시간 = a + b·H / {{피츠}} 이동시간 = a + b·log₂(2D/W) / 단순반응시간 약 {{0.2초}}',
+ def:'<ul><li>사람이 자극에 반응하고 손을 목표까지 움직이는 데 걸리는 시간에 관한 법칙</li></ul>',
+ detail:'<b>정보량</b><ul><li>같은 확률의 대안 n개: H = log<sub>2</sub> n (bit)</li><li>확률이 다르면: H = Σ p<sub>i</sub> log<sub>2</sub>(1/p<sub>i</sub>)</li></ul><b>반응시간</b><ul><li>단순반응시간(자극 1개): 약 0.15~0.2초</li><li>{{힉-하이만(Hick-Hyman) 법칙}}: 선택반응시간은 정보량(대안 수의 log)에 비례해 증가</li></ul><b>{{피츠(Fitts)의 법칙}}</b><ul><li>MT = a + b × log<sub>2</sub>(2D/W) — D: 목표까지 거리, W: 목표 폭</li><li>거리가 멀수록, 목표가 작을수록 이동시간 증가 → 자주 쓰는 버튼은 크게, 가깝게</li></ul><b>속도-정확성 상충</b>: 빠르게 하면 정확도가 떨어짐 (속도와 정확성의 trade-off)',
+ calc:'① 신호등 4가지가 같은 확률 → H = log<sub>2</sub>4 = <b>2bit</b><br>② 확률 0.5, 0.25, 0.25 → H = 0.5×1 + 0.25×2 + 0.25×2 = <b>1.5bit</b>',
+ ex:'<ul><li>비상정지 버튼은 크게(W↑), 작업자 가까이(D↓) → 피츠의 법칙</li></ul>',
+ exam:'<ul><li>정보량 계산 (자주 출제)</li><li>피츠 법칙 변수 뜻</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'6-3. 작업 공간 및 작업자세'},
+{id:'f9',title:'9. 부품배치의 원칙 · 활동분석 · 개별 작업공간 설계지침',
+ core:'부품배치 {{중요성·사용빈도(위치 결정)}} / {{기능별·사용순서(배치 결정)}} / 정상작업역 {{아래팔}} 범위, 최대작업역 {{팔 전체}} / 입식 작업대 {{정밀 팔꿈치+5~10cm · 경 −5~10cm · 중 −10~20cm}}',
+ def:'<ul><li>작업에 필요한 부품·공구·조종장치를 어디에, 어떤 순서로 배치할지 정하는 원칙과 작업공간 설계 기준</li></ul>',
+ detail:'<b>부품배치의 4원칙</b><table><tr><th>원칙</th><th>결정 대상</th><th>뜻</th></tr><tr><td>{{중요성의 원칙}}</td><td rowspan="2">대략적 <b>위치</b></td><td>목표 달성에 중요한 부품을 편리한 위치에</td></tr><tr><td>{{사용빈도의 원칙}}</td><td>자주 쓰는 것을 편리한 위치에</td></tr><tr><td>{{기능별 배치의 원칙}}</td><td rowspan="2">구체적 <b>배치</b></td><td>기능이 관련된 것끼리 모음</td></tr><tr><td>{{사용순서의 원칙}}</td><td>사용 순서대로 배치</td></tr></table><b>활동분석</b><ul><li>작업자의 시선 이동, 손 이동, 부품 간 연결 빈도를 분석 (링크 분석) → 연결이 잦은 것끼리 가깝게</li></ul><b>작업영역</b><ul><li>{{정상작업역}}: 위팔을 몸에 붙이고 아래팔만 움직여 닿는 범위 (약 34~45cm)</li><li>{{최대작업역}}: 팔 전체를 뻗어 닿는 범위 (약 55~65cm)</li><li>작업공간 포락면: 앉은 작업자가 특정 작업을 하는 데 쓰는 공간</li></ul><b>입식 작업대 높이 (팔꿈치 높이 기준)</b><table><tr><th>작업</th><th>높이</th></tr><tr><td>정밀 작업</td><td>팔꿈치보다 5~10cm <b>높게</b></td></tr><tr><td>경작업</td><td>팔꿈치보다 5~10cm 낮게</td></tr><tr><td>중작업 (힘)</td><td>팔꿈치보다 10~20cm 낮게</td></tr></table><b>의자 설계</b>: 좌판 높이 = 오금 높이(5%ile, 조절식), 좌판 깊이 = 엉덩이-오금 길이(5%ile), 좌판 폭 = 엉덩이 너비(95%ile), 등받이 요추 지지, 체중이 좌골결절에 실리게',
+ ex:'<ul><li>정밀 납땜 작업대 → 팔꿈치보다 조금 높게(눈 가까이) / 포장 박스 작업 → 낮게</li></ul>',
+ cmp:'<table><tr><th>위치 결정</th><th>배치 결정</th></tr><tr><td>중요성, 사용빈도</td><td>기능별, 사용순서</td></tr></table>',
+ exam:'<ul><li>부품배치 원칙 중 "위치"를 정하는 것 (중요성·사용빈도)</li><li>작업 종류별 작업대 높이</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'6-4. 작업측정'},
+{id:'f10',title:'10. 표준시간 및 연구',
+ core:'정미시간 = {{관측시간 × 레이팅계수}} / 외경법 표준시간 = {{정미시간 × (1 + 여유율)}} / 내경법 = {{정미시간 ÷ (1 − 여유율)}} / 여유 {{개인·피로·지연}}',
+ def:'<ul><li><b>표준시간</b>: 숙련된 작업자가 정해진 방법과 설비로, 정상 속도로 한 단위 작업을 하는 데 필요한 시간 (여유 포함)</li></ul>',
+ detail:'<ul><li>{{정미시간}}(정상시간) = 평균 관측시간 × (레이팅 계수 ÷ 100)</li><li>{{레이팅(수행도 평가)}}: 관측된 작업자 속도를 정상 속도와 비교해 보정 (빠르면 &gt;100%)</li><li>{{여유시간}}: 개인 여유(생리적 욕구), 피로 여유, 지연(작업) 여유</li></ul><table><tr><th>방식</th><th>여유율 정의</th><th>표준시간</th></tr><tr><td>{{외경법}}</td><td>여유시간 ÷ 정미시간</td><td>정미시간 × (1 + 여유율)</td></tr><tr><td>{{내경법}}</td><td>여유시간 ÷ (정미시간 + 여유시간) = 여유시간 ÷ 근무시간</td><td>정미시간 ÷ (1 − 여유율)</td></tr></table><b>시간연구(스톱워치법)</b>: 작업을 요소로 나눠 여러 번 측정 → 평균 → 레이팅 → 여유 부여',
+ calc:'평균 관측 2.0분, 레이팅 110%, 여유율 10%<br>정미시간 = 2.0 × 1.1 = 2.2분<br>외경법: 2.2 × 1.1 = <b>2.42분</b> / 내경법: 2.2 ÷ 0.9 ≈ <b>2.44분</b>',
+ exam:'<ul><li>외경법·내경법 계산 (자주 출제)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f11',title:'11. Work sampling의 원리 및 절차',
+ core:'{{무작위 순간 관측}}으로 작업·유휴 비율 추정 (통계적) / 관측횟수 N = {{z²·p(1 − p) ÷ e²}} / 장점 {{비용 적음·작업자 의식 적음}} / 단점 {{짧은 주기 반복 작업에 부적합}}',
+ def:'<ul><li><b>워크샘플링</b>: 작업자나 기계를 무작위 시각에 순간적으로 관측해, 작업·유휴 등 각 상태의 비율을 통계적으로 추정하는 방법 (Tippett)</li></ul>',
+ detail:'<b>절차</b>: 목적 설정 → 관측 항목 분류 → 예비 관측(p 추정) → 신뢰도·정확도 결정 → 관측 횟수 산정 → 무작위 관측 시각 결정 → 관측·기록 → 결과 분석<br><b>관측 횟수</b><ul><li>N = z<sup>2</sup> × p(1 − p) ÷ e<sup>2</sup> (z: 신뢰수준 계수, 95%면 1.96 ≈ 2, p: 비율, e: 허용 오차)</li></ul><table><tr><th>장점</th><th>단점</th></tr><tr><td>관측자 1명이 여러 대상 관측<br>비용·시간 적음<br>작업자가 덜 의식 (자연스러운 작업)<br>중단해도 다시 계속 가능<br>여유율·가동률 산정에 적합</td><td>짧은 주기 반복 작업에 부적합<br>세부 작업 요소 분석 불가<br>작업 방법 변화 시 다시 해야 함<br>개인별 차이 파악 어려움</td></tr></table>',
+ calc:'p = 0.2, 95% 신뢰(z ≈ 2), 허용오차 e = 0.04 → N = 4 × 0.2 × 0.8 ÷ 0.0016 = <b>400회</b>',
+ exam:'<ul><li>워크샘플링 장단점</li><li>관측 횟수 계산</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f12',title:'12. 표준자료 (MTM, Work factor 등)',
+ core:'{{PTS}} = 기본동작별 미리 정한 시간 합산 / {{MTM}} 1 TMU = {{0.00001시간 = 0.036초}} / {{WF}} 동작 + 변수(무게·조절 등) / 장점 {{레이팅 불필요}}',
+ def:'<ul><li><b>PTS(Predetermined Time Standards, 기정시간표준)</b>: 사람의 동작을 기본 동작으로 나누고, 각 기본 동작에 미리 정해 둔 시간을 합쳐 표준시간을 정하는 방법</li><li><b>표준자료법</b>: 과거 측정 자료로 작업 요소별 표준시간 식·표를 만들어 새 작업에 적용</li></ul>',
+ detail:'<table><tr><th>기법</th><th>특징</th></tr><tr><td>{{MTM}}(Methods Time Measurement)</td><td>기본 동작(손 뻗기, 운반, 회전, 잡기, 정치, 놓기 등)별 시간표. 단위 TMU = 0.00001시간 = 0.0006분 = 0.036초</td></tr><tr><td>{{WF}}(Work Factor)</td><td>동작 거리·신체 부위 + 작업 변수(무게, 방향 조절, 주의, 정지 등)로 시간 결정</td></tr><tr><td>MODAPTS 등</td><td>간이 PTS</td></tr></table><table><tr><th>PTS 장점</th><th>PTS 단점</th></tr><tr><td>레이팅(수행도 평가) 불필요<br>작업 전(설계 단계)에 시간 예측 가능<br>작업 방법 개선과 함께 사용<br>일관성</td><td>비반복·자유로운 작업에 부적합<br>분석에 숙련 필요, 시간 소요<br>정신 작업에 부적합</td></tr></table>',
+ calc:'어떤 동작이 1,000 TMU → 1,000 × 0.036초 = <b>36초</b>',
+ exam:'<ul><li>TMU 환산</li><li>PTS의 장점 = 레이팅 불필요</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'6-5. 작업환경과 인간공학'},
+{id:'f13',title:'13. 빛과 소음의 특성',
+ core:'조도 = {{광도 ÷ 거리²}} / 반사율 = {{휘도 ÷ 조도}} / 추천 반사율 {{천장 80~90 · 벽 40~60 · 가구 25~45 · 바닥 20~40%}} / dB 합 = {{10 log(10^(L₁/10) + …)}} / 거리 2배 → {{6dB}} 감소 / sone = {{2^((phon − 40)/10)}}',
+ def:'<ul><li>조명과 소음을 정량적으로 다루는 기본 개념과 계산식</li></ul>',
+ detail:'<b>빛</b><table><tr><th>용어</th><th>뜻·단위</th></tr><tr><td>광도</td><td>광원의 밝기 (cd, 칸델라)</td></tr><tr><td>{{조도}}</td><td>면에 도달하는 빛의 양 (lux) = 광도 ÷ 거리² (역제곱 법칙)</td></tr><tr><td>휘도</td><td>면이 반사·발산하는 빛의 밝기 (fL, cd/m²)</td></tr><tr><td>{{반사율}}</td><td>휘도 ÷ 조도 × 100 (%)</td></tr><tr><td>대비</td><td>(배경 휘도 − 표적 휘도) ÷ 배경 휘도 × 100</td></tr></table><ul><li>추천 반사율: 천장 80~90%, 벽 40~60%, 가구·책상 25~45%, 바닥 20~40% → <b>위로 갈수록 밝게</b></li><li>눈부심(글레어): 광원을 시선에서 멀리, 간접조명, 확산 커버, 휘도비 줄이기</li></ul><b>소음</b><ul><li>dB = 20 log(P/P<sub>0</sub>) (음압), 합성: L = 10 log(10<sup>L1/10</sup> + 10<sup>L2/10</sup> + …)</li><li>같은 크기 두 소음을 합하면 +3dB</li><li>점음원 거리 감쇠: 거리 2배 → 6dB 감소 (L<sub>2</sub> = L<sub>1</sub> − 20 log(d<sub>2</sub>/d<sub>1</sub>))</li><li>음의 크기: phon(1,000Hz 순음 dB와 같은 크기), sone(40phon = 1sone, 10phon 증가마다 2배)</li><li>{{은폐(masking) 효과}}: 큰 소리가 작은 소리를 들리지 않게 함</li></ul>',
+ calc:'① 광도 100cd, 거리 2m → 조도 = 100 ÷ 4 = <b>25lux</b><br>② 90dB + 90dB → <b>93dB</b><br>③ 10m에서 90dB → 20m에서 <b>84dB</b><br>④ 60phon → 2<sup>(60−40)/10</sup> = <b>4sone</b>',
+ exam:'<ul><li>조도·반사율·소음 합성·거리 감쇠·sone 계산</li><li>추천 반사율 순서 (천장 &gt; 벽 &gt; 가구 &gt; 바닥)</li></ul>',
+ law:'작업장 조도 기준은 안전보건기준규칙 제8조 (1과목 6장).'},
+
+{id:'f14',title:'14. 열교환과정과 열압박 · 실효온도와 Oxford 지수',
+ core:'열평형 S = {{M − E ± R ± C − W}} / {{실효온도}} = 온도·습도·기류 조합 (습도 100%·무풍 기준 체감) / {{Oxford 지수}} WD = {{0.85 습구 + 0.15 건구}}',
+ def:'<ul><li>사람 몸은 대사로 열을 만들고, 증발·복사·대류·전도로 열을 주고받습니다. 이 균형이 깨지면 열압박(더위 스트레스)이 생깁니다.</li></ul>',
+ detail:'<b>열교환 방정식</b><ul><li>S(열축적) = M(대사열) − E(증발) ± R(복사) ± C(대류) − W(한 일)</li><li>S &gt; 0 이면 체온 상승 (열압박), S &lt; 0 이면 체온 하강</li><li>증발(땀)은 열을 잃기만 함, 복사·대류는 주변 온도에 따라 얻거나 잃음</li></ul><b>열압박 지수</b><table><tr><th>지수</th><th>내용</th></tr><tr><td>{{실효온도(감각온도, ET)}}</td><td>온도·습도·기류가 함께 주는 체감 온도. 습도 100%·무풍 상태에서 같은 느낌을 주는 온도로 표시</td></tr><tr><td>{{Oxford 지수(WD)}}</td><td>습건(WD) 지수 = 0.85 × 습구온도 + 0.15 × 건구온도</td></tr><tr><td>WBGT</td><td>옥외 0.7 습구 + 0.2 흑구 + 0.1 건구 (5장)</td></tr><tr><td>열스트레스지수(HSI)</td><td>필요 증발량 ÷ 최대 증발량 × 100</td></tr></table><b>열 순응</b>: 고열 환경에 1~2주 서서히 노출하면 땀 분비 증가·염분 손실 감소로 적응',
+ calc:'습구 28℃, 건구 34℃ → Oxford 지수 = 0.85 × 28 + 0.15 × 34 = 23.8 + 5.1 = <b>28.9℃</b>',
+ exam:'<ul><li>Oxford 지수 계수 (0.85·0.15)</li><li>열교환 요소</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'f15',title:'15. 진동과 가속도 · 이상환경',
+ core:'전신진동 인체 공진 {{4~8Hz}} / 진동은 {{시력·추적 작업}} 저하, 반응시간 영향 {{적음}} / 이상환경 {{고열·한랭·기압·고도·산소결핍}}',
+ def:'<ul><li>진동·가속도가 작업 성능과 건강에 주는 영향, 그리고 고열·한랭·기압 등 이상환경에서의 사고와 부상</li></ul>',
+ detail:'<b>진동</b><ul><li>전신진동: 인체 공진 주파수 4~8Hz(몸통), 머리 약 20~30Hz → 요통, 위장 장해</li><li>국소진동: 수공구, 8~1,500Hz → 레이노, 뼈·관절</li><li>성능 영향: 시력 저하(특히 10~25Hz), 정밀 추적 작업 저하 / 반응시간·감시 작업은 영향 비교적 적음</li><li>대책: 방진 좌석, 저진동 장비, 노출시간 제한</li></ul><b>가속도</b>: 가속도(g)가 크면 시야 상실(블랙아웃), 의식 상실 — 조종사·고속 이동<br><b>이상환경과 사고</b><table><tr><th>환경</th><th>영향</th></tr><tr><td>고열</td><td>열사병·열탈진, 판단력 저하, 땀으로 미끄러짐</td></tr><tr><td>한랭</td><td>손 감각·민첩성 저하, 동상, 저체온증</td></tr><tr><td>고기압</td><td>감압병, 질소마취</td></tr><tr><td>고도(저기압)</td><td>고산병, 산소 부족으로 판단력 저하</td></tr><tr><td>산소결핍(18% 미만)</td><td>질식 — 밀폐공간</td></tr></table>',
+ exam:'<ul><li>인체 공진 주파수 4~8Hz</li><li>진동이 반응시간에는 영향이 적음</li></ul>',
+ law:'안전보건기준규칙 제4편(진동·이상기압·온도·밀폐공간).'},
+
+{id:'f16',title:'16. 사무/VDT 작업 설계 및 관리',
+ core:'화면 상단 {{눈높이와 같거나 약간 아래}} / 눈-화면 거리 {{40cm 이상}} / 시선 {{수평선 아래 10~15°}} / 팔꿈치 {{90° 이상}} / 키보드 {{팔꿈치 높이}} / 연속 작업 후 {{휴식}}',
+ def:'<ul><li><b>VDT(영상표시단말기) 작업</b>: 모니터·키보드·마우스를 쓰는 작업. 목·어깨·손목·눈 피로와 근골격계질환의 원인이 됩니다.</li></ul>',
+ detail:'<b>작업자세 기준 (VDT 작업 지침 고시)</b><ul><li>화면 상단이 눈높이와 같거나 약간 아래, 시선은 수평선 아래 약 10~15° (작업 화면 중심)</li><li>눈과 화면 거리 {{40cm 이상}}</li><li>위팔은 자연스럽게 내리고, 팔꿈치 내각 90° 이상</li><li>키보드는 팔꿈치 높이, 손목은 곧게 (손목 받침 활용)</li><li>무릎 내각 90° 전후, 발바닥 전체가 바닥에 (필요 시 발 받침대)</li><li>의자 등받이로 요추 지지</li></ul><b>작업환경</b><ul><li>화면 조도 300~500lux 정도, 창·조명의 반사(눈부심) 방지, 화면은 창과 직각 배치</li><li>화면 밝기·대비 조절, 문자 크기 적정</li></ul><b>작업관리</b>: 연속 작업 시간 제한과 휴식(1시간 작업 후 10~15분 정도), 스트레칭, 작업 다양화<br><span style="color:var(--sub);font-size:13px">※ 세부 수치는 「영상표시단말기(VDT) 취급근로자 작업관리지침」 고시로 확인.</span>',
+ ex:'<ul><li>노트북만 보면 목이 숙여짐 → 받침대로 화면을 올리고 별도 키보드 사용</li></ul>',
+ exam:'<ul><li>VDT 작업 기준에 <b>틀린</b> 것 (예: "화면 상단을 눈높이보다 높게")</li></ul>',
+ law:'고용노동부 고시 「영상표시단말기(VDT) 취급근로자 작업관리지침」.'},
+
+{grp:'6-6. 중량물 취급 작업'},
+{id:'f17',title:'17. 중량물 취급 방법 · NIOSH Lifting Equation',
+ core:'RWL = {{23kg × HM × VM × DM × AM × FM × CM}} / LI = {{물체 무게 ÷ RWL}}, {{LI > 1}}이면 위험 / HM = {{25/H}} / 들기 {{몸 가까이·무릎 굽혀·허리 비틀지 않기}} / {{5kg}} 이상 중량 표시',
+ def:'<ul><li><b>NIOSH 들기 공식</b>: 미국 NIOSH가 만든 공식으로, 들기 작업 조건에서 대부분의 건강한 작업자가 요통 위험 없이 들 수 있는 <b>권장무게한계(RWL)</b>를 계산</li></ul>',
+ why:'<ul><li>같은 10kg이라도 멀리, 낮게, 비틀어 들면 허리 부담이 훨씬 큽니다. 조건마다 감소계수를 곱해 허용 무게를 줄여 줍니다.</li></ul>',
+ detail:'<b>RWL = LC × HM × VM × DM × AM × FM × CM</b><table><tr><th>계수</th><th>뜻</th><th>식 (cm)</th></tr><tr><td>LC</td><td>부하 상수</td><td>{{23kg}}</td></tr><tr><td>{{HM}}</td><td>수평 계수 (발 중심~손 수평거리 H)</td><td>25 ÷ H</td></tr><tr><td>{{VM}}</td><td>수직 계수 (바닥~손 높이 V)</td><td>1 − 0.003 × |V − 75|</td></tr><tr><td>{{DM}}</td><td>거리 계수 (수직 이동거리 D)</td><td>0.82 + 4.5 ÷ D</td></tr><tr><td>{{AM}}</td><td>비대칭 계수 (몸 비틀림 각도 A)</td><td>1 − 0.0032 × A</td></tr><tr><td>{{FM}}</td><td>빈도 계수</td><td>표에서 찾음 (분당 횟수·작업시간)</td></tr><tr><td>{{CM}}</td><td>손잡이(커플링) 계수</td><td>표에서 찾음 (양호·보통·불량)</td></tr></table><ul><li>들기지수 LI = 실제 물체 무게 ÷ RWL → LI &gt; 1이면 요통 위험, 1 이하로 설계</li></ul><b>올바른 들기 방법</b><ul><li>물체를 몸 가까이, 발을 어깨너비로 벌림</li><li>허리를 곧게 펴고 무릎을 굽혀 다리 힘으로 들기</li><li>허리를 비틀지 말고 발을 돌려 방향 전환</li><li>무거우면 2인 작업·운반 기구(대차, 호이스트) 사용</li></ul><b>법적 조치 (안전보건기준규칙)</b><ul><li>5kg 이상 중량물은 중량과 무게중심을 표시, 손잡이·보조도구 제공</li><li>중량물 취급 근로자에게 올바른 자세 교육</li></ul>',
+ calc:'H = 50cm → HM = 25/50 = 0.5 / 다른 계수가 모두 1이면 RWL = 23 × 0.5 = <b>11.5kg</b> → 15kg 상자의 LI = 15 ÷ 11.5 ≈ <b>1.3</b> → 위험',
+ ex:'<ul><li>팔레트 바닥에서 상자 들기 → VM↓, 비틀어 옮기기 → AM↓ → 팔레트 높이 올리고 회전대 사용</li></ul>',
+ exam:'<ul><li>RWL 구성 계수와 LC 23kg</li><li>LI 계산·판정 (LI &gt; 1)</li><li>HM = 25/H</li></ul>',
+ law:'산업안전보건기준에 관한 규칙 제663조~제666조(중량물의 표시, 작업자세 등).'},
+
+{id:'f18',title:'키워드 카드 — 2과목 주요항목 6',tag:'암기',
+ core:'95 {{통과}}·5 {{닿기}} / C/D 작으면 {{민감}} / 공간·운동·개념·양식 / 1L = {{5kcal}} / 23kg',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>출입문 높이</td><td>{{최대치 95%ile}}</td></tr><tr><td>조종장치 거리</td><td>{{최소치 5%ile}}</td></tr><tr><td>자동차 좌석</td><td>{{조절식}}</td></tr><tr><td>은행 창구</td><td>{{평균치}}</td></tr><tr><td>짧고 즉각, 이동 중</td><td>{{청각 표시장치}}</td></tr><tr><td>추세 파악</td><td>{{동침형}}</td></tr><tr><td>정확한 값</td><td>{{계수형}}</td></tr><tr><td>500~3,000Hz</td><td>{{경보 신호 주파수}}</td></tr><tr><td>핸들 오른쪽 → 차 오른쪽</td><td>{{운동적 양립성}}</td></tr><tr><td>빨강 = 뜨거움</td><td>{{개념적 양립성}}</td></tr><tr><td>국소 근육</td><td>{{근전도 EMG}}</td></tr><tr><td>log₂ n</td><td>{{정보량(bit)}}</td></tr><tr><td>거리·폭과 이동시간</td><td>{{피츠의 법칙}}</td></tr><tr><td>중요성·사용빈도</td><td>{{부품 위치 결정}}</td></tr><tr><td>정밀 작업대</td><td>{{팔꿈치보다 높게}}</td></tr><tr><td>정미 × (1 + 여유율)</td><td>{{외경법}}</td></tr><tr><td>1 TMU</td><td>{{0.036초}}</td></tr><tr><td>레이팅 불필요</td><td>{{PTS}}</td></tr><tr><td>천장 80~90%</td><td>{{추천 반사율}}</td></tr><tr><td>0.85 습 + 0.15 건</td><td>{{Oxford 지수}}</td></tr><tr><td>4~8Hz</td><td>{{전신진동 공진}}</td></tr><tr><td>40cm</td><td>{{VDT 눈-화면 거리}}</td></tr><tr><td>LI &gt; 1</td><td>{{요통 위험}}</td></tr></table>'}
+];
+
+var MN={
+f1:[
+ {k:'95 = 지나가기 / 5 = 닿기',s:'"<b>큰 사람</b>도 머리 안 부딪히게(문·통로 95%ile), <b>작은 사람</b>도 손 닿게(버튼·선반 5%ile), 되면 <b>조절</b>, 안 되면 마지막에 <b>평균</b>"',m:'최대치 {{95%ile}} · 최소치 {{5%ile}} · {{조절식 우선}} · {{평균치 최후}}'}],
+f2:[
+ {k:'청각 = 짧·즉·이',s:'"<b>화재 경보</b>는 짧게, 지금 당장, 어디서든 들린다 — 다시 볼 필요 없음"',m:'청각 {{짧고 단순·즉각·이동 중·재참조 없음}} / 시각 {{길고 복잡·재참조·위치}}'},
+ {k:'동침 = 추세 / 계수 = 정확',s:'"<b>속도계 바늘</b>(동침)은 빨라지는지 느려지는지, <b>디지털 시계</b>(계수)는 정확한 숫자"',m:'동침형 {{추세}} / 계수형 {{정확한 값}}'},
+ {k:'500 ~ 3,000 / 멀리 1,000',s:'"귀는 <b>오백~삼천</b>에서 제일 예민, <b>멀리</b> 보낼 땐 낮은 소리(1,000 이하) — 뱃고동이 낮은 이유"',m:'{{500~3,000Hz}} / 장거리 {{1,000Hz 이하}} / 장애물 {{500Hz 이하}}'}],
+f3:[
+ {k:'C/D 작다 = 민감',s:'"<b>마우스 감도 최고</b>(C/D 작음) → 휙 가지만 멈추기 힘듦(조정시간↑)"',m:'C/D 작음 {{이동↓ 조정↑}} / 큼 {{이동↑ 조정↓}}'}],
+f4:[
+ {k:'공 · 운 · 개 · 양',s:'"<b>공운</b>(공 운반) <b>개양</b>(개 양치기)" — 위치가 맞고, 방향이 맞고, 뜻이 맞고, 감각이 맞고',m:'{{공간적}} · {{운동적}} · {{개념적}} · {{양식}}'}],
+f5:[
+ {k:'손목 대신 공구를 굽혀라',s:'"<b>사람이 굽지 말고 연장이 굽어라</b>" — 손목은 일자, 손잡이는 길고 굵게',m:'{{손목 곧게}} · {{손바닥 압박 피함}} · 힘 {{30~45mm}} · 길이 {{100mm 이상}}'}],
+f6:[
+ {k:'EMG = 국소 / O₂ = 전신 / CFF = 정신',s:'"<b>근육</b> 하나는 전기(EMG)로, <b>온몸</b>은 숨(산소)으로, <b>머리</b>는 깜빡임(CFF)으로 잰다"',m:'국소 {{근전도}} · 전신 {{산소소비량}} · 정신 {{점멸융합주파수·GSR}}'}],
+f7:[
+ {k:'1L = 5kcal',s:'"산소 <b>한 병(1L)</b>에 <b>오(5)</b>칼로리 — \'한 오\'"',m:'에너지 = {{산소소비량 × 5}}'}],
+f8:[
+ {k:'log₂ n',s:'"<b>스무고개</b> — 예/아니오 질문 한 번이 1bit, 4개 중 하나는 2번이면 맞힌다"',m:'H = {{log₂ n}}'},
+ {k:'피츠 = 멀고 작으면 느림',s:'"<b>다트</b>: 과녁이 멀고 작을수록 오래 걸린다 → 자주 쓰는 버튼은 크고 가깝게"',m:'MT = {{a + b log₂(2D/W)}}'}],
+f9:[
+ {k:'중·빈 = 위치 / 기·순 = 배치',s:'"<b>중빈</b>(중요하고 빈번한 것)은 <b>명당</b>에, <b>기순</b>(기능·순서)으로 <b>줄 세우기</b>"',m:'위치 {{중요성·사용빈도}} / 배치 {{기능별·사용순서}}'},
+ {k:'정밀↑ · 경↓ · 중↓↓',s:'"<b>시계 수리</b>는 눈 가까이(팔꿈치보다 위), <b>포장</b>은 조금 아래, <b>망치질</b>은 한참 아래"',m:'정밀 {{+5~10cm}} · 경 {{−5~10cm}} · 중 {{−10~20cm}}'}],
+f10:[
+ {k:'외경 × (1+) / 내경 ÷ (1−)',s:'"<b>외</b>경은 <b>밖에서 더하기</b>(곱하기 1+), <b>내</b>경은 <b>안에서 빼서 나누기</b>(÷ 1−)"',m:'외경법 {{정미 × (1 + 여유율)}} / 내경법 {{정미 ÷ (1 − 여유율)}}'}],
+f11:[
+ {k:'워크샘플링 = 사진',s:'"<b>몰래 찍은 스냅사진</b> 여러 장으로 \'일하는 비율\'을 추정 — 싸고 자연스럽지만, 빠른 반복 동작은 못 잡음"',m:'{{무작위 순간 관측}} / 단점 {{짧은 주기 반복 작업 부적합}}'}],
+f12:[
+ {k:'TMU = 0.036초',s:'"<b>T</b>iny <b>M</b>U — 아주 작은 단위, 십만분의 1시간 = <b>0.036초</b> (공공삼육)"',m:'1 TMU = {{0.00001시간 = 0.036초}}'}],
+f13:[
+ {k:'천 · 벽 · 가 · 바',s:'"<b>하늘</b>(천장)이 제일 밝고 <b>땅</b>(바닥)이 제일 어둡다 — 80~90 · 40~60 · 25~45 · 20~40"',m:'천장 {{80~90%}} · 벽 {{40~60%}} · 가구 {{25~45%}} · 바닥 {{20~40%}}'},
+ {k:'+3dB · −6dB',s:'"같은 소리 둘이면 <b>+3</b>, 거리 두 배면 <b>−6</b> — \'더하면 3, 멀면 6\'"',m:'동일 음 합성 {{+3dB}} / 거리 2배 {{−6dB}}'}],
+f14:[
+ {k:'Oxford 0.85 · 0.15',s:'"<b>옥스퍼드</b> 대학은 비가 많아 <b>습구</b>가 85%"',m:'WD = {{0.85 습구 + 0.15 건구}}'}],
+f15:[
+ {k:'4 ~ 8Hz',s:'"<b>사</b>(4)람 몸통은 <b>팔</b>(8)Hz까지 같이 흔들린다 — 트럭 진동이 허리에 나쁜 이유"',m:'전신진동 공진 {{4~8Hz}}'}],
+f16:[
+ {k:'VDT 40 · 아래 · 90',s:'"화면은 <b>팔 길이</b>(40cm 이상) 거리, <b>살짝 내려다보고</b>, 팔꿈치는 <b>ㄴ자</b>(90° 이상)"',m:'{{40cm 이상}} · {{눈높이 이하}} · {{팔꿈치 90° 이상}}'}],
+f17:[
+ {k:'23 × H·V·D·A·F·C',s:'"<b>23</b>kg에서 시작해 <b>H</b>orizontal(멀리) · <b>V</b>ertical(높낮이) · <b>D</b>istance(이동) · <b>A</b>symmetry(비틀기) · <b>F</b>requency(자주) · <b>C</b>oupling(손잡이)만큼 깎는다"',m:'RWL = {{23 × HM × VM × DM × AM × FM × CM}} / {{LI > 1 위험}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

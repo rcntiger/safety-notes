@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5과목 2. 화학물질 안전관리 실행</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 5과목 · 화학설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 2. 화학물질 안전관리 실행 · 세세항목 14개 → 학습단위 11개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">5과목 목차</a><a href="p1.html">◀ 이전</a><a href="p3.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s5-p2-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'2-1. 화학물질(위험물, 유해화학물질) 확인'},
+{id:'b1',title:'1. 위험물의 기초화학',
+ core:'증기비중 = {{분자량 ÷ 29}} (1보다 크면 바닥에 깔림) / 이상기체 {{PV = nRT}}, 0℃·1atm 1몰 = {{22.4L}} / ppm ↔ mg/m³ = {{ppm × 분자량 ÷ 24.45}}(25℃)',
+ def:'<ul><li>위험물 계산에 필요한 기본 화학 개념</li></ul>',
+ detail:'<ul><li>원자량: H 1, C 12, N 14, O 16, S 32, Cl 35.5</li><li>공기의 평균 분자량 ≈ 29 → 증기비중 = 물질 분자량 ÷ 29<ul><li>1보다 크면 공기보다 무거워 낮은 곳(피트·하수구)에 고임 (프로판 44 → 1.52)</li><li>1보다 작으면 위로 확산 (수소 2, 메탄 16, 암모니아 17)</li></ul></li><li>이상기체 상태방정식: PV = nRT (R = 0.082 atm·L/mol·K)</li><li>표준상태(0℃, 1atm)에서 기체 1몰 = 22.4L, 25℃에서 약 24.45L</li><li>농도 환산: mg/m³ = ppm × 분자량 ÷ 24.45 (25℃, 1atm)</li><li>산화: 산소를 얻거나 전자를 잃음 / 환원: 산소를 잃거나 전자를 얻음</li></ul>',
+ calc:'① 부탄 C<sub>4</sub>H<sub>10</sub> 분자량 58 → 증기비중 = 58 ÷ 29 = <b>2</b><br>② 톨루엔(분자량 92) 50ppm → 50 × 92 ÷ 24.45 ≈ <b>188mg/m³</b>',
+ exam:'<ul><li>증기비중 계산, 공기보다 가벼운 가스 고르기</li><li>ppm ↔ mg/m³ 환산</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'b2',title:'2. 위험물의 정의 · 종류',
+ core:'산안법 위험물질 {{폭발성·유기과산화물 / 물반응성·인화성 고체 / 산화성 액체·고체 / 인화성 액체 / 인화성 가스 / 부식성 / 급성독성}} / 인화성 액체 기준 {{23℃ 미만·35℃ / 23~60℃}} / 인화성 가스 {{LEL 13% 이하 또는 범위 12% 이상}}',
+ def:'<ul><li><b>위험물질</b>: 산업안전보건기준에 관한 규칙 별표 1에 정한, 폭발·화재·부식·급성 중독을 일으킬 수 있는 물질</li></ul>',
+ detail:'<b>산업안전보건법상 위험물질 (안전보건기준규칙 별표 1)</b><table><tr><th>분류</th><th>예</th></tr><tr><td>폭발성 물질 및 유기과산화물</td><td>질산에스테르류(니트로글리세린·니트로셀룰로오스), 니트로화합물(TNT), 유기과산화물(과산화벤조일)</td></tr><tr><td>물반응성 물질 및 인화성 고체</td><td>리튬, 칼륨·나트륨, 황, 황린, 황화인, 셀룰로이드, 알킬알루미늄, 마그네슘 분말, 칼슘탄화물(카바이드)</td></tr><tr><td>산화성 액체 및 산화성 고체</td><td>차아염소산·아염소산·염소산·과염소산 및 그 염류, 브롬산염, 요오드산염, 과산화수소, 질산 및 그 염류, 과망간산염, 중크롬산염</td></tr><tr><td>{{인화성 액체}}</td><td>① 인화점 23℃ 미만 · 초기끓는점 35℃ 이하: 에틸에테르, 가솔린, 아세트알데히드, 산화프로필렌<br>② 인화점 23℃ 미만 · 초기끓는점 35℃ 초과: 노르말헥산, 아세톤, 메틸에틸케톤, 메틸알코올, 에틸알코올, 이황화탄소<br>③ 인화점 23℃ 이상 60℃ 이하: 크실렌, 아세트산아밀, 등유, 경유, 테레핀유, 이소아밀알코올, 아세트산, 하이드라진</td></tr><tr><td>{{인화성 가스}}</td><td>수소, 아세틸렌, 에틸렌, 메탄, 에탄, 프로판, 부탄 — 20℃·표준압력에서 폭발하한 13% 이하 또는 상·하한 차이 12% 이상</td></tr><tr><td>{{부식성 물질}}</td><td>산: 농도 20% 이상 염산·황산·질산, 60% 이상 인산·아세트산·불산 / 염기: 농도 40% 이상 수산화나트륨·수산화칼륨</td></tr><tr><td>{{급성 독성 물질}}</td><td>LD50(경구, 쥐) 300mg/kg 이하, LD50(경피) 1,000mg/kg 이하, 가스 LC50(쥐, 4시간) 2,500ppm 이하, 증기 LC50 10mg/L 이하, 분진·미스트 1mg/L 이하</td></tr></table><b>위험물안전관리법 분류 (참고)</b>: 제1류 산화성 고체, 제2류 가연성 고체, 제3류 자연발화성·금수성, 제4류 인화성 액체, 제5류 자기반응성, 제6류 산화성 액체',
+ exam:'<ul><li>물질과 위험물 분류 짝짓기</li><li>부식성 농도 기준 (20%·60%·40%)</li><li>급성독성 LD50 기준</li></ul>',
+ law:'산업안전보건기준에 관한 규칙 별표 1(위험물질의 종류). <span style="color:var(--sub)">수치는 별표로 확인.</span>'},
+
+{id:'b3',title:'3. 노출기준 · 유해화학물질의 유해요인',
+ core:'{{TWA}} 8시간 / {{STEL}} 15분 / {{C}} 최고 / 혼합물 {{ΣC/T > 1}} 초과 / 유해성 {{발암성·생식세포변이원성·생식독성(CMR)·급성독성·자극성·과민성·표적장기 독성}}',
+ def:'<ul><li>2과목 5장(화학적 유해요인 노출기준)과 같은 내용입니다. 5과목에서는 MSDS·GHS 분류와 연결해 묻습니다.</li></ul>',
+ detail:'<b>노출기준</b>: TWA(8시간 평균), STEL(15분, 1일 4회, 60분 간격), C(최고노출기준) — 혼합물 노출지수 C<sub>1</sub>/T<sub>1</sub> + C<sub>2</sub>/T<sub>2</sub> + … &gt; 1 이면 초과<br><b>GHS 건강 유해성 분류</b><ul><li>급성 독성, 피부 부식성·자극성, 심한 눈 손상·자극성</li><li>호흡기 과민성, 피부 과민성</li><li>{{발암성}}, {{생식세포 변이원성}}, {{생식독성}} (CMR)</li><li>특정표적장기 독성(1회·반복 노출), 흡인 유해성</li></ul><b>물리적 위험성</b>: 폭발성, 인화성(가스·액체·고체·에어로졸), 산화성, 고압가스, 자기반응성, 자연발화성, 물반응성, 금속부식성 등<br><b>유해 경로</b>: 호흡기 &gt; 피부 &gt; 소화기',
+ exam:'<ul><li>CMR 물질 뜻</li></ul>',
+ law:'화학물질의 분류·표시 및 물질안전보건자료에 관한 기준(고시), 노출기준 고시.'},
+
+{grp:'2-2. 화학물질 유해 위험성 확인'},
+{id:'b4',title:'4. 위험물의 성질 및 위험성',
+ core:'물반응 {{나트륨·칼륨 → 수소}}, {{탄화칼슘 → 아세틸렌}}, {{인화칼슘 → 포스핀}} / 자연발화 {{황린·알킬알루미늄}} / 산화성 {{염소산염·과산화물 — 가연물과 혼합 시 폭발}} / {{혼촉 위험}}',
+ def:'<ul><li>위험물마다 위험한 성질이 달라 보관·취급 방법도 다릅니다.</li></ul>',
+ detail:'<b>물반응성 물질 (물과 닿으면 위험)</b><table><tr><th>물질</th><th>물과 반응해 생기는 것</th></tr><tr><td>나트륨, 칼륨, 리튬</td><td>{{수소}} + 발열 → 화재·폭발</td></tr><tr><td>탄화칼슘(카바이드)</td><td>{{아세틸렌}}</td></tr><tr><td>인화칼슘</td><td>{{포스핀}}(유독·자연발화)</td></tr><tr><td>탄화알루미늄</td><td>메탄</td></tr><tr><td>알킬알루미늄</td><td>에탄 등, 공기 중 자연발화</td></tr></table><b>자연발화성</b>: 황린(공기 중 약 34℃에서 발화 → 물속 보관), 알킬알루미늄, 기름 묻은 걸레(산화열 축적)<br><b>자연발화 조건</b>: 발열량 큼, 열전도율 작음(축열), 표면적 넓음, 적당한 수분, 주위 온도 높음<br><b>산화성 물질</b>: 자신은 타지 않지만 산소를 내줌 → 가연물·유기물과 섞이면 격렬한 연소·폭발<br><b>혼촉 발화</b>: 산화제 + 환원제(가연물), 강산 + 강염기 등 섞이면 발열·발화 → 분리 저장',
+ exam:'<ul><li>물과 반응해 생기는 가스 짝짓기 (카바이드 → 아세틸렌)</li><li>자연발화 조건 (열전도율 작을수록)</li></ul>',
+ law:'안전보건기준규칙 제225조(위험물질 등의 취급).'},
+
+{id:'b5',title:'5. 위험물의 저장 및 취급방법',
+ core:'{{나트륨·칼륨 → 석유(등유) 속}} / {{황린 → 물속}} / {{이황화탄소 → 물속(수조)}} / {{니트로셀룰로오스 → 알코올·물로 습윤}} / {{아세틸렌 → 아세톤에 용해·다공성 물질}} / {{과산화수소 → 구멍 뚫린 마개}}',
+ def:'<ul><li>위험물의 성질에 맞춰 공기·물·열을 차단하는 저장 방법</li></ul>',
+ detail:'<table><tr><th>물질</th><th>저장 방법</th><th>이유</th></tr><tr><td>나트륨, 칼륨</td><td>{{석유(등유·경유) 속}}</td><td>공기 중 수분·산소와 반응 방지</td></tr><tr><td>황린</td><td>{{물속}}(pH 9 정도 약알칼리)</td><td>공기 중 자연발화 방지</td></tr><tr><td>이황화탄소</td><td>{{물속}} (수조)</td><td>증기 발생 억제 (물보다 무겁고 물에 녹지 않음)</td></tr><tr><td>니트로셀룰로오스</td><td>{{알코올·물로 습윤}}</td><td>건조하면 폭발 위험</td></tr><tr><td>아세틸렌</td><td>{{아세톤}}에 녹여 다공성 물질 채운 용기에</td><td>압축하면 분해 폭발</td></tr><tr><td>과산화수소</td><td>구멍 뚫린 마개, 서늘한 곳</td><td>분해 시 산소 발생으로 압력 상승</td></tr><tr><td>알킬알루미늄</td><td>불활성가스 봉입</td><td>자연발화</td></tr></table><b>취급 일반</b> (안전보건기준규칙 제225조): 폭발성 물질은 화기·충격 금지, 물반응성은 물 접촉 금지, 산화성은 분해 촉진 물질 접촉 금지, 인화성 액체는 화기·과열 금지, 부식성은 누출 방지',
+ exam:'<ul><li>물질별 저장 방법 (자주 출제)</li></ul>',
+ law:'안전보건기준규칙 제225조, 위험물안전관리법(저장 기준 참고).'},
+
+{id:'b6',title:'6. 인화성 가스 취급시 주의사항',
+ core:'{{가스누출감지경보기}} 경보 설정 {{폭발하한계 25% 이하}} / 용기 {{40℃ 이하}}·전도 방지·직사광선 차단 / 공기보다 무거운 가스 감지기는 {{바닥 가까이}}, 가벼운 가스는 {{천장 가까이}}',
+ def:'<ul><li>프로판·수소·아세틸렌 등 인화성 가스를 다룰 때의 기본 수칙</li></ul>',
+ detail:'<ul><li>가스누출감지경보기: 폭발하한계의 25% 이하에서 경보, 독성가스는 TWA 이하에서 경보</li><li>설치 위치: 공기보다 무거운 가스(프로판·부탄)는 바닥 가까이(30cm 이내), 가벼운 가스(수소·메탄)는 천장 가까이</li><li>용기 보관: 40℃ 이하, 직사광선·화기 피함, 전도 방지 체인, 밸브 보호캡</li><li>통풍·환기, 점화원 관리, 방폭 전기기기</li><li>밸브는 천천히 열기, 누출 확인은 비눗물</li><li>가스 용기 색 (일부): 산소 녹색, 수소 주황색, 아세틸렌 황색, 액화탄산가스 청색, 액화암모니아 백색, 액화염소 갈색, LPG 회색</li></ul>',
+ exam:'<ul><li>경보 설정값 LEL 25%</li><li>가스 용기 색 (산소 녹색, 수소 주황색, 아세틸렌 황색)</li></ul>',
+ law:'안전보건기준규칙 제232조(폭발 또는 화재 등의 예방), 고압가스 안전관리법 시행규칙(용기 도색).'},
+
+{id:'b7',title:'7. 유해화학물질 취급시 주의사항 · 물질안전보건자료(MSDS)',
+ core:'MSDS {{16개 항목}} / 사업주 {{게시·비치·교육·경고표지}} / 취급 {{국소배기·보호구·세안·샤워설비·밀폐 용기·라벨}}',
+ def:'<ul><li><b>물질안전보건자료(MSDS)</b>: 화학물질의 유해성·위험성, 취급 방법, 응급조치 등을 적은 자료. 화학물질을 양도·제공하는 자가 작성해 제공합니다.</li></ul>',
+ detail:'<b>MSDS 16개 항목</b><ol><li>화학제품과 회사에 관한 정보</li><li>{{유해성·위험성}}</li><li>구성성분의 명칭 및 함유량</li><li>{{응급조치 요령}}</li><li>폭발·화재 시 대처방법</li><li>누출 사고 시 대처방법</li><li>취급 및 저장방법</li><li>노출방지 및 개인보호구</li><li>물리화학적 특성</li><li>안정성 및 반응성</li><li>독성에 관한 정보</li><li>환경에 미치는 영향</li><li>폐기 시 주의사항</li><li>운송에 필요한 정보</li><li>법적 규제 현황</li><li>그 밖의 참고사항</li></ol><b>사업주 의무</b><ul><li>MSDS를 취급 근로자가 쉽게 볼 수 있는 장소에 게시·비치</li><li>경고표지(그림문자, 신호어, 유해·위험 문구, 예방조치 문구) 부착</li><li>근로자 MSDS 교육 및 기록</li></ul><b>유해화학물질 취급 주의</b><ul><li>국소배기장치, 밀폐 설비, 보호구(방독마스크·화학장갑·보안경)</li><li>세안설비·비상샤워, 누출 대비 흡착재</li><li>용기 라벨, 다른 용기로 옮기면 다시 표시</li><li>작업장 내 음식물 섭취·흡연 금지</li></ul>',
+ exam:'<ul><li>MSDS 항목 (순서·포함 여부)</li><li>사업주 의무</li></ul>',
+ law:'산업안전보건법 제110조~제116조(물질안전보건자료), 시행규칙 제156조~.'},
+
+{grp:'2-3. 화학물질 취급설비 개념 확인'},
+{id:'b8',title:'8. 각종 장치(고정, 회전 및 안전장치) 종류',
+ core:'고정 장치 {{탑·조(槽)·열교환기·저장탱크·배관}} / 회전 장치 {{펌프·압축기·송풍기·교반기·원심분리기}} / 안전장치 {{안전밸브·파열판·화염방지기·긴급차단밸브·체크밸브·벤트스택·플레어스택}}',
+ def:'<ul><li>화학 공장 설비를 움직임에 따라 나누고, 이상 시 작동하는 안전장치를 정리</li></ul>',
+ detail:'<table><tr><th>구분</th><th>장치</th></tr><tr><td>고정 장치</td><td>반응기, 증류탑, 흡수탑, 저장조(탱크), 열교환기, 배관·밸브</td></tr><tr><td>회전 장치</td><td>펌프, 압축기, 송풍기, 교반기, 원심분리기, 혼합기</td></tr><tr><td>안전장치</td><td>안전밸브, 파열판, 화염방지기, 긴급차단밸브, 체크밸브(역류 방지), 벤트스택, 플레어스택(가연성 가스 연소 처리), 블로다운, 인터록</td></tr></table><ul><li>{{화염방지기}}: 인화성 액체·가스 저장탱크 통기관에 설치, 외부 화염이 탱크 안으로 들어가는 것 차단 (금속망·소결금속)</li><li>{{체크밸브}}: 한 방향으로만 흐르게 (역류 방지)</li><li>{{플레어스택}}: 비상 방출된 가연성 가스를 높은 곳에서 연소시켜 처리</li></ul>',
+ exam:'<ul><li>화염방지기 설치 위치</li></ul>',
+ law:'안전보건기준규칙 제269조(화염방지기의 설치 등).'},
+
+{id:'b9',title:'9. 화학장치(반응기, 정류탑, 열교환기 등) 특성',
+ core:'반응기 {{회분식·반회분식·연속식}} / 이상 {{폭주반응}} → 냉각·반응 중지제·긴급방출 / 증류탑 {{단탑(포종·다공판·밸브)·충전탑}} / 열교환기 {{다관식(shell & tube)·이중관·판형}} 점검 {{부식·누설·스케일}}',
+ def:'<ul><li>화학 공정의 핵심 장치와 각각의 위험 특성</li></ul>',
+ detail:'<b>반응기</b><ul><li>조작 방식: 회분식(한 번에 넣고 반응 후 꺼냄), 반회분식, 연속식</li><li>형태: 교반조형, 관형, 탑형, 유동층형</li><li>{{폭주반응}}: 발열 반응에서 냉각이 부족하면 온도 상승 → 반응 속도 증가 → 더 큰 발열의 악순환 → 압력 급상승·파열</li><li>대책: 냉각 능력 확보, 온도·압력 감시와 인터록, 반응 중지제 투입, 긴급 방출(파열판·안전밸브), 원료 공급 차단</li></ul><b>증류탑(정류탑)</b><ul><li>끓는점 차이로 혼합물 분리</li><li>단탑: 포종탑, 다공판(체판)탑, 밸브탑 / 충전탑: 충전물(라시히 링 등)</li><li>점검: 트레이 부식·막힘, 플러딩(넘침), 압력 손실</li></ul><b>열교환기</b><ul><li>다관식(shell & tube, 가장 많이 씀), 이중관식, 판형, 공랭식</li><li>점검: 튜브 부식·누설, 스케일·오염(열전달 저하), 진동, 개스킷</li></ul>',
+ exam:'<ul><li>폭주반응 정의와 대책</li></ul>',
+ law:'안전보건기준규칙 제273조(계측장치 등의 설치) 등.'},
+
+{id:'b10',title:'10. 화학설비(건조설비 등)의 취급시 주의사항 · 전기설비(계측설비 포함)',
+ core:'특수화학설비 {{발열반응·증류 등 분리·가열로·반응폭주 우려·350℃ 이상 또는 980kPa 이상}} → {{계측장치·자동경보·긴급차단·예비동력원}} / 건조설비 {{위험물 건조 시 독립 단층·폭발구·직접 화염 가열 금지}}',
+ def:'<ul><li><b>특수화학설비</b>: 위험물을 기준량 이상 제조·취급하면서 이상 시 큰 사고가 날 수 있는 설비 (안전보건기준규칙 제273조)</li></ul>',
+ detail:'<b>특수화학설비</b><ul><li>대상: 발열반응 공정의 반응장치, 증류·정류·증발·추출 등 분리 장치, 가열로·가열기, 반응폭주로 이상 화학반응 우려 설비, 온도 350℃ 이상 또는 게이지 압력 980kPa 이상 운전 설비</li><li>필요 장치: 계측장치(온도계·유량계·압력계), {{자동경보장치}}, {{긴급차단장치}}, {{예비동력원}}(정전 대비)</li></ul><b>건조설비</b><ul><li>위험물 건조설비 건축물: 독립된 단층 건물 (또는 최상층·내화구조)</li><li>폭발구(방산구) 설치, 직접 불꽃으로 가열 금지, 온도 측정·조정 장치</li><li>건조 시 생기는 가스·증기·분진의 배출, 내부 청소</li></ul><b>전기·계측설비</b><ul><li>폭발위험장소 방폭 전기기기 (4과목)</li><li>계측기: 온도·압력·유량·액위·가스 검지기 → 이상 시 인터록·경보</li><li>계측기기 정기 교정</li></ul>',
+ exam:'<ul><li>특수화학설비 기준 (350℃, 980kPa)과 필요 장치</li></ul>',
+ law:'안전보건기준규칙 제273조~제276조(특수화학설비), 제280조~제284조(건조설비).'},
+
+{id:'b11',title:'키워드 카드 — 5과목 주요항목 2',tag:'암기',
+ core:'분자량 ÷ 29 / 23·35·60℃ / 20·60·40% / 나트륨 석유·황린 물 / LEL 25% / MSDS 16',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>증기비중 &gt; 1</td><td>{{바닥에 고임}}</td></tr><tr><td>인화점 23℃ 미만, 끓는점 35℃ 이하</td><td>{{에테르·가솔린 등 최위험 인화성 액체}}</td></tr><tr><td>LEL 13% 이하 / 범위 12% 이상</td><td>{{인화성 가스}}</td></tr><tr><td>염산·황산 20%</td><td>{{부식성 산}}</td></tr><tr><td>수산화나트륨 40%</td><td>{{부식성 염기}}</td></tr><tr><td>LD50 경구 300mg/kg</td><td>{{급성독성}}</td></tr><tr><td>카바이드 + 물</td><td>{{아세틸렌}}</td></tr><tr><td>인화칼슘 + 물</td><td>{{포스핀}}</td></tr><tr><td>나트륨·칼륨</td><td>{{석유 속 보관}}</td></tr><tr><td>황린</td><td>{{물속 보관}}</td></tr><tr><td>아세틸렌 용기</td><td>{{아세톤 + 다공성 물질}}</td></tr><tr><td>가스 경보</td><td>{{LEL 25% 이하}}</td></tr><tr><td>산소 용기</td><td>{{녹색}}</td></tr><tr><td>수소 용기</td><td>{{주황색}}</td></tr><tr><td>MSDS 2번 항목</td><td>{{유해성·위험성}}</td></tr><tr><td>탱크 통기관 화염 차단</td><td>{{화염방지기}}</td></tr><tr><td>냉각 부족 악순환</td><td>{{폭주반응}}</td></tr><tr><td>350℃ · 980kPa</td><td>{{특수화학설비}}</td></tr></table>'}
+];
+
+var MN={
+b1:[
+ {k:'÷ 29',s:'"공기는 <b>이십구</b>(29) — 이보다 무거운 가스는 <b>지하로</b>, 가벼운 수소·메탄·암모니아는 <b>하늘로</b>"',m:'증기비중 = {{분자량 ÷ 29}}'}],
+b2:[
+ {k:'23 · 35 · 60',s:'"인화점 <b>23</b>(이삼) 미만은 위험, 끓는점 <b>35</b>(삼오) 이하는 더 위험, <b>60</b>까지가 인화성 액체"',m:'{{23℃ 미만·35℃ 이하}} / {{23℃ 미만·35℃ 초과}} / {{23~60℃}}'},
+ {k:'산 20·60 / 염기 40',s:'"<b>센 산</b>(염산·황산·질산)은 <b>20%</b>만 돼도, <b>약한 산</b>(인산·아세트산·불산)은 <b>60%</b>, <b>염기</b>는 <b>40%</b>"',m:'강산 {{20%}} · 약산 {{60%}} · 염기 {{40%}}'},
+ {k:'13 · 12',s:'"하한 <b>13</b> 이하거나 폭이 <b>12</b> 이상이면 인화성 가스 — 십삼, 십이"',m:'LEL {{13% 이하}} 또는 범위 {{12% 이상}}'}],
+b4:[
+ {k:'나·칼 → 수소 / 카바이드 → 아세틸렌',s:'"<b>나트륨</b>을 물에 넣으면 <b>뽀글뽀글 수소</b>, <b>카바이드</b>(옛날 카바이드 등)에 물 → <b>아세틸렌</b> 불빛"',m:'Na·K + 물 → {{수소}} / CaC₂ + 물 → {{아세틸렌}} / Ca₃P₂ + 물 → {{포스핀}}'}],
+b5:[
+ {k:'나칼 = 석유 / 황린·CS₂ = 물',s:'"<b>물과 싸우는</b> 나트륨·칼륨은 <b>기름</b>에, <b>공기와 싸우는</b> 황린은 <b>물</b>에"',m:'Na·K {{석유 속}} / 황린·이황화탄소 {{물속}}'},
+ {k:'아세틸렌 = 아세톤',s:'"<b>아세</b>틸렌은 <b>아세</b>톤에 녹인다 — 앞 글자가 같다"',m:'아세틸렌 {{아세톤 + 다공성 물질}}'}],
+b6:[
+ {k:'25% · 40℃',s:'"<b>사분의 일</b>(25%)만 차도 울리고, 가스통은 <b>사십 도</b> 넘지 않게"',m:'경보 {{LEL 25% 이하}} / 용기 {{40℃ 이하}}'},
+ {k:'산녹 · 수주 · 아황',s:'"<b>산</b>소는 <b>숲</b>(녹색), <b>수</b>소는 <b>주</b>황, <b>아</b>세틸렌은 <b>황</b>색"',m:'산소 {{녹색}} · 수소 {{주황색}} · 아세틸렌 {{황색}}'}],
+b7:[
+ {k:'MSDS 16',s:'"MSDS는 <b>16</b>장짜리 — 앞부분은 \'누구·무엇이 위험·성분·응급조치\' 순"',m:'1 {{정보}} · 2 {{유해성·위험성}} · 3 {{구성성분}} · 4 {{응급조치}}'}],
+b10:[
+ {k:'350 · 980',s:'"<b>삼백오십 도</b> 또는 <b>구팔공</b>(약 10기압) 넘으면 특수화학설비"',m:'{{350℃ 이상}} 또는 {{980kPa 이상}}'},
+ {k:'계 · 경 · 차 · 예',s:'"<b>계경차예</b> → 재고(계측), 울리고(경보), 끊고(차단), 대비(예비동력)"',m:'{{계측장치}} · {{자동경보}} · {{긴급차단}} · {{예비동력원}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

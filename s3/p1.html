@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3과목 1. 기계공정의 안전</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 3과목 · 기계·기구 및 설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 1. 기계공정의 안전 · 세세항목 17개 → 학습단위 11개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">3과목 목차</a><span class="dis">◀ 이전</span><a href="p2.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s3-p1-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'1-1. 기계공정의 특수성 분석'},
+{id:'a1',title:'1. 설계도(설비 도면, 장비사양서 등) 검토 · 설계도에 따른 안전지침',
+ core:'검토 항목 {{위험점·방호장치·비상정지·접근 공간·잠금장치(LOTO)·전기·배치 동선}} / 원칙 {{설계 단계에서 본질안전}}',
+ def:'<ul><li>설비를 들이거나 바꿀 때 도면·사양서를 보고 위험 요소를 미리 찾아 설계에 반영하는 활동</li></ul>',
+ why:'<ul><li>설치 후에 고치면 비용이 크고 방호가 불완전해지기 쉬워서, 설계 단계에서 본질안전을 반영하는 것이 가장 효과적입니다.</li></ul>',
+ detail:'<b>검토 대상 문서</b>: 설비 배치도, 설비 도면(조립도·부품도), 장비 사양서(용량·속도·압력), 전기 회로도, 공정 흐름도, 제조사 매뉴얼<br><b>검토 항목</b><ul><li>운동 부분의 위험점과 방호장치(덮개·인터록·광전자식 등) 적용 여부</li><li>비상정지 장치 위치·개수, 정지 성능</li><li>정비·청소 시 에너지 차단·잠금(LOTO) 가능 구조</li><li>작업자 접근 통로, 정비 공간, 추락 방지(난간·발판)</li><li>전기(접지·누전차단), 압력·온도 안전장치</li><li>소음·진동·분진 발생원과 대책</li><li>안전인증·자율안전확인 대상 여부</li></ul><b>설계도에 따른 안전지침</b>: 검토 결과를 설비별 안전 작업 기준, 점검표, 표준작업절차서로 만들어 운용',
+ ex:'<ul><li>신규 컨베이어 도면에서 풀리 접선물림점에 덮개가 없음 → 발주 전 덮개 추가 요구</li></ul>',
+ exam:'<ul><li>설계 검토 시 확인할 항목</li></ul>',
+ law:'산업안전보건법 제80조(유해하거나 위험한 기계·기구에 대한 방호조치), 유해위험방지계획서(1과목).'},
+
+{id:'a2',title:'2. 파레토도 · 특성요인도 · 클로즈 분석 · 관리도',
+ core:'{{파레토도}} 크기 순 막대 + 누적선 → 중점 항목 / {{특성요인도}} 어골도, 원인-결과 / {{클로즈 분석}} 2개 이상 요인 교차 / {{관리도}} 시간 추이 + 관리 상·하한',
+ def:'<ul><li>재해·불량 자료를 정리해 원인을 찾는 통계적 분석 도구</li></ul>',
+ detail:'<table><tr><th>도구</th><th>모양·방법</th><th>용도</th></tr><tr><td>{{파레토도}}</td><td>항목을 크기 순으로 막대 정렬 + 누적 비율 꺾은선</td><td>중요한 소수 원인(20%가 80%) 찾기, 중점 관리 대상 결정</td></tr><tr><td>{{특성요인도}}</td><td>결과(특성)를 머리, 원인을 큰 뼈·작은 뼈로 — <b>물고기 뼈(어골도)</b></td><td>재해의 원인과 결과 관계를 계통적으로 정리</td></tr><tr><td>{{클로즈(Close) 분석}}</td><td>2개 이상의 문제 관계를 <b>교차표(크로스)</b>로 분석</td><td>요인 간 상호 관계 파악 (예: 작업 종류 × 시간대)</td></tr><tr><td>{{관리도}}</td><td>시간에 따른 재해·불량 추이를 중심선과 <b>관리 상한·하한</b>으로 표시</td><td>재해 발생 수 관리, 이상 경향 감지</td></tr></table>',
+ ex:'<ul><li>지난해 재해를 형태별로 정렬 → 협착·전도가 70% → 파레토도로 중점 대책 선정</li></ul>',
+ cmp:'<table><tr><th>파레토도</th><th>특성요인도</th></tr><tr><td>무엇이 <b>많은가</b></td><td>왜 <b>일어났나</b></td></tr></table>',
+ exam:'<ul><li>도구 설명 고르기 (특히 클로즈 분석 = 2개 이상 교차)</li></ul>',
+ law:'법령 근거 없음(이론). 1과목 재해 통계와 연결.'},
+
+{id:'a3',title:'3. 공정의 특수성에 따른 위험요인 · 특수 작업의 조건',
+ core:'공정 위험 {{고속 회전·왕복·고압·고온·중량물·자동 기동}} / {{비정형 작업(정비·청소·이상처리)}}에 재해 집중 → {{운전 정지·잠금·표지·감시인}}',
+ def:'<ul><li>공정마다 기계의 움직임, 에너지(전기·압력·열), 재료 특성이 달라 고유한 위험이 생깁니다. 특히 평소와 다른 <b>비정형 작업</b>에서 재해가 많습니다.</li></ul>',
+ detail:'<b>공정 특수성에 따른 위험 예</b><table><tr><th>공정</th><th>대표 위험</th></tr><tr><td>프레스·절곡</td><td>왕복운동 협착</td></tr><tr><td>절삭(선반·밀링)</td><td>회전체 말림, 칩 비래</td></tr><tr><td>사출·압축 성형</td><td>금형 협착, 고온 화상</td></tr><tr><td>컨베이어·자동화</td><td>접선물림, 갑작스러운 기동</td></tr><tr><td>보일러·압력용기</td><td>파열, 증기 화상</td></tr><tr><td>용접</td><td>감전, 화재, 흄</td></tr></table><b>특수 작업(비정형 작업)의 조건</b><ul><li>정비·수리·청소·급유·검사·조정·이물질 제거 등</li><li>기계 <b>운전을 정지</b>하고, 기동장치에 <b>잠금장치</b>·<b>표지판</b> 설치 (LOTO: Lock-out / Tag-out)</li><li>잔류 에너지(압력·스프링·중력) 제거, 하강 방지 안전블록</li><li>운전 중 해야 하면 위험 부위에 덮개·안전장치, 감시인 배치, 신호 방법 결정</li><li>작업허가, 작업 전 위험성 확인, 2인 1조</li></ul>',
+ ex:'<ul><li>컨베이어에 걸린 박스를 운전 중 손으로 빼다 말림 → 정지·잠금 후 제거해야 함</li></ul>',
+ exam:'<ul><li>정비 작업 시 조치 (운전 정지, 잠금, 표지)</li></ul>',
+ law:'산업안전보건기준에 관한 규칙 제92조(정비 등의 작업 시의 운전정지 등), 제93조(방호장치의 해체 금지).'},
+
+{id:'a4',title:'4. 표준안전작업절차서 · 공정도를 활용한 공정분석 기술',
+ core:'절차서 {{작업 순서·단계별 위험·안전조치·보호구·비상조치}} / 공정도 {{○ 가공·⇨ 운반·□ 검사·D 정체·▽ 저장}}',
+ def:'<ul><li><b>표준안전작업절차서(SOP)</b>: 작업을 안전하게 하는 방법을 단계별로 정한 문서</li><li><b>공정분석</b>: 공정도로 작업 흐름을 기록해 낭비와 위험 단계를 찾는 기법 (2과목 4장 공정도 기호)</li></ul>',
+ detail:'<b>표준안전작업절차서 포함 사항</b><ul><li>작업명, 적용 설비, 필요 자격·인원</li><li>작업 순서 (단계별)</li><li>단계별 유해·위험요인과 안전조치</li><li>필요 보호구, 공구, 점검 항목</li><li>이상 발생 시 비상조치</li><li>위험성평가 결과와 연계, 근로자 참여로 작성, 정기 개정</li></ul><b>작성 원칙</b>: 쉬운 말, 그림·사진 활용, 현장 실정 반영, 교육·TBM에 사용<br><b>공정도를 활용한 공정분석</b><ul><li>단순공정분석(작업·검사만), 세밀공정분석(운반·정체·저장 포함), 흐름공정도·흐름선도(배치도 위에 동선)</li><li>운반·정체가 많은 곳 → 지게차·대차 동선이 겹치는 위험 지점 파악</li></ul>',
+ ex:'<ul><li>금형 교체 절차서: 전원 차단 → 잠금·표지 → 안전블록 삽입 → 금형 분리 → …</li></ul>',
+ exam:'<ul><li>공정도 기호</li></ul>',
+ law:'법령 근거 없음(작업계획서는 안전보건기준규칙 제38조).'},
+
+{grp:'1-2. 기계의 위험 안전조건 분석'},
+{id:'a5',title:'5. 기계의 위험요인 · 기계 위험성',
+ core:'운동 형태 {{회전·왕복·직선·진동}} / 기계적 위험 {{협착·끼임·말림·절단·충돌·찔림·비래·분출}} / 비기계적 {{전기·열·소음·화학·방사선}}',
+ def:'<ul><li>기계의 운동 부분, 에너지, 재료에서 생기는 위험. 운동 형태를 보면 위험점을 예측할 수 있습니다.</li></ul>',
+ detail:'<b>운동 형태별 위험</b><table><tr><th>운동</th><th>위험</th><th>예</th></tr><tr><td>회전 운동</td><td>말림, 물림, 접선물림</td><td>축, 롤러, 기어, 벨트</td></tr><tr><td>왕복 운동</td><td>협착, 충돌</td><td>프레스 슬라이드, 셰이퍼</td></tr><tr><td>직선(미끄럼) 운동</td><td>끼임, 충돌</td><td>컨베이어, 테이블</td></tr><tr><td>진동 운동</td><td>진동 장해, 파손</td><td>진동체, 진동 공구</td></tr></table><b>기계적 위험 형태</b>: 협착·끼임, 말림, 절단·베임, 충돌·충격, 찔림, 파편 비래, 유체·고온물 분출, 미끄러짐<br><b>비기계적 위험</b>: 감전, 화상(고온), 소음·진동, 화학물질, 방사선, 화재·폭발<br><b>기계 위험성 평가 시 고려</b>: 사용 목적과 예견 가능한 오사용, 수명주기 전 단계(설치·운전·정비·해체), 작업자 숙련도',
+ exam:'<ul><li>운동 형태와 위험 짝짓기</li></ul>',
+ law:'산업안전보건기준에 관한 규칙 제2편 제1장(기계·기구 등에 의한 위험 예방).'},
+
+{id:'a6',title:'6. 본질적 안전',
+ core:'{{Fool proof}}(실수해도 안전) · {{Fail safe}}(고장 나도 안전) / Fail safe 기능 3단계 {{fail passive(정지) · fail active(경보 후 짧게 운전) · fail operational(계속 운전)}}',
+ def:'<ul><li><b>본질적 안전</b>: 작업자가 실수하거나 기계가 고장 나도 사고로 이어지지 않도록 기계 자체에 안전 기능을 넣는 것</li></ul>',
+ why:'<ul><li>사람의 주의나 교육에 의존하지 않으므로 가장 확실한 안전 대책입니다.</li></ul>',
+ detail:'<b>풀 프루프(Fool proof)</b> — 사람의 실수 대비<ul><li>가드식(인터록 가드: 덮개 열면 정지), 록(lock)식, 트립식(신체가 위험영역 들어가면 정지), 오버런 기구, 밀어내기식, 기동방지(조작 순서 잘못되면 기동 안 됨)</li></ul><b>페일 세이프(Fail safe)</b> — 기계의 고장 대비<table><tr><th>단계</th><th>고장 시 동작</th></tr><tr><td>{{fail passive}}</td><td>부품이 고장 나면 기계가 <b>정지</b> (일반 산업기계 대부분)</td></tr><tr><td>{{fail active}}</td><td>고장 나면 <b>경보</b>를 울리며 짧은 시간 운전 가능</td></tr><tr><td>{{fail operational}}</td><td>고장 나도 다음 정기 보수까지 <b>운전 지속</b> (병렬 구조) — 가장 바람직</td></tr></table><ul><li>구조적 fail safe 예: 다경로 하중 구조, 분할 구조, 교대 구조, 하중 경감 구조</li></ul>',
+ ex:'<ul><li>엘리베이터 로프가 끊어지면 비상 정지장치 작동 → fail safe</li><li>세탁기 문이 열리면 회전 안 함 → fool proof(인터록)</li></ul>',
+ cmp:'<table><tr><th>fail passive</th><th>fail operational</th></tr><tr><td>멈춘다</td><td>계속 돈다</td></tr></table>',
+ exam:'<ul><li>fail safe 3단계 구분</li><li>fool proof 예시 고르기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a7',title:'7. 기계의 일반적인 안전사항과 안전조건',
+ core:'안전화 5가지 {{외형·기능·구조·작업·보전작업}}의 안전화 / 안전율 = {{극한강도 ÷ 허용응력}} = {{파괴하중 ÷ 안전하중}}',
+ def:'<ul><li>기계를 안전하게 만들기 위한 일반 조건. 다섯 가지 측면으로 나눠 봅니다.</li></ul>',
+ detail:'<table><tr><th>안전화</th><th>내용</th></tr><tr><td>{{외형의 안전화}}</td><td>돌출부·회전부에 덮개, 별실·구획 배치, 안전 색채 (예: 기동 버튼 녹색, 정지 버튼 적색, 위험 부위 황색)</td></tr><tr><td>{{기능의 안전화}}</td><td>정전·전압강하 시 오동작 방지, 사용압력 변동 시 안전 — 소극적 대책(이상 시 정지), 적극적 대책(회로 개선으로 오동작 자체 방지)</td></tr><tr><td>{{구조의 안전화}}</td><td>재료 결함, 설계 결함(강도 계산·안전율), 가공 결함(열처리·용접) 방지</td></tr><tr><td>{{작업의 안전화}}</td><td>작업 표준화, 기계 배치·작업 공간, 인터록, 조작 장치 배치</td></tr><tr><td>{{보전작업의 안전화}}</td><td>점검·급유·교체가 쉽고 안전한 구조, 고장 부위 쉽게 발견</td></tr></table><b>안전율(안전계수)</b><ul><li>안전율 = 극한(인장)강도 ÷ 허용응력 = 파괴하중 ÷ 안전(최대사용)하중</li><li>하중 종류별로 정함: 정하중 &lt; 반복하중 &lt; 교번하중 &lt; 충격하중 순으로 안전율을 크게</li></ul>',
+ calc:'인장강도 400MPa, 허용응력 100MPa → 안전율 = 400 ÷ 100 = <b>4</b>',
+ exam:'<ul><li>안전화 종류와 예 짝짓기 (정전 시 오동작 방지 = 기능의 안전화)</li><li>안전율 계산</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a8',title:'8. 유해위험기계기구 종류, 기능과 작동원리',
+ core:'안전인증 기계 {{프레스·전단기·절곡기·크레인·리프트·압력용기·롤러기·사출성형기·고소작업대·곤돌라}} / 자율안전확인 {{연삭기·로봇·혼합기·파쇄기·컨베이어·정비용 리프트·공작기계·목재가공기계·인쇄기}}',
+ def:'<ul><li>법에서 유해·위험하다고 정해 안전인증·자율안전확인·안전검사를 받게 하는 기계·기구·방호장치 (1과목 6장 제도 설명과 연결)</li></ul>',
+ detail:'<b>안전인증 대상 기계 (시행령 제74조)</b><ul><li>프레스, 전단기 및 절곡기, 크레인, 리프트, 압력용기, 롤러기, 사출성형기, 고소작업대, 곤돌라</li></ul><b>안전인증 대상 방호장치</b><ul><li>프레스 및 전단기 방호장치, 양중기용 과부하방지장치, 보일러·압력용기 압력방출용 안전밸브, 압력용기 압력방출용 파열판, 절연용 방호구 및 활선작업용 기구, 방폭구조 전기기계·기구 및 부품, 추락·낙하·붕괴 위험 방지용 가설기자재, 충돌·협착 위험 방지용 산업용 로봇 방호장치</li></ul><b>자율안전확인 대상 기계 (시행령 제77조)</b><ul><li>연삭기·연마기(휴대형 제외), 산업용 로봇, 혼합기, 파쇄기·분쇄기, 식품가공용 기계, 컨베이어, 자동차정비용 리프트, 공작기계(선반·드릴기·평삭·형삭기·밀링), 고정형 목재가공용 기계(둥근톱·대패·루타기·띠톱·모떼기), 인쇄기</li></ul><b>자율안전확인 대상 방호장치</b><ul><li>아세틸렌·가스집합 용접장치용 안전기, 교류아크용접기용 자동전격방지기, 롤러기 급정지장치, 연삭기 덮개, 목재가공용 둥근톱 반발예방장치·날접촉예방장치, 동력식 수동대패용 칼날접촉방지장치, 일부 가설기자재</li></ul><span style="color:var(--sub);font-size:13px">※ 대상 목록은 시행령 개정으로 바뀔 수 있어 교재로 확인. 기계별 작동원리와 방호장치는 3장에서.</span>',
+ cmp:'<table><tr><th>안전인증</th><th>자율안전확인</th></tr><tr><td>프레스·크레인·압력용기 등 고위험</td><td>연삭기·컨베이어·로봇 등</td></tr><tr><td>프레스 방호장치, 과부하방지장치, 안전밸브</td><td>안전기, 자동전격방지기, 연삭기 덮개</td></tr></table>',
+ exam:'<ul><li>안전인증 대상인지 자율안전확인 대상인지 구분 (자주 출제)</li></ul>',
+ law:'산업안전보건법 제84조·제89조, 시행령 제74조·제77조.'},
+
+{id:'a9',title:'9. 기계 방호장치 · 위험점',
+ core:'방호장치 {{격리형·위치제한형·접근거부형·접근반응형·포집형}} / 위험점 6 {{협착점·끼임점·절단점·물림점·접선물림점·회전말림점}}',
+ def:'<ul><li><b>방호장치</b>: 위험 부위로부터 작업자를 보호하는 장치</li><li><b>위험점</b>: 기계의 운동 부분에서 신체가 끼이거나 말려 들어가는 지점</li></ul>',
+ why:'<ul><li>위험점의 종류를 알면 어떤 방호장치가 맞는지 바로 정할 수 있습니다.</li></ul>',
+ detail:'<b>방호장치의 분류 (방호 원리)</b><table><tr><th>형식</th><th>원리</th><th>예</th></tr><tr><td>{{격리형}}</td><td>위험 부위를 덮개·울로 차단</td><td>완전차단형 덮개, 안전방책(울타리)</td></tr><tr><td>{{위치제한형}}</td><td>조작자의 손 위치를 위험 범위 밖으로 제한</td><td>프레스 양수조작식</td></tr><tr><td>{{접근거부형}}</td><td>위험 부위에 접근하면 강제로 밀어냄</td><td>손쳐내기식(수인식 포함)</td></tr><tr><td>{{접근반응형}}</td><td>접근을 감지하면 정지</td><td>광전자식(감응식)</td></tr><tr><td>{{포집형}}</td><td>위험원이 튀어나오는 것을 잡음</td><td>연삭숫돌 덮개, 둥근톱 반발예방장치</td></tr></table><b>위험점 6가지</b><table><tr><th>위험점</th><th>형성</th><th>예</th></tr><tr><td>{{협착점}}</td><td><b>왕복</b> 운동부 + 고정부</td><td>프레스, 전단기, 성형기</td></tr><tr><td>{{끼임점}}</td><td><b>회전</b> 운동부 + 고정부</td><td>연삭숫돌과 작업대, 교반기 날개와 하우징, 반복동작 링크</td></tr><tr><td>{{절단점}}</td><td>회전하는 날 자체</td><td>둥근톱, 띠톱, 밀링 커터</td></tr><tr><td>{{물림점}}</td><td>회전체 <b>2개</b>가 서로 반대로 맞물림</td><td>롤러, 기어</td></tr><tr><td>{{접선물림점}}</td><td>회전부의 <b>접선 방향</b>으로 물려 들어감</td><td>V벨트와 풀리, 체인과 스프로킷, 랙과 피니언</td></tr><tr><td>{{회전말림점}}</td><td>회전하는 물체에 말려 들어감</td><td>회전축, 드릴, 커플링, 돌출 고정나사</td></tr></table>',
+ ex:'<ul><li>롤러기 두 롤 사이 → 물림점 → 급정지장치 / 벨트와 풀리 → 접선물림점 → 덮개</li></ul>',
+ cmp:'<table><tr><th>협착점</th><th>끼임점</th></tr><tr><td>왕복 + 고정</td><td>회전 + 고정</td></tr></table><table><tr><th>물림점</th><th>접선물림점</th></tr><tr><td>회전체 둘이 맞물림</td><td>회전체와 직선(벨트·체인) 접선</td></tr></table>',
+ exam:'<ul><li>위험점 이름과 예 짝짓기 (매회 출제 수준)</li><li>방호장치 형식 분류</li></ul>',
+ law:'안전보건기준규칙 제87조(원동기·회전축 등의 위험 방지).'},
+
+{id:'a10',title:'10. 설비보전의 개념 · 기계 작동 원리 분석',
+ core:'{{사후보전(BM)}} 고장 후 / {{예방보전(PM)}} 시간기준(TBM)·상태기준(CBM) / {{개량보전(CM)}} 고장 안 나게 개선 / {{보전예방(MP)}} 설계 단계 / {{TPM}} 전원 참가',
+ def:'<ul><li><b>설비보전</b>: 설비가 고장 없이 제 성능을 내도록 점검·정비·개선하는 활동</li></ul>',
+ detail:'<table><tr><th>보전 방식</th><th>내용</th></tr><tr><td>{{사후보전(BM)}}</td><td>고장 난 뒤 수리 — 중요도 낮은 설비</td></tr><tr><td>{{예방보전(PM)}}</td><td>고장 나기 전 정기 점검·교체 — 시간기준보전(TBM), 상태기준보전(CBM, 진동·온도 등 상태 감시 = 예지보전)</td></tr><tr><td>{{개량보전(CM)}}</td><td>고장이 잘 나는 부분을 개선해 수명·보전성 향상</td></tr><tr><td>{{보전예방(MP)}}</td><td>설계 단계부터 고장 없고 보전이 쉬운 설비로</td></tr><tr><td>생산보전</td><td>위 방식을 경제적으로 조합</td></tr><tr><td>{{TPM}}(종합적 생산보전)</td><td>설비 효율 최대화를 위해 전원 참가 (자주보전 포함)</td></tr></table><b>기계 작동 원리 분석</b><ul><li>동력원(전동기·유압·공압) → 전달(축·벨트·기어·링크) → 작업부(공구·금형) 흐름으로 분석</li><li>각 단계의 위험점과 에너지원 파악 → 방호장치·잠금 위치 결정</li></ul>',
+ ex:'<ul><li>모터 진동값이 기준을 넘으면 베어링 교체 → 상태기준보전(CBM)</li></ul>',
+ cmp:'<table><tr><th>개량보전</th><th>보전예방</th></tr><tr><td>있는 설비를 고침</td><td>설계 단계에서 예방</td></tr></table>',
+ exam:'<ul><li>보전 방식 정의 구분</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a11',title:'키워드 카드 — 3과목 주요항목 1',tag:'암기',
+ core:'파레토·특성요인·{{클로즈}}·관리도 / fail {{passive·active·operational}} / 위험점 6',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>물고기 뼈</td><td>{{특성요인도}}</td></tr><tr><td>2개 이상 교차표</td><td>{{클로즈 분석}}</td></tr><tr><td>관리 상·하한</td><td>{{관리도}}</td></tr><tr><td>정비 시 잠금·표지</td><td>{{LOTO}}</td></tr><tr><td>고장 시 정지</td><td>{{fail passive}}</td></tr><tr><td>고장 나도 계속 운전</td><td>{{fail operational}}</td></tr><tr><td>정전 시 오동작 방지</td><td>{{기능의 안전화}}</td></tr><tr><td>극한강도 ÷ 허용응력</td><td>{{안전율}}</td></tr><tr><td>프레스·크레인·압력용기</td><td>{{안전인증 대상}}</td></tr><tr><td>연삭기·컨베이어·로봇</td><td>{{자율안전확인 대상}}</td></tr><tr><td>양수조작식</td><td>{{위치제한형}}</td></tr><tr><td>광전자식</td><td>{{접근반응형}}</td></tr><tr><td>손쳐내기식</td><td>{{접근거부형}}</td></tr><tr><td>연삭숫돌 덮개</td><td>{{포집형}}</td></tr><tr><td>프레스 왕복 + 고정</td><td>{{협착점}}</td></tr><tr><td>연삭숫돌 + 작업대</td><td>{{끼임점}}</td></tr><tr><td>롤러 두 개</td><td>{{물림점}}</td></tr><tr><td>V벨트 + 풀리</td><td>{{접선물림점}}</td></tr><tr><td>회전축·드릴</td><td>{{회전말림점}}</td></tr><tr><td>상태 감시 보전</td><td>{{CBM(예지보전)}}</td></tr></table>'}
+];
+
+var MN={
+a2:[
+ {k:'파 · 특 · 클 · 관',s:'"<b>파</b>레토는 <b>막대 키 순서</b>, <b>특</b>성요인은 <b>생선 뼈</b>, <b>클</b>로즈는 <b>크로스(×)</b> 교차표, <b>관</b>리도는 <b>심전도</b>처럼 시간 따라 선"',m:'{{파레토도}} · {{특성요인도}} · {{클로즈 분석}} · {{관리도}}'}],
+a3:[
+ {k:'LOTO = 잠그고 붙이고',s:'"<b>Lock</b>(자물쇠) + <b>Tag</b>(이름표) — 내가 정비 중이니 아무도 켜지 마!"',m:'정비 시 {{운전 정지 · 잠금장치 · 표지판}}'}],
+a6:[
+ {k:'passive · active · operational',s:'"고장 나면 <b>멈추고</b>(passive, 수동적), <b>울며 버티고</b>(active, 경보), <b>끝까지 달린다</b>(operational, 운전 지속) — 뒤로 갈수록 좋다"',m:'{{정지}} · {{경보 후 짧게 운전}} · {{운전 지속}}'}],
+a7:[
+ {k:'외 · 기 · 구 · 작 · 보',s:'"<b>외기구</b>(바깥 기구)로 <b>작보</b>(작업 보수)" — 겉모습, 기능, 구조, 작업, 보전',m:'{{외형}} · {{기능}} · {{구조}} · {{작업}} · {{보전작업}}의 안전화'},
+ {k:'안전율 = 극한 ÷ 허용',s:'"<b>끊어지는 힘</b>을 <b>쓰는 힘</b>으로 나눈다 — 몇 배 여유가 있나"',m:'안전율 = {{극한강도 ÷ 허용응력}}'}],
+a8:[
+ {k:'인증 = 프·전·크·리·압·롤·사·고·곤',s:'"<b>프전크리</b>(프렌치 크리스마스) <b>압롤사</b>(압력 롤 사진) <b>고곤</b>(고공 곤돌라)" — 9가지',m:'{{프레스·전단기·크레인·리프트·압력용기·롤러기·사출성형기·고소작업대·곤돌라}}'}],
+a9:[
+ {k:'격 · 위 · 거 · 반 · 포',s:'"<b>격</b>리하고, <b>위</b>치 묶고, <b>거</b>부(밀어내고), <b>반</b>응(감지해 멈추고), <b>포</b>집(튀는 것 잡고)"',m:'{{격리형}} · {{위치제한형}} · {{접근거부형}} · {{접근반응형}} · {{포집형}}'},
+ {k:'협 · 끼 · 절 · 물 · 접 · 회',s:'"<b>협</b>(왕복 프레스) <b>끼</b>(회전 + 벽) <b>절</b>(톱날) <b>물</b>(롤러 두 개가 깨물기) <b>접</b>(벨트가 바퀴에 감기는 선) <b>회</b>(축에 머리카락 감김)"',m:'{{협착점}} · {{끼임점}} · {{절단점}} · {{물림점}} · {{접선물림점}} · {{회전말림점}}'}],
+a10:[
+ {k:'B · P · C · MP',s:'"<b>B</b>reak(고장 나면 고침) · <b>P</b>revent(미리) · <b>C</b>orrect(고쳐서 개선) · <b>M</b>aintenance <b>P</b>revention(설계부터)"',m:'{{사후}} · {{예방}} · {{개량}} · {{보전예방}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

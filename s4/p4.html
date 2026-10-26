@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4과목 4. 전기 방폭 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 4과목 · 전기설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 4. 전기 방폭 관리 · 세세항목 7개 → 학습단위 8개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">4과목 목차</a><a href="p3.html">◀ 이전</a><a href="p5.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s4-p4-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'4-1. 전기방폭설비'},
+{id:'d1',title:'1. 방폭구조의 종류 및 특징',
+ core:'{{내압(d)}} 내부 폭발 견딤·화염 차단 / {{압력(p)}} 보호가스 압입 / {{유입(o)}} 기름 속 / {{안전증(e)}} 불꽃·고온 안 생기게 / {{본질안전(i)}} 에너지가 착화 이하 / {{충전(q)}} 모래 / {{몰드(m)}} 수지 / {{비점화(n)}} 2종용',
+ def:'<ul><li><b>방폭구조</b>: 폭발성 가스·증기·분진이 있는 장소에서 전기기기가 점화원이 되지 않도록 만든 구조</li></ul>',
+ why:'<ul><li>스위치 불꽃, 모터 표면 열이 인화성 가스에 불을 붙일 수 있으므로, 불꽃·열을 가두거나, 가스를 막거나, 에너지를 낮춥니다.</li></ul>',
+ detail:'<table><tr><th>구조</th><th>기호</th><th>원리</th></tr><tr><td>{{내압 방폭구조}}</td><td>d</td><td>용기 내부에서 폭발해도 용기가 견디고, 틈새로 화염이 외부로 나가지 않게 (화염일주한계)</td></tr><tr><td>{{압력 방폭구조}}</td><td>p</td><td>용기 안에 깨끗한 공기·불활성가스를 압입해 외부 가스 유입 차단</td></tr><tr><td>{{유입 방폭구조}}</td><td>o</td><td>불꽃 발생부를 기름 속에 넣음</td></tr><tr><td>{{안전증 방폭구조}}</td><td>e</td><td>정상 운전 중 불꽃·아크·고온이 생기지 않도록 구조상·온도상 안전도를 높임</td></tr><tr><td>{{본질안전 방폭구조}}</td><td>ia, ib</td><td>정상·사고 시 불꽃·열 에너지가 최소착화에너지 이하 — 계측·통신 소전력 회로</td></tr><tr><td>{{충전 방폭구조}}</td><td>q</td><td>용기를 모래 등 충전물로 채움</td></tr><tr><td>{{몰드 방폭구조}}</td><td>m</td><td>불꽃 부분을 수지(컴파운드)로 밀봉</td></tr><tr><td>{{비점화 방폭구조}}</td><td>n</td><td>정상 운전 시 점화하지 않음 — 2종 장소용</td></tr><tr><td>특수 방폭구조</td><td>s</td><td>위 외의 방법으로 시험 확인</td></tr></table>',
+ ex:'<ul><li>도장 공장 조명 → 내압 방폭형 등기구 / 가스 탱크 안 액위계 → 본질안전형</li></ul>',
+ cmp:'<table><tr><th>내압(d)</th><th>압력(p)</th></tr><tr><td>폭발을 안에 가둠</td><td>가스가 아예 못 들어오게</td></tr></table>',
+ exam:'<ul><li>방폭구조 기호와 원리 짝짓기 (매회 출제 수준)</li></ul>',
+ law:'안전보건기준규칙 제311조(폭발위험장소에서 사용하는 전기기계·기구의 선정), KS C IEC 60079 시리즈.'},
+
+{id:'d2',title:'2. 방폭구조 선정 및 유의사항',
+ core:'{{0종}} → {{본질안전 ia}}(특수) / {{1종}} → {{내압·압력·유입·안전증·본질안전·충전·몰드}} / {{2종}} → 0·1종용 + {{비점화 n}} / 선정 시 {{위험장소·가스그룹·온도등급}} 일치',
+ def:'<ul><li>위험장소 등급과 가스 종류에 맞는 방폭기기를 골라야 합니다.</li></ul>',
+ detail:'<table><tr><th>위험장소</th><th>사용 가능한 방폭구조</th></tr><tr><td>{{0종}}</td><td>본질안전(ia), 특수(0종용으로 인증된 것)</td></tr><tr><td>{{1종}}</td><td>내압(d), 압력(p), 유입(o), 안전증(e), 본질안전(ia·ib), 충전(q), 몰드(m)</td></tr><tr><td>{{2종}}</td><td>0종·1종용 모두 + 비점화(n)</td></tr></table><b>선정 시 유의사항</b><ul><li>위험장소 등급(0·1·2종 / 20·21·22종) 판정</li><li>가스·증기의 그룹(IIA·IIB·IIC)과 발화온도에 맞는 온도등급(T1~T6) 선택</li><li>설치 환경(부식·습기·진동), 배선 방법(내압 전선관·케이블 그랜드)</li><li>방폭 성능을 해치는 개조 금지, 정기 점검(나사 풀림, 틈새, 패킹)</li></ul>',
+ exam:'<ul><li>0종 장소에 쓸 수 있는 방폭구조 = 본질안전(ia)</li></ul>',
+ law:'안전보건기준규칙 제311조, KS C IEC 60079-14.'},
+
+{id:'d3',title:'3. 방폭형 전기기기 (표시 읽기)',
+ core:'표시 예 {{Ex d IIB T4}} = 방폭 · 내압 · 가스그룹 IIB · 온도등급 T4 / 기기그룹 {{I 광산 · II 가스 · III 분진}} / {{EPL Ga·Gb·Gc}}',
+ def:'<ul><li>방폭기기 명판의 기호를 읽으면 어디에 쓸 수 있는지 알 수 있습니다.</li></ul>',
+ detail:'<b>표시 순서 예: Ex d IIB T4 Gb</b><table><tr><th>기호</th><th>뜻</th></tr><tr><td>Ex</td><td>방폭기기</td></tr><tr><td>d</td><td>방폭구조 (내압)</td></tr><tr><td>IIB</td><td>가스 그룹</td></tr><tr><td>T4</td><td>온도등급 (최고표면온도 135℃ 이하)</td></tr><tr><td>Gb</td><td>기기보호수준(EPL) — 1종 장소용</td></tr></table><b>기기 그룹</b>: I (탄광), II (가스·증기), III (분진)<br><b>기기보호수준(EPL)</b>: Ga(0종) · Gb(1종) · Gc(2종) / 분진은 Da · Db · Dc',
+ exam:'<ul><li>표시 기호 해석</li></ul>',
+ law:'KS C IEC 60079-0.'},
+
+{grp:'4-2. 전기방폭 사고예방 및 대응'},
+{id:'d4',title:'4. 전기폭발등급',
+ core:'가스그룹 {{IIA(MESG 0.9mm 이상)·IIB(0.5~0.9mm)·IIC(0.5mm 이하, 가장 위험)}} / IIC = {{수소·아세틸렌·이황화탄소}} / 온도등급 {{T1 450 · T2 300 · T3 200 · T4 135 · T5 100 · T6 85℃}}',
+ def:'<ul><li><b>폭발등급</b>: 가스가 좁은 틈새로 화염을 얼마나 잘 통과시키는지(최대안전틈새 MESG)로 나눈 등급</li><li><b>온도등급</b>: 기기 표면이 올라갈 수 있는 최고온도 등급 — 가스의 발화온도보다 낮아야 함</li></ul>',
+ detail:'<b>가스 그룹 (최대안전틈새 MESG 기준)</b><table><tr><th>그룹</th><th>MESG</th><th>대표 가스</th></tr><tr><td>{{IIA}}</td><td>0.9mm 이상</td><td>프로판, 메탄(IIA 계열), 가솔린, 아세톤</td></tr><tr><td>{{IIB}}</td><td>0.5mm 초과 0.9mm 미만</td><td>에틸렌, 에테르</td></tr><tr><td>{{IIC}}</td><td>0.5mm 이하</td><td>{{수소, 아세틸렌, 이황화탄소}}</td></tr></table><ul><li>틈새가 작을수록(IIC) 화염이 잘 빠져나가 위험 → IIC용 기기는 IIA·IIB에도 사용 가능</li></ul><b>온도등급</b><table><tr><th>등급</th><th>최고표면온도</th></tr><tr><td>T1</td><td>450℃</td></tr><tr><td>T2</td><td>300℃</td></tr><tr><td>T3</td><td>200℃</td></tr><tr><td>T4</td><td>135℃</td></tr><tr><td>T5</td><td>100℃</td></tr><tr><td>T6</td><td>85℃</td></tr></table><ul><li>가스 발화온도보다 낮은 온도등급 기기를 선택 (T6이 가장 엄격)</li></ul>',
+ exam:'<ul><li>IIC 대표 가스 (수소·아세틸렌)</li><li>온도등급 숫자</li></ul>',
+ law:'KS C IEC 60079-0, -20-1. <span style="color:var(--sub)">옛 국내 등급(1·2·3등급)은 현행 IIA·IIB·IIC와 대응.</span>'},
+
+{id:'d5',title:'5. 위험장소 선정',
+ core:'가스 {{0종(지속·장시간 존재) · 1종(정상 작동 중 생성 가능) · 2종(이상 시에만 단시간)}} / 분진 {{20종 · 21종 · 22종}} / 예 0종 {{탱크·용기 내부}}, 1종 {{벤트·맨홀 주변}}, 2종 {{개스킷·패킹 주변}}',
+ def:'<ul><li><b>폭발위험장소</b>: 폭발성 분위기가 존재할 가능성(빈도·지속시간)에 따라 등급을 나눈 장소</li></ul>',
+ detail:'<b>가스·증기 위험장소</b><table><tr><th>등급</th><th>뜻</th><th>예</th></tr><tr><td>{{0종 장소}}</td><td>폭발성 분위기가 연속적·장기간 또는 빈번하게 존재</td><td>인화성 액체 탱크·용기 내부의 액면 위 공간</td></tr><tr><td>{{1종 장소}}</td><td>정상 작동 중 폭발성 분위기가 생길 수 있음</td><td>탱크 통기구(벤트)·맨홀 주변, 샘플링 지점</td></tr><tr><td>{{2종 장소}}</td><td>정상 작동 중에는 없고, 이상 시에만 단시간 존재</td><td>플랜지·개스킷·패킹 주변, 1종 장소 주변</td></tr></table><b>분진 위험장소</b>: 20종(연속 존재) · 21종(정상 작동 중 생성 가능) · 22종(이상 시 단시간)<br><b>선정 절차</b>: 누출원 파악 → 누출 등급(연속·1차·2차) → 환기 정도·가용성 → 위험장소 종류·범위 결정 → 도면 작성',
+ exam:'<ul><li>장소 예와 등급 짝짓기 (탱크 내부 = 0종)</li></ul>',
+ law:'안전보건기준규칙 제230조(폭발위험이 있는 장소의 설정 및 관리), KS C IEC 60079-10-1.'},
+
+{id:'d6',title:'6. 정전기방지 대책 (방폭 관점)',
+ core:'폭발위험장소의 정전기 대책 {{접지·본딩·유속 제한·가습·대전방지 보호구·제전기·도전성 바닥}} / 인화성 액체 주입 {{본딩·접지 후 저속 주입·정치 시간}}',
+ def:'<ul><li>폭발위험장소에서는 정전기 방전이 가장 흔한 점화원이므로 3장의 대책을 모두 적용합니다.</li></ul>',
+ detail:'<ul><li>설비: 탱크·배관·드럼·탱크로리 접지와 본딩</li><li>공정: 배관 내 유속 제한, 주입 시 노즐을 바닥까지 넣어 낙하·분출 방지, 정치 시간 후 검척</li><li>환경: 가습(70% 이상), 도전성 바닥</li><li>사람: 대전방지 안전화·제전복, 출입 전 인체 정전기 제거 장치</li><li>재료: 대전방지 처리 용기·호스, 도전성 재료</li><li>제전기: 방사선식 등 방폭 장소용</li></ul>',
+ exam:'<ul><li>인화성 액체 취급 시 정전기 대책</li></ul>',
+ law:'안전보건기준규칙 제325조.'},
+
+{id:'d7',title:'7. 절연저항 · 접지저항 · 정전용량 측정',
+ core:'절연저항 {{메거(절연저항계)}} — 저압 {{SELV·PELV 0.5MΩ / FELV·500V 이하 1.0MΩ / 500V 초과 1.0MΩ}} 이상 / 접지저항 {{3전극법(전위차계법)}}, 보조극 {{약 10m 간격 일직선}} / 정전용량 {{LCR 미터}}',
+ def:'<ul><li>전기설비가 안전한지 숫자로 확인하는 측정. 절연이 나빠지면 누전, 접지가 나빠지면 감전 위험이 커집니다.</li></ul>',
+ detail:'<b>절연저항 측정</b><ul><li>절연저항계(메거)로 전로와 대지 사이, 선간 측정 (전원 차단 상태)</li><li>저압 전로 절연저항 기준 (KEC)</li></ul><table><tr><th>전로 사용전압</th><th>시험전압(DC)</th><th>절연저항</th></tr><tr><td>SELV, PELV</td><td>250V</td><td>{{0.5MΩ 이상}}</td></tr><tr><td>FELV, 500V 이하</td><td>500V</td><td>{{1.0MΩ 이상}}</td></tr><tr><td>500V 초과</td><td>1,000V</td><td>{{1.0MΩ 이상}}</td></tr></table><ul><li>측정이 곤란하면 누설전류 1mA 이하로 관리</li></ul><b>접지저항 측정</b><ul><li>3전극법(전위차계법): 측정 접지극(E), 전위 보조극(P), 전류 보조극(C)을 일직선으로 약 10m 간격 배치</li><li>접지저항이 낮을수록 고장 전류가 잘 흘러 차단기가 빨리 동작</li></ul><b>정전용량 측정</b>: 정전용량계(LCR 미터)로 측정 → 정전기 방전 에너지 계산(½CV²)에 사용',
+ exam:'<ul><li>절연저항 기준값 (KEC)</li><li>접지저항 측정 방법</li></ul>',
+ law:'한국전기설비규정(KEC) 132(전로의 절연저항). <span style="color:var(--sub)">옛 기준(150V 이하 0.1MΩ 등)과 다름.</span>'},
+
+{id:'d8',title:'키워드 카드 — 4과목 주요항목 4',tag:'암기',
+ core:'d·p·o·e·i·q·m·n / 0종 {{ia}} / IIC {{수소·아세틸렌}} / T4 {{135℃}}',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>내부 폭발에 견딤</td><td>{{내압 d}}</td></tr><tr><td>보호가스 압입</td><td>{{압력 p}}</td></tr><tr><td>기름 속</td><td>{{유입 o}}</td></tr><tr><td>안전도 증가</td><td>{{안전증 e}}</td></tr><tr><td>에너지 착화 이하</td><td>{{본질안전 i}}</td></tr><tr><td>모래</td><td>{{충전 q}}</td></tr><tr><td>수지 밀봉</td><td>{{몰드 m}}</td></tr><tr><td>2종 전용</td><td>{{비점화 n}}</td></tr><tr><td>0종 장소</td><td>{{본질안전 ia}}</td></tr><tr><td>MESG 0.5mm 이하</td><td>{{IIC}}</td></tr><tr><td>T1 / T6</td><td>{{450℃ / 85℃}}</td></tr><tr><td>탱크 내부</td><td>{{0종}}</td></tr><tr><td>벤트 주변</td><td>{{1종}}</td></tr><tr><td>개스킷 주변</td><td>{{2종}}</td></tr><tr><td>분진 연속</td><td>{{20종}}</td></tr><tr><td>메거</td><td>{{절연저항계}}</td></tr><tr><td>E · P · C 10m</td><td>{{3전극법 접지저항}}</td></tr></table>'}
+];
+
+var MN={
+d1:[
+ {k:'d · p · o · e · i · q · m · n',s:'"<b>d</b>(덮개 두꺼운 금고) · <b>p</b>(pressure 바람 불어넣기) · <b>o</b>(oil 기름) · <b>e</b>(enhanced 안전 강화) · <b>i</b>(intrinsic 본래 약한 전기) · <b>q</b>(quartz 모래) · <b>m</b>(mould 수지) · <b>n</b>(non-sparking 불꽃 없음)"',m:'{{내압}} · {{압력}} · {{유입}} · {{안전증}} · {{본질안전}} · {{충전}} · {{몰드}} · {{비점화}}'}],
+d2:[
+ {k:'0종 = 본질안전',s:'"가스 속에 <b>잠겨 있는</b> 곳(0종)엔 <b>원래부터 약한 전기</b>(본질안전 ia)만"',m:'0종 {{ia}} / 2종 {{+ n}}'}],
+d4:[
+ {k:'A · B · C = 순한 → 사나운',s:'"<b>A</b>는 순한 프로판, <b>C</b>는 사나운 <b>수소·아세틸렌</b> — 틈이 좁아도(0.5mm↓) 불이 빠져나간다"',m:'IIA {{0.9mm↑}} · IIB · IIC {{0.5mm↓ 수소·아세틸렌}}'},
+ {k:'450 · 300 · 200 · 135 · 100 · 85',s:'"<b>사오공</b>(450) 오븐 → <b>삼백</b> → <b>이백</b> → <b>백삼오</b> → <b>백</b>(물 끓는점) → <b>팔오</b>(사우나)" — T가 클수록 차갑고 엄격',m:'T1 {{450}} · T2 {{300}} · T3 {{200}} · T4 {{135}} · T5 {{100}} · T6 {{85}}℃'}],
+d5:[
+ {k:'0 안 · 1 입구 · 2 이음새',s:'"<b>0종</b>은 탱크 <b>안</b>, <b>1종</b>은 숨 쉬는 <b>입구</b>(벤트·맨홀), <b>2종</b>은 가끔 새는 <b>이음새</b>(개스킷)"',m:'{{0종 내부}} · {{1종 벤트·맨홀}} · {{2종 플랜지·패킹}}'}],
+d7:[
+ {k:'0.5 · 1.0 · 1.0',s:'"아주 낮은 전압(SELV)만 <b>반</b>(0.5), 나머지는 다 <b>1</b>MΩ"',m:'SELV·PELV {{0.5MΩ}} / 그 외 {{1.0MΩ}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

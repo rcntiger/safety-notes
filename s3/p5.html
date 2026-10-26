@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3과목 5. 설비진단 및 검사</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 3과목 · 기계·기구 및 설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 5. 설비진단 및 검사 · 세세항목 9개 → 학습단위 8개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">3과목 목차</a><a href="p4.html">◀ 이전</a><a href="../s4/index.html">4과목 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s3-p5-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'5-1. 비파괴검사의 종류 및 특징'},
+{id:'e1',title:'1. 비파괴검사 개요 · 육안검사 · 누설검사',
+ core:'비파괴검사 = 제품을 {{부수지 않고}} 결함 확인 / {{육안(VT)}} 가장 기본, 표면 / {{누설(LT)}} 기밀성 — 비눗물·헬륨·가압·진공',
+ def:'<ul><li><b>비파괴검사(NDT)</b>: 재료나 제품을 손상시키지 않고 내부·표면의 결함(균열, 기공, 부식 등)을 찾아내는 검사</li></ul>',
+ why:'<ul><li>압력용기·배관·크레인처럼 사용 중인 설비는 잘라 볼 수 없으므로, 부수지 않고 결함을 찾아야 사고를 미리 막을 수 있습니다.</li></ul>',
+ detail:'<b>검사 위치에 따른 분류</b><table><tr><th>표면 결함</th><th>내부 결함</th></tr><tr><td>육안(VT), 침투(PT), 자기탐상(MT), 와전류(ET)</td><td>초음파(UT), 방사선투과(RT)</td></tr></table><b>육안검사(VT, Visual Test)</b><ul><li>눈이나 확대경·내시경·카메라로 표면을 관찰</li><li>가장 간단하고 기본, 모든 검사의 첫 단계</li><li>표면 균열·부식·변형·용접 외관 확인 / 내부 결함은 알 수 없음</li></ul><b>누설검사(LT, Leak Test)</b><ul><li>압력용기·배관·탱크의 기밀성(새는지) 확인</li><li>방법: 가압 후 비눗물(기포), 압력 변화 측정, 헬륨·할로겐 가스 감지, 진공법</li></ul>',
+ exam:'<ul><li>표면 검사 vs 내부 검사 분류</li></ul>',
+ law:'안전검사 고시(압력용기 등 검사 방법).'},
+
+{id:'e2',title:'2. 침투검사 (PT)',
+ core:'{{표면에 열린}} 결함 / 절차 {{전처리 → 침투 → 세척 → 현상 → 관찰 → 후처리}} / {{염색·형광}} 침투액 / {{비자성체·비금속}}도 가능',
+ def:'<ul><li><b>침투탐상검사(Penetrant Test)</b>: 표면의 갈라진 틈에 색이나 형광이 있는 침투액을 스며들게 한 뒤, 현상제로 빨아올려 결함을 보이게 하는 방법</li></ul>',
+ detail:'<b>절차</b><ol><li>전처리 (기름·녹·오물 제거)</li><li>침투 (침투액 도포, 침투 시간 유지)</li><li>세척 (표면의 남은 침투액 제거)</li><li>현상 (현상제를 뿌려 틈 속 침투액을 빨아올림)</li><li>관찰 (염색: 밝은 곳 / 형광: 자외선 등 아래)</li><li>후처리 (세척)</li></ol><table><tr><th>장점</th><th>단점</th></tr><tr><td>재질 관계없이(금속·비금속·비자성) 가능, 간단·저렴, 복잡한 모양도 가능</td><td><b>표면에 열린 결함만</b>, 다공성 재료 불가, 표면 처리 필요, 결함 깊이 모름</td></tr></table>',
+ exam:'<ul><li>침투검사 절차 순서</li><li>표면 열린 결함만 검출</li></ul>',
+ law:'KS B 0816 등 비파괴검사 KS (참고).'},
+
+{id:'e3',title:'3. 초음파검사 (UT)',
+ core:'{{내부 결함}}·{{두께 측정}} / 방식 {{펄스반사법·투과법·공진법}} / {{한쪽 면}}에서 검사, 결함 {{위치·깊이}} 파악 / {{접촉매질}} 필요',
+ def:'<ul><li><b>초음파탐상검사(Ultrasonic Test)</b>: 사람이 들을 수 없는 높은 주파수의 음파를 재료에 보내, 결함에서 반사되어 돌아오는 신호로 내부 결함을 찾는 방법</li></ul>',
+ detail:'<ul><li>펄스 반사법(가장 많이 씀): 반사파가 돌아오는 시간으로 결함 깊이 계산</li><li>투과법: 반대편에서 받아 감쇠 정도로 판단</li><li>공진법: 두께 측정</li><li>탐촉자와 재료 사이에 기름·물 등 {{접촉매질}}을 발라 공기층 제거</li></ul><table><tr><th>장점</th><th>단점</th></tr><tr><td>내부 결함 검출, 한쪽 면만 접근해도 됨, 결함 위치·깊이 알 수 있음, 두께 측정, 방사선 위험 없음, 즉시 결과</td><td>표면이 거칠거나 복잡한 형상은 어려움, 검사자 숙련 필요, 기록 보존이 RT보다 어려움, 결함 방향에 따라 검출력 차이</td></tr></table>',
+ ex:'<ul><li>부식된 배관의 남은 두께를 밖에서 측정 → 초음파 두께 측정</li></ul>',
+ cmp:'<table><tr><th>UT</th><th>RT</th></tr><tr><td>음파, 한쪽 면, 즉시, 방사선 없음</td><td>방사선, 필름 기록, 양쪽 접근 필요, 피폭 관리</td></tr></table>',
+ exam:'<ul><li>초음파검사 특징 (한쪽 면, 깊이 측정)</li></ul>',
+ law:'참고: 비파괴검사 KS.'},
+
+{id:'e4',title:'4. 자기탐상검사 (MT)',
+ core:'{{강자성체}}의 {{표면·표면 바로 아래}} 결함 / {{자분}}이 누설 자속에 모임 / {{비자성체(알루미늄·오스테나이트 스테인리스)}} 불가',
+ def:'<ul><li><b>자분탐상검사(Magnetic particle Test)</b>: 철 같은 강자성체를 자화시키면 결함 부위에서 자기장이 새어 나오는데, 여기에 뿌린 철가루(자분)가 모이는 것을 보고 결함을 찾는 방법</li></ul>',
+ detail:'<ul><li>대상: 철·니켈·코발트 등 <b>강자성체</b></li><li>표면과 표면 바로 아래(얕은 내부) 결함 검출</li><li>자화 방법: 축 통전법, 코일법, 극간법 등</li><li>결함이 자력선과 <b>직각</b>일 때 가장 잘 보임 → 두 방향으로 검사</li></ul><table><tr><th>장점</th><th>단점</th></tr><tr><td>미세한 표면 균열에 감도 높음, 빠르고 간단, 표면 아래 얕은 결함도</td><td>비자성체 불가, 깊은 내부 결함 불가, 검사 후 탈자 필요할 수 있음</td></tr></table>',
+ exam:'<ul><li>자기탐상검사 적용 불가 재료 (알루미늄, 오스테나이트계 스테인리스)</li></ul>',
+ law:'참고: 비파괴검사 KS.'},
+
+{id:'e5',title:'5. 음향검사 (AE) · 방사선투과검사 (RT)',
+ core:'{{음향방출(AE)}} 균열이 자랄 때 내는 탄성파 감지 → {{가동 중 감시}} / {{방사선투과(RT)}} X선·γ선, {{내부 결함·필름 기록}}, {{피폭 관리}} 필요',
+ def:'<ul><li><b>음향방출검사(Acoustic Emission)</b>: 재료가 변형되거나 균열이 진행될 때 스스로 내는 미세한 탄성파를 센서로 감지</li><li><b>방사선투과검사(Radiographic Test)</b>: X선·γ선을 투과시켜 필름(또는 디지털)에 찍힌 농도 차로 내부 결함을 확인</li></ul>',
+ detail:'<b>음향방출(AE)</b><ul><li>결함이 <b>진행 중</b>인지 알 수 있음 → 압력용기·교량 가동 중 상시 감시</li><li>넓은 범위를 한 번에 감시, 결함 위치 추정</li><li>단점: 진행하지 않는 정지 결함은 검출 어려움, 소음 간섭</li></ul><b>방사선투과(RT)</b><ul><li>내부의 기공·슬래그·용입 불량 등 체적 결함에 좋음</li><li>결과를 필름으로 <b>영구 기록</b></li><li>단점: 방사선 피폭 위험(관리구역 설정), 균열 방향에 따라 검출 어려움, 장비·비용, 양쪽 접근 필요</li></ul><b>그 외</b>: 와전류검사(ET) — 도체에 와전류를 흘려 표면 결함·두께, 비접촉·고속 (관 검사)',
+ exam:'<ul><li>가동 중 균열 진전 감시 = 음향방출</li><li>방사선투과 장단점 (기록 보존·피폭)</li></ul>',
+ law:'원자력안전법(방사선 작업), 안전보건기준규칙 제4편 제8장(방사선).'},
+
+{grp:'5-2. 소음·진동 방지 기술'},
+{id:'e6',title:'6. 소음방지 방법',
+ core:'{{발생원}}(저소음·방진·소음기·밀폐) → {{전파경로}}(차음·흡음·거리·방향) → {{수음자}}(보호구·차음부스·노출시간) / 차음 질량법칙 {{면밀도·주파수 2배 → 약 6dB}}',
+ def:'<ul><li>기계 소음을 줄이는 기술적 방법. 발생원에 가까울수록 효과가 큽니다 (2과목 5장 소음 대책과 같은 원리).</li></ul>',
+ detail:'<table><tr><th>단계</th><th>방법</th></tr><tr><td>{{발생원 대책}}</td><td>저소음 기계·공법으로 교체, 회전수·속도 낮춤, 불평형 제거, 방진(진동이 구조물로 전달되어 생기는 고체음 차단), 소음기(배기·흡기), 밀폐(방음 커버), 공명 방지</td></tr><tr><td>{{전파경로 대책}}</td><td>차음벽·방음벽, 흡음재(내부 반사음 감소), 거리 감쇠(점음원 거리 2배 → 6dB), 소음원 방향 바꾸기, 배치 변경</td></tr><tr><td>{{수음자 대책}}</td><td>귀마개·귀덮개, 방음 감시실(부스), 노출 시간 단축, 청력보존프로그램</td></tr></table><ul><li>차음: 소리를 막아 반대편으로 덜 전달 (무겁고 밀도 높은 벽)</li><li>흡음: 소리 에너지를 흡수해 반사를 줄임 (다공성 재료: 유리섬유, 흡음 패널)</li><li>질량법칙: 차음벽 면밀도나 주파수가 2배가 되면 투과손실 약 6dB 증가</li></ul>',
+ cmp:'<table><tr><th>차음</th><th>흡음</th></tr><tr><td>막는다 (무거운 벽)</td><td>빨아들인다 (푹신한 재료)</td></tr></table>',
+ exam:'<ul><li>대책을 발생원·경로·수음자로 분류</li><li>차음 vs 흡음</li></ul>',
+ law:'안전보건기준규칙 제512조~제521조(소음).'},
+
+{id:'e7',title:'7. 진동방지 방법',
+ core:'{{발생원}}(불평형 제거·밸런싱) / {{방진(진동 절연)}} 스프링·방진고무·공기스프링 / {{공진 회피}} 진동수비 {{√2 이상}}에서 전달률 < 1 / {{제진}} 감쇠재',
+ def:'<ul><li>기계의 진동이 기초·건물·사람에게 전달되지 않게 하는 방법</li></ul>',
+ detail:'<ul><li>{{발생원 대책}}: 회전체 불평형 제거(밸런싱), 정렬 불량 수정, 마모 부품 교체, 가진력 감소</li><li>{{방진(진동 절연)}}: 기계와 기초 사이에 탄성 지지 — 금속 스프링(저주파), 방진고무(고주파·간편), 공기스프링</li><li>{{공진 회피}}: 가진 진동수와 고유 진동수를 떨어뜨림 — 진동수비(가진/고유)가 √2보다 커야 전달률이 1보다 작아져 방진 효과</li><li>{{제진(감쇠)}}: 판에 감쇠재(제진재)를 붙여 진동 에너지 흡수</li><li>기초 강화, 질량 증가, 진동원 격리</li><li>사람 쪽: 방진장갑, 방진 좌석, 노출 시간 제한</li></ul>',
+ exam:'<ul><li>방진 효과 조건 (진동수비 √2 초과)</li></ul>',
+ law:'안전보건기준규칙 제512조~(진동작업).'},
+
+{id:'e8',title:'키워드 카드 — 3과목 주요항목 5',tag:'암기',
+ core:'표면 {{VT·PT·MT·ET}} / 내부 {{UT·RT}} / 가동 중 {{AE}} / 차음·흡음 / √2',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>모든 검사의 첫 단계</td><td>{{육안검사}}</td></tr><tr><td>비눗물·헬륨</td><td>{{누설검사}}</td></tr><tr><td>침투 → 세척 → 현상</td><td>{{침투검사}}</td></tr><tr><td>표면 열린 결함만</td><td>{{침투검사}}</td></tr><tr><td>한쪽 면, 두께 측정</td><td>{{초음파검사}}</td></tr><tr><td>접촉매질</td><td>{{초음파검사}}</td></tr><tr><td>철가루, 강자성체</td><td>{{자기탐상검사}}</td></tr><tr><td>균열 진전 감시</td><td>{{음향방출검사}}</td></tr><tr><td>필름 영구 기록, 피폭</td><td>{{방사선투과검사}}</td></tr><tr><td>소음기·밀폐</td><td>{{발생원 대책}}</td></tr><tr><td>무거운 벽</td><td>{{차음}}</td></tr><tr><td>다공성 재료</td><td>{{흡음}}</td></tr><tr><td>밸런싱</td><td>{{진동 발생원 대책}}</td></tr><tr><td>진동수비 √2 초과</td><td>{{방진 효과}}</td></tr></table>'}
+];
+
+var MN={
+e1:[
+ {k:'표면 = 눈·물감·자석 / 내부 = 소리·빛',s:'"<b>겉</b>은 눈(VT)·물감(PT)·자석(MT)으로, <b>속</b>은 소리(UT)·엑스레이(RT)로 본다 — 병원 검사와 같다"',m:'표면 {{VT·PT·MT}} / 내부 {{UT·RT}}'}],
+e2:[
+ {k:'전 · 침 · 세 · 현 · 관 · 후',s:'"<b>전침세현관후</b> → \'전에 침 세 번 현관 후\'" — 닦고, 바르고, 씻고, 드러내고, 보고, 정리',m:'{{전처리}} → {{침투}} → {{세척}} → {{현상}} → {{관찰}} → {{후처리}}'}],
+e3:[
+ {k:'UT = 박쥐',s:'"<b>박쥐</b>처럼 초음파를 쏘고 메아리로 거리 측정 — 한쪽에서만 쏴도 된다"',m:'초음파 {{내부 결함·깊이·두께, 한쪽 면}}'}],
+e4:[
+ {k:'MT = 자석에 붙는 것만',s:'"<b>냉장고 자석</b>이 붙는 재료만 검사 가능 — 알루미늄 캔은 안 된다"',m:'자기탐상 {{강자성체만}}'}],
+e5:[
+ {k:'AE = 얼음 깨지는 소리',s:'"<b>얼음판이 쩍쩍</b> 우는 소리 — 균열이 자랄 때 나는 소리를 듣는다(가동 중 감시)"',m:'음향방출 {{진행 중인 균열 감시}}'},
+ {k:'RT = 엑스레이 사진',s:'"<b>병원 엑스레이</b> — 필름이 남지만 방사선 조심"',m:'방사선투과 {{필름 기록·피폭 관리}}'}],
+e6:[
+ {k:'원 · 경 · 수',s:'"소음은 <b>원경수</b> — 원천, 경로, 수신자 순으로 막는다 (앞일수록 효과↑)"',m:'{{발생원}} → {{전파경로}} → {{수음자}}'},
+ {k:'차음 = 벽 / 흡음 = 솜',s:'"<b>콘크리트 벽</b>은 막고(차음), <b>솜이불</b>은 빨아들인다(흡음)"',m:'차음 {{무겁고 밀도 높은 벽}} / 흡음 {{다공성 재료}}'}],
+e7:[
+ {k:'√2 ≈ 1.4',s:'"흔드는 속도가 고유 진동의 <b>1.4배</b>를 넘어야 스프링이 진동을 걸러 준다"',m:'진동수비 {{√2 초과 → 전달률 < 1}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6과목 6. 공사 및 작업종류별 안전</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 6과목 · 건설공사 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 6. 공사 및 작업종류별 안전 · 세세항목 6개 → 학습단위 7개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">6과목 목차</a><a href="p5.html">◀ 이전</a><span class="dis">다음 ▶</span></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s6-p6-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'6-1. 양중 및 해체 공사'},
+{id:'f1',title:'1. 양중공사 시 안전수칙',
+ core:'{{작업계획서·신호수·유도로프}} / 타워크레인 풍속 {{10m/s 초과 설치·해체 중지 · 20m/s 초과 운전 중지 · 30m/s 초과 우려 시 이탈 방지}} / {{정격하중 준수·과부하방지장치}} / 매단 화물 아래 {{출입 금지}} / 와이어로프 안전계수 {{화물 5 · 탑승 10}}',
+ def:'<ul><li><b>양중공사</b>: 타워크레인·이동식 크레인·리프트 등으로 자재를 들어 올려 옮기는 작업</li></ul>',
+ detail:'<b>작업 전</b><ul><li>작업계획서: 양중기 종류·성능, 작업 반경, 인양물 중량, 신호 방법, 줄걸이 방법</li><li>지반 지지력 확인, 아웃트리거 완전 확장·받침판 (이동식 크레인)</li><li>와이어로프·훅·샤클 점검 (폐기 기준: 소선 10% 절단, 지름 7% 감소)</li><li>고압선 근접 시 이격 거리 확보·감시인</li></ul><b>작업 중</b><ul><li>정격하중 초과 금지, 과부하방지·권과방지장치 작동 확인</li><li>신호수 1명이 정해진 신호로, 운전원은 그 신호만 따름</li><li>인양물에 유도로프 (흔들림·회전 제어), 화물 위 탑승 금지</li><li>매단 화물 아래 출입 금지, 작업 반경 출입 통제</li><li>줄걸이: 무게중심 확인, 슬링 각도는 작게 (60° 이내 권장 — 각도가 클수록 장력 증가)</li></ul><b>타워크레인 (안전보건기준규칙 제37조·제140조~)</b><ul><li>순간풍속 {{10m/s}} 초과: 설치·수리·점검·해체 작업 중지</li><li>순간풍속 {{20m/s}} 초과: 운전 작업 중지</li><li>순간풍속 {{30m/s}} 초과 바람이 불 우려가 있으면 주행 크레인 이탈 방지 조치</li><li>설치·해체 작업계획서, 작업 순서, 강도·지지 방법</li></ul>',
+ calc:'2줄 슬링, 화물 2톤, 줄 사이 각도 60° → 한 줄 장력 = 1 ÷ cos30° ≈ <b>1.15톤</b> (각도가 120°면 2톤으로 커짐)',
+ exam:'<ul><li>풍속 기준 10·20·30m/s</li><li>슬링 각도와 장력 관계</li></ul>',
+ law:'안전보건기준규칙 제37조(악천후 및 강풍 시 작업 중지), 제132조~제170조(양중기), 제38조(작업계획서).'},
+
+{id:'f2',title:'2. 해체공사 시 안전수칙',
+ core:'해체 작업계획서 {{해체 방법·순서도 / 가설·방호·환기·살수·방화설비 / 연락 방법 / 해체물 처분 / 기계·기구 계획 / 화약류 사용 계획}} / 공법 {{압쇄기·브레이커·절단·팽창제·화약 발파}} / {{위층에서 아래층으로}} / 강풍·폭우 시 {{중지}}',
+ def:'<ul><li><b>해체공사</b>: 건물·구조물을 부수어 철거하는 공사. 붕괴, 낙하, 분진(석면), 소음이 주요 위험입니다.</li></ul>',
+ detail:'<b>해체 작업계획서 내용 (안전보건기준규칙 별표 4)</b><ol><li>해체의 방법 및 해체 순서도면</li><li>가설설비·방호설비·환기설비 및 살수·방화설비 등의 방법</li><li>사업장 내 연락 방법</li><li>해체물의 처분 계획</li><li>해체 작업용 기계·기구 등의 작업계획서</li><li>해체 작업용 화약류 등의 사용계획서</li><li>그 밖에 안전·보건 관련 사항</li></ol><b>해체 공법</b><table><tr><th>공법</th><th>특징</th></tr><tr><td>압쇄기</td><td>굴착기에 부착, 콘크리트를 물어 부숨 — 저소음, 많이 씀</td></tr><tr><td>대형·핸드 브레이커</td><td>타격 — 소음·진동 큼</td></tr><tr><td>절단 공법 (와이어쏘·다이아몬드 톱)</td><td>저진동, 정밀</td></tr><tr><td>팽창제</td><td>구멍(지름 30~50mm)을 뚫고 팽창제로 균열 — 무소음, 천공 간격 30~70cm 정도</td></tr><tr><td>화약 발파</td><td>공기 단축, 위험 관리 엄격</td></tr><tr><td>잭·쐐기</td><td>밀어 올리거나 쪼갬</td></tr></table><b>안전수칙</b><ul><li>사전 조사: 구조, 석면 함유 여부(석면 조사·해체 신고), 인접 건물·매설물, 가스·전기 차단</li><li>해체는 원칙적으로 <b>위층에서 아래층</b>으로, 구조 안정성 유지</li><li>작업구역 출입 금지·감시인, 낙하물 방지 (비계·방호시트·살수로 분진 억제)</li><li>강풍·폭우·폭설 시 작업 중지</li><li>압쇄기 등 장비가 올라가는 슬래브의 하중 검토·보강</li></ul>',
+ exam:'<ul><li>해체 작업계획서 포함 사항</li><li>해체 공법 특징 (팽창제 = 무소음)</li></ul>',
+ law:'안전보건기준규칙 제38조·별표 4(해체작업 작업계획서), 건축물관리법(해체 허가·감리).'},
+
+{grp:'6-2. 콘크리트 및 PC 공사'},
+{id:'f3',title:'3. 콘크리트공사 시 안전수칙',
+ core:'타설 {{편심 없이 분산·거푸집·동바리 감시자·이상 시 즉시 중지·대피}} / 진동기 {{과다 사용 금지(측압↑)}} / 펌프카 {{아웃트리거·붐 아래 출입 금지·고압선 이격·호스 요동 주의}} / 양생 {{강도 확인 후 해체}}',
+ def:'<ul><li>콘크리트 타설·양생·거푸집 해체 과정의 안전수칙 (5장 거푸집·동바리와 연결)</li></ul>',
+ detail:'<b>타설 전</b><ul><li>거푸집·동바리 조립 상태 점검 (조립도와 일치, 수평연결재, 받침)</li><li>타설 순서·속도 계획, 장비 배치</li></ul><b>타설 중 (안전보건기준규칙 제334조)</b><ul><li>당일 작업 시작 전 거푸집·동바리 변형·변위·지반 침하 점검, 이상 시 보수</li><li>작업 중 감시자를 배치해 변형·변위·침하 확인, 이상이 있으면 작업 중지·근로자 대피</li><li>콘크리트가 한쪽에 몰리지 않게 골고루 분산 타설 (편심 하중 방지)</li><li>설계도서상 양생 기간 준수, 충분한 강도 확인 후 해체</li><li>진동기는 적절히 사용 (과다하면 측압 증가로 거푸집 붕괴)</li></ul><b>콘크리트 펌프카 (제335조)</b><ul><li>작업 전 호스·선단 결속·배관 점검</li><li>호스 선단이 요동하지 않게 확실히 붙잡고 작업</li><li>아웃트리거 설치, 지반 침하 방지</li><li>붐 아래 출입 금지, 고압선 접촉 방지</li><li>압송 중 배관 막힘 해소 시 압력 제거 후</li></ul>',
+ exam:'<ul><li>타설 시 감시자·편심 방지</li><li>펌프카 안전수칙</li></ul>',
+ law:'안전보건기준규칙 제334조(콘크리트의 타설작업), 제335조(콘크리트 타설장비 사용 시의 준수사항).'},
+
+{id:'f4',title:'4. PC공사 시 안전수칙',
+ core:'PC(프리캐스트 콘크리트) {{공장 제작 → 현장 양중·조립}} / {{양중계획·신호·유도로프·임시 고정(버팀)·접합 전 해체 금지}} / 강풍 {{10m/s 이상}} 작업 중지 / 조립 순서 {{기둥 → 보 → 슬래브(바닥판)}}',
+ def:'<ul><li><b>PC공사</b>: 공장에서 미리 만든 콘크리트 부재(기둥·보·벽·슬래브)를 현장에서 크레인으로 들어 조립하는 공사</li></ul>',
+ detail:'<ul><li>양중 계획: 부재 중량·인양 위치(인서트), 크레인 용량·작업 반경, 조립 순서</li><li>부재 인양: 인양 고리·인서트 점검, 유도로프로 회전·흔들림 제어, 신호수 배치</li><li>조립: 부재를 놓은 즉시 임시 버팀(가새·서포트)으로 고정, 접합(용접·그라우팅)이 끝나기 전 임시 고정 해체 금지</li><li>고소 조립 작업자 안전대, 단부 안전난간·추락방호망</li><li>강풍(풍속 약 10m/s 이상)·강우 시 작업 중지</li><li>부재 적치: 전도 방지 받침, 적치장 지반</li></ul>',
+ exam:'<ul><li>PC 부재 조립 시 임시 고정</li></ul>',
+ law:'안전보건기준규칙 제2편 제4장(건설작업 등), 양중기 관련 조문.'},
+
+{grp:'6-3. 운반 및 하역작업'},
+{id:'f5',title:'5. 운반작업 시 안전수칙',
+ core:'인력 운반 {{몸 가까이·무릎 굽혀·허리 비틀지 않기·무거우면 2인 또는 기계}} / 긴 물건 {{앞쪽을 높게}} / 기계 운반 {{지게차·컨베이어·대차 — 작업계획·유도자}} / {{5kg}} 이상 중량 표시',
+ def:'<ul><li>자재를 사람이나 기계로 옮기는 작업의 안전수칙 (2과목 중량물 취급과 연결)</li></ul>',
+ detail:'<b>인력 운반</b><ul><li>몸에 가깝게 들고, 무릎을 굽혀 다리 힘으로, 허리를 비틀지 않음 (NIOSH 들기 원칙)</li><li>무겁거나 큰 물건은 2인 이상 또는 운반 기구 사용, 공동 작업 시 신호·보조 맞추기</li><li>긴 물건(파이프·각재)은 앞쪽을 높게 들어 다른 사람과 부딪히지 않게</li><li>시야를 가리지 않게, 통로 장애물 제거</li><li>5kg 이상 중량물에 중량·무게중심 표시 (안전보건기준규칙 제665조)</li></ul><b>기계 운반</b><ul><li>지게차·구내운반차·컨베이어·대차 활용 (3과목 3장)</li><li>운반 경로 확보, 유도자, 제한속도</li><li>경사로에서 화물이 굴러떨어지지 않게 고정</li></ul><b>운반의 원칙</b>: 운반 거리는 짧게, 운반은 기계화, 중간 취급은 최소로, 대량은 연속 운반',
+ exam:'<ul><li>인력 운반 수칙 (긴 물건 앞쪽 높게)</li></ul>',
+ law:'안전보건기준규칙 제663조~제666조(중량물), 제171조~(차량계 하역운반기계).'},
+
+{id:'f6',title:'6. 하역작업 시 안전수칙',
+ core:'{{짐 윗면 2m 이상 → 승강설비}} / {{화물 중간에서 빼내지 않기}} / {{꼬임 끊어진 섬유로프 사용 금지}} / 부두·안벽 통로 {{90cm 이상}} / 차량 하역 {{작업지휘자·바퀴 고임목}} / 적재 {{편하중·높이 제한·고정}}',
+ def:'<ul><li>화물을 차량·선박에 싣고 내리는 작업의 안전수칙</li></ul>',
+ detail:'<ul><li>바닥에서 짐 윗면까지 높이 {{2m 이상}}인 화물자동차 적재·하역 시 승강설비 설치</li><li>쌓여 있는 화물의 <b>중간에서 빼내지 않기</b> (붕괴)</li><li>꼬임이 끊어지거나 심하게 손상·부식된 섬유로프 사용 금지, 작업 전 로프 점검</li><li>하역 작업장: 충분한 조명, 통로 확보, 부두·안벽 통로 폭 {{90cm 이상}}</li><li>차량계 하역운반기계 단위 100kg 이상 화물 싣고 내릴 때 작업지휘자 지정 (작업 순서·방법, 기구·공구 점검, 출입 통제)</li><li>차량은 바퀴 고임목, 시동 끄고, 경사지 하역 금지</li><li>적재: 편하중 없게, 최대적재량 초과 금지, 낙하 방지 로프·덮개</li><li>지게차 하역은 헤드가드·백레스트, 포크 위 사람 탑승 금지</li></ul>',
+ exam:'<ul><li>하역 수칙 (2m 승강설비, 중간에서 빼내지 않기)</li></ul>',
+ law:'안전보건기준규칙 제177조(싣거나 내리는 작업), 제187조(승강설비), 제388조~제393조(하역작업 등).'},
+
+{id:'f7',title:'키워드 카드 — 6과목 주요항목 6',tag:'암기',
+ core:'10·20·30m/s / 위층 → 아래층 / 감시자·편심 / PC 임시 고정 / 2m 승강설비 / 90cm',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>타워크레인 설치·해체 중지</td><td>{{순간풍속 10m/s 초과}}</td></tr><tr><td>타워크레인 운전 중지</td><td>{{20m/s 초과}}</td></tr><tr><td>이탈 방지 조치</td><td>{{30m/s 초과 우려}}</td></tr><tr><td>슬링 각도 클수록</td><td>{{장력 증가}}</td></tr><tr><td>무소음 해체</td><td>{{팽창제}}</td></tr><tr><td>해체 순서</td><td>{{위층에서 아래층}}</td></tr><tr><td>타설 중 감시</td><td>{{거푸집·동바리 감시자}}</td></tr><tr><td>진동기 과다</td><td>{{측압 증가}}</td></tr><tr><td>PC 접합 전</td><td>{{임시 고정 해체 금지}}</td></tr><tr><td>긴 물건 운반</td><td>{{앞쪽을 높게}}</td></tr><tr><td>짐 윗면 2m</td><td>{{승강설비}}</td></tr><tr><td>부두·안벽 통로</td><td>{{90cm 이상}}</td></tr><tr><td>100kg 이상 화물 하역</td><td>{{작업지휘자}}</td></tr></table>'}
+];
+
+var MN={
+f1:[
+ {k:'10 · 20 · 30',s:'"바람 <b>10</b>이면 조립 멈춤, <b>20</b>이면 운전 멈춤, <b>30</b>이면 크레인이 날아가지 않게 묶어라 — 10씩 올라감"',m:'{{10m/s 설치·해체 중지}} · {{20m/s 운전 중지}} · {{30m/s 이탈 방지}}'},
+ {k:'슬링 각도 ↑ = 장력 ↑',s:'"두 팔을 <b>넓게 벌려</b> 물건을 들수록 팔이 더 힘들다"',m:'줄걸이 각도가 클수록 {{한 줄 장력 증가}}'}],
+f2:[
+ {k:'방 · 가 · 연 · 처 · 기 · 화',s:'"<b>방가</b>운 <b>연</b>락, <b>처</b>리, <b>기</b>계, <b>화</b>약" — 해체 방법·순서, 가설·방호설비, 연락, 해체물 처분, 기계 계획, 화약 계획',m:'{{방법·순서}} · {{가설·방호설비}} · {{연락}} · {{처분}} · {{기계}} · {{화약}}'},
+ {k:'위 → 아래',s:'"<b>젠가</b>는 위에서부터 — 해체는 위층에서 아래층으로"',m:'해체 순서 {{위층 → 아래층}}'}],
+f3:[
+ {k:'감 · 분 · 진 · 펌',s:'"<b>감시</b>하고, <b>분산</b>해 붓고, <b>진동기</b>는 적당히, <b>펌프카</b> 붐 아래는 금지"',m:'{{감시자}} · {{분산 타설}} · {{진동기 과다 금지}} · {{붐 아래 출입 금지}}'}],
+f4:[
+ {k:'놓자마자 버팀',s:'"<b>레고</b> 블록처럼 꽂았으면 <b>풀칠(접합) 마를 때까지</b> 손으로 받쳐라"',m:'{{조립 즉시 임시 고정}} · {{접합 전 해체 금지}}'}],
+f6:[
+ {k:'2m · 중간 금지 · 90cm',s:'"짐 위가 <b>키보다</b> 높으면(2m) 사다리, 쌓인 짐은 <b>젠가처럼 중간에서 빼지 말기</b>, 부두 통로는 <b>90cm</b>"',m:'{{2m 이상 승강설비}} · {{중간에서 빼내기 금지}} · {{통로 90cm 이상}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

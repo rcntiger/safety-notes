@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5과목 1. 화재·폭발 검토</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 5과목 · 화학설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 1. 화재·폭발 검토 · 세세항목 13개 → 학습단위 9개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">5과목 목차</a><span class="dis">◀ 이전</span><a href="p2.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s5-p1-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'1-1. 화재·폭발 이론 및 발생 이해'},
+{id:'a1',title:'1. 연소의 정의 및 요소 · 인화점 및 발화점',
+ core:'연소 3요소 {{가연물·산소공급원·점화원}} + {{연쇄반응}} = 4요소 / {{인화점}} 점화원 있을 때 불붙는 최저온도 / {{발화점}} 점화원 없이 스스로 / {{연소점}} 연소가 계속되는 온도 (인화점보다 약간 높음)',
+ def:'<ul><li><b>연소</b>: 가연물이 산소와 빠르게 반응하면서 열과 빛을 내는 산화 반응</li></ul>',
+ why:'<ul><li>요소 중 하나만 없애도 연소가 일어나지 않으므로, 화재 예방과 소화는 모두 이 요소를 끊는 방법입니다.</li></ul>',
+ detail:'<b>연소의 요소</b><table><tr><th>요소</th><th>예</th></tr><tr><td>{{가연물}}</td><td>목재, 유류, 가스, 금속분 — 산화되기 쉽고 발열량이 크며 활성화 에너지가 작은 것</td></tr><tr><td>{{산소공급원}}</td><td>공기(산소 21%), 산화제(염소산염·과산화물), 자기반응성 물질 내부 산소</td></tr><tr><td>{{점화원}}</td><td>불꽃, 전기 스파크, 정전기, 마찰·충격, 고온 표면, 단열압축, 자연발화열</td></tr><tr><td>{{연쇄반응}}</td><td>라디칼이 연속해서 반응을 이어감 (억제소화의 대상)</td></tr></table><b>온도 관련 용어</b><table><tr><th>용어</th><th>뜻</th></tr><tr><td>{{인화점}}</td><td>점화원을 가까이 했을 때 불이 붙는 최저 온도 (액체 위험성의 기준) — 낮을수록 위험</td></tr><tr><td>{{연소점}}</td><td>불이 붙은 뒤 연소가 계속(약 5초 이상) 유지되는 최저 온도, 보통 인화점보다 5~10℃ 높음</td></tr><tr><td>{{발화점}}(착화점)</td><td>점화원 없이 가열만으로 스스로 불이 붙는 최저 온도</td></tr></table><b>발화점이 낮아지는 조건</b>: 압력이 높을 때, 발열량이 클 때, 산소 농도가 높을 때, 분자 구조가 복잡할 때, 반응활성이 클 때, 열전도율이 작을 때',
+ ex:'<ul><li>가솔린 인화점 약 −43℃ → 겨울에도 불이 붙음 / 경유 인화점 약 50℃ 이상</li></ul>',
+ cmp:'<table><tr><th>인화점</th><th>발화점</th></tr><tr><td>불씨가 있어야</td><td>불씨 없이 스스로</td></tr><tr><td>낮은 온도</td><td>훨씬 높은 온도</td></tr></table>',
+ exam:'<ul><li>인화점·연소점·발화점 정의 구분</li><li>발화점이 낮아지는 조건</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a2',title:'2. 연소·폭발의 형태 및 종류',
+ core:'기체 {{확산·예혼합}} / 액체 {{증발·분해}} / 고체 {{표면(숯·코크스·금속분)·분해(목재·종이)·증발(황·나프탈렌)·자기(니트로셀룰로오스·TNT)}} / 폭발 {{물리적(수증기·BLEVE) · 화학적(가스·분진·분해·중합·산화)}} / {{BLEVE·UVCE}}',
+ def:'<ul><li>물질의 상태에 따라 타는 방식이 다르고, 폭발도 원인에 따라 나뉩니다.</li></ul>',
+ detail:'<b>연소의 형태</b><table><tr><th>상태</th><th>형태</th><th>예</th></tr><tr><td rowspan="2">기체</td><td>확산연소</td><td>가스가 공기와 섞이면서 탐 (가스레인지 불꽃)</td></tr><tr><td>예혼합연소</td><td>미리 공기와 섞인 혼합기가 탐 (폭발적)</td></tr><tr><td rowspan="2">액체</td><td>증발연소</td><td>액체가 증발한 증기가 탐 (알코올, 휘발유)</td></tr><tr><td>분해연소</td><td>점도 높은 액체가 열분해되어 탐 (중유)</td></tr><tr><td rowspan="4">고체</td><td>{{표면연소}}</td><td>표면에서 불꽃 없이 탐 — 숯, 코크스, 금속분, 목탄</td></tr><tr><td>{{분해연소}}</td><td>열분해 가스가 탐 — 목재, 종이, 석탄, 플라스틱</td></tr><tr><td>{{증발연소}}</td><td>녹아 증발해 탐 — 황, 나프탈렌, 파라핀(양초)</td></tr><tr><td>{{자기연소}}(내부연소)</td><td>분자 내 산소로 탐 — 니트로셀룰로오스, 트리니트로톨루엔(TNT), 질산에스테르류</td></tr></table><b>폭발의 분류</b><table><tr><th>분류</th><th>종류</th></tr><tr><td>물리적 폭발</td><td>수증기 폭발, 보일러 파열, {{BLEVE}}(비등액체 팽창증기 폭발: 가스 탱크가 외부 화재로 가열·파열)</td></tr><tr><td>화학적 폭발</td><td>가스 폭발, {{분진 폭발}}, {{분해 폭발}}(아세틸렌·산화에틸렌), 중합 폭발(시안화수소·산화에틸렌), 산화 폭발</td></tr><tr><td>기상 폭발</td><td>가스, 분무, 분진, 분해 폭발</td></tr><tr><td>응상 폭발</td><td>수증기 폭발, 증기 폭발, 전선 폭발, 고상 전이 폭발</td></tr></table><ul><li>{{UVCE}}(증기운 폭발): 대기 중에 누출된 가연성 증기가 구름처럼 퍼진 뒤 점화되어 폭발</li><li>분진 폭발: 가스 폭발보다 발생 에너지가 크고, 2차·3차 폭발, 불완전 연소로 일산화탄소 중독 위험</li></ul>',
+ exam:'<ul><li>고체 연소 형태와 물질 짝짓기 (자주 출제)</li><li>BLEVE·UVCE 정의</li><li>분진 폭발 특징</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a3',title:'3. 연소(폭발)범위 및 위험도 · 완전연소 조성농도',
+ core:'위험도 H = {{(U − L) ÷ L}} / 대표 범위 {{수소 4~75 · 아세틸렌 2.5~81 · 메탄 5~15 · 프로판 2.1~9.5}} / Cst = {{100 ÷ (1 + 4.773 × O₂)}} / LEL ≈ {{0.55 Cst}}, UEL ≈ {{3.5 Cst}} / 르샤틀리에 L = {{100 ÷ Σ(Vᵢ/Lᵢ)}}',
+ def:'<ul><li><b>연소(폭발)범위</b>: 공기 중에서 가연성 가스가 연소할 수 있는 농도 범위 (하한 LEL ~ 상한 UEL, vol%)</li><li><b>위험도</b>: 범위가 넓고 하한이 낮을수록 위험</li><li><b>완전연소 조성농도(Cst, 화학양론농도)</b>: 가연물이 산소와 과부족 없이 완전히 반응하는 농도</li></ul>',
+ detail:'<b>대표 가스 연소범위 (vol%, 교재 기준값)</b><table><tr><th>가스</th><th>하한~상한</th></tr><tr><td>{{아세틸렌}}</td><td>2.5 ~ 81</td></tr><tr><td>{{수소}}</td><td>4 ~ 75</td></tr><tr><td>일산화탄소</td><td>12.5 ~ 74</td></tr><tr><td>이황화탄소</td><td>1.2 ~ 44</td></tr><tr><td>에틸에테르</td><td>1.9 ~ 48</td></tr><tr><td>에틸렌</td><td>2.7 ~ 36</td></tr><tr><td>{{메탄}}</td><td>5 ~ 15</td></tr><tr><td>{{프로판}}</td><td>2.1 ~ 9.5</td></tr><tr><td>부탄</td><td>1.8 ~ 8.4</td></tr><tr><td>암모니아</td><td>15 ~ 28</td></tr><tr><td>가솔린</td><td>1.4 ~ 7.6</td></tr></table><b>식</b><ul><li>위험도 H = (UEL − LEL) ÷ LEL</li><li>완전연소 조성농도 C<sub>st</sub> = 100 ÷ (1 + 4.773 × O<sub>2</sub>) [vol%] — O<sub>2</sub>: 1몰이 완전연소하는 데 필요한 산소 몰수 = n + (m − f − 2λ)/4 (C<sub>n</sub>H<sub>m</sub>O<sub>λ</sub>Cl<sub>f</sub>)</li><li>Jones 식: LEL ≈ 0.55 × C<sub>st</sub>, UEL ≈ 3.50 × C<sub>st</sub></li><li>혼합가스 폭발한계(르샤틀리에): L = 100 ÷ (V<sub>1</sub>/L<sub>1</sub> + V<sub>2</sub>/L<sub>2</sub> + …) — V: 혼합가스 중 각 성분 vol%</li></ul><b>범위에 영향을 주는 요인</b>: 온도가 높으면 넓어짐, 압력이 높으면 상한이 크게 올라감(일산화탄소·수소는 예외적 거동), 산소 농도가 높으면 넓어짐, 불활성가스를 넣으면 좁아짐',
+ calc:'① 메탄 위험도 = (15 − 5) ÷ 5 = <b>2</b> / 수소 = (75 − 4) ÷ 4 ≈ <b>17.75</b><br>② 프로판 C<sub>3</sub>H<sub>8</sub>: O<sub>2</sub> = 3 + 8/4 = 5 → C<sub>st</sub> = 100 ÷ (1 + 23.865) ≈ <b>4.02%</b> → LEL ≈ 0.55 × 4.02 ≈ <b>2.2%</b><br>③ 메탄 80%(L 5) + 프로판 20%(L 2.1) → L = 100 ÷ (16 + 9.52) ≈ <b>3.92%</b>',
+ exam:'<ul><li>위험도 계산, Cst·LEL 계산, 르샤틀리에 계산 (매회 출제 수준)</li><li>연소범위가 가장 넓은 가스 = 아세틸렌</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a4',title:'4. 화재의 종류 및 예방대책',
+ core:'{{A 일반(백색)}} · {{B 유류(황색)}} · {{C 전기(청색)}} · {{D 금속(무색)}} · K 주방 / 예방 {{가연물 관리·점화원 관리·산소 차단·정리정돈·위험물 분리 저장}}',
+ def:'<ul><li>타는 물질에 따라 화재를 나누고, 맞는 소화 방법을 고릅니다.</li></ul>',
+ detail:'<table><tr><th>등급</th><th>화재</th><th>표시색</th><th>적응 소화</th></tr><tr><td>{{A}}</td><td>일반화재 (목재·종이·섬유) — 재가 남음</td><td>백색</td><td>물(냉각)</td></tr><tr><td>{{B}}</td><td>유류·가스 화재</td><td>황색</td><td>포, CO<sub>2</sub>, 분말 (질식)</td></tr><tr><td>{{C}}</td><td>전기화재 (통전 중)</td><td>청색</td><td>CO<sub>2</sub>, 분말, 할론 (비전도성)</td></tr><tr><td>{{D}}</td><td>금속화재 (나트륨·칼륨·마그네슘 분)</td><td>무색</td><td>마른 모래, 팽창질석, 금속화재용 분말 (물 금지)</td></tr><tr><td>K</td><td>주방(식용유) 화재</td><td>—</td><td>K급 소화기 (비누화 냉각)</td></tr></table><b>예방대책</b><ul><li>가연물: 위험물 최소 보유, 분리 저장, 누출 방지, 환기</li><li>점화원: 화기 작업 허가, 방폭 전기기기, 정전기 제거, 마찰·충격 방지</li><li>산소: 불활성가스 봉입</li><li>설비: 소화설비·경보설비, 방화구획, 정리정돈</li></ul>',
+ exam:'<ul><li>화재 등급과 표시색 (B 황색, C 청색)</li><li>금속화재에 물 금지</li></ul>',
+ law:'화재의 예방 및 안전관리에 관한 법률, 소화기구 및 자동소화장치의 화재안전기준.'},
+
+{id:'a5',title:'5. 연소파와 폭굉파 · 폭발의 원리',
+ core:'{{연소파(폭연)}} 전파속도 {{0.1~10m/s}} 아음속 / {{폭굉파}} {{1,000~3,500m/s}} 초음속·충격파 / 폭굉유도거리 짧아짐 {{연소속도 큼·관 지름 작음·압력 높음·점화에너지 큼·관 속 장애물}}',
+ def:'<ul><li><b>폭연(deflagration)</b>: 화염이 음속보다 느리게 전파하는 연소·폭발</li><li><b>폭굉(detonation)</b>: 화염이 충격파와 함께 음속보다 빠르게 전파하는 격렬한 폭발</li></ul>',
+ detail:'<table><tr><th></th><th>연소파(폭연)</th><th>폭굉파</th></tr><tr><td>전파 속도</td><td>0.1~10m/s (음속 이하)</td><td>1,000~3,500m/s (음속 이상)</td></tr><tr><td>압력</td><td>상대적으로 낮음</td><td>충격파로 매우 큼 (초기 압력의 수십 배)</td></tr><tr><td>전파 메커니즘</td><td>열·분자 확산</td><td>충격파 압축에 의한 착화</td></tr></table><b>폭굉유도거리(DID)</b>: 처음 폭연으로 시작한 화염이 폭굉으로 바뀌기까지의 거리 — 짧을수록 위험<ul><li>짧아지는 조건: 정상 연소속도가 큰 혼합가스, 관 지름이 작을수록, 압력이 높을수록, 점화원 에너지가 클수록, 관 속에 방해물이 있을수록</li></ul><b>폭발의 원리</b><ul><li>밀폐 또는 반밀폐 공간에서 연소·반응으로 생긴 가스와 열이 순간적으로 팽창 → 급격한 압력 상승 → 용기·건물 파괴</li><li>폭발 압력은 초기 압력과 온도비, 생성 가스 몰수에 비례</li></ul>',
+ exam:'<ul><li>폭굉 속도 범위</li><li>폭굉유도거리가 짧아지는 조건 (관 지름 작을수록)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'1-2. 소화 원리 이해'},
+{id:'a6',title:'6. 소화의 정의 · 종류 · 소화기',
+ core:'소화 {{제거·질식·냉각·억제(부촉매)}} + 희석·유화·피복 / 질식 {{산소 15% 이하}} / 분말 {{1종 BC 백색·2종 BC 담회색·3종 ABC 담홍색·4종 BC 회색}} / 할론 {{1301 효과 최대}}',
+ def:'<ul><li><b>소화</b>: 연소의 요소 중 하나 이상을 없애 불을 끄는 것</li></ul>',
+ detail:'<b>소화 방법</b><table><tr><th>방법</th><th>원리</th><th>예</th></tr><tr><td>{{제거소화}}</td><td>가연물을 없앰</td><td>가스 밸브 잠금, 산불 방화선</td></tr><tr><td>{{질식소화}}</td><td>산소 농도를 15% 이하로 낮춤</td><td>CO<sub>2</sub>, 포, 마른 모래, 담요</td></tr><tr><td>{{냉각소화}}</td><td>온도를 발화점 이하로</td><td>물 (기화열이 큼)</td></tr><tr><td>{{억제소화}}(부촉매)</td><td>연쇄반응 차단 — <b>화학적</b> 소화</td><td>할론, 분말</td></tr><tr><td>희석소화</td><td>가연물 농도를 연소범위 이하로</td><td>수용성 알코올에 물</td></tr><tr><td>유화·피복</td><td>유면에 막을 형성</td><td>물분무(에멀션), 포</td></tr></table><ul><li>제거·질식·냉각은 물리적 소화, 억제는 화학적 소화</li></ul><b>소화기 종류</b><table><tr><th>소화기</th><th>주 소화작용</th><th>적응</th></tr><tr><td>물·강화액</td><td>냉각</td><td>A (강화액 무상은 B·C 일부)</td></tr><tr><td>포(화학포·기계포)</td><td>질식·냉각</td><td>A·B</td></tr><tr><td>이산화탄소</td><td>질식</td><td>B·C (밀폐 공간 질식 주의)</td></tr><tr><td>할론(1301, 1211, 2402)</td><td>억제</td><td>B·C — 1301이 소화 효과 가장 큼</td></tr><tr><td>할로겐화합물·불활성기체(청정소화약제)</td><td>억제·질식</td><td>B·C</td></tr></table><b>분말 소화약제</b><table><tr><th>종류</th><th>주성분</th><th>적응</th><th>색</th></tr><tr><td>제1종</td><td>탄산수소나트륨</td><td>B·C</td><td>백색</td></tr><tr><td>제2종</td><td>탄산수소칼륨</td><td>B·C</td><td>담회색(보라)</td></tr><tr><td>{{제3종}}</td><td>제1인산암모늄</td><td>{{A·B·C}}</td><td>담홍색</td></tr><tr><td>제4종</td><td>탄산수소칼륨 + 요소</td><td>B·C</td><td>회색</td></tr></table>',
+ calc:'질식소화 필요 CO<sub>2</sub> 농도 = (21 − 목표 O<sub>2</sub>) ÷ 21 × 100 → 산소를 15%로: (21 − 15) ÷ 21 × 100 ≈ <b>28.6%</b>',
+ exam:'<ul><li>소화 방법과 예 짝짓기 (억제 = 화학적)</li><li>분말 소화약제 종류·색 (3종 ABC 담홍색)</li><li>CO₂ 농도 계산</li></ul>',
+ law:'소화기구 및 자동소화장치의 화재안전기준.'},
+
+{grp:'1-3. 폭발방지대책 수립'},
+{id:'a7',title:'7. 폭발방지대책',
+ core:'{{예방}}(가연물·점화원 관리·{{불활성화}}) → {{국한}}(봉쇄·억제·차단·화염방지기·벤트) → {{방호}}(안전거리·방폭벽) / 불활성화 퍼지 {{진공·압력·스위프·사이펀}} / 최소산소농도 MOC = {{LEL × 산소 몰수}}',
+ def:'<ul><li>폭발이 일어나지 않게 막고(예방), 일어나도 퍼지지 않게 하고(국한), 피해를 줄이는(방호) 대책</li></ul>',
+ detail:'<b>예방 대책</b><ul><li>가연물: 누출 방지, 환기·희석으로 LEL 이하 유지, 가스 검지·경보 (LEL 25% 이하에서 경보)</li><li>점화원: 방폭 전기, 정전기 제거, 화기 관리, 고온 표면 관리</li><li>{{불활성화(inerting)}}: 질소·CO<sub>2</sub> 등으로 산소 농도를 최소산소농도(MOC) 이하로</li></ul><b>퍼지(purge) 방법</b><table><tr><th>방법</th><th>원리</th></tr><tr><td>진공 퍼지</td><td>용기를 진공으로 했다가 불활성가스 주입 반복 (저압 용기)</td></tr><tr><td>압력 퍼지</td><td>불활성가스로 가압했다가 대기로 방출 반복 (빠름)</td></tr><tr><td>스위프 퍼지</td><td>한쪽으로 불활성가스 넣고 다른 쪽으로 빼며 쓸어냄 (가압·진공 불가 시)</td></tr><tr><td>사이펀 퍼지</td><td>용기를 액체로 채운 뒤 빼면서 불활성가스 주입 (대형 탱크)</td></tr></table><b>국한·방호 대책</b><ul><li>봉쇄(폭발 압력에 견디는 설계), 폭발 억제(감지 후 소화약제 고속 분사), 차단(긴급 차단밸브), 화염방지기(flame arrester), 폭발 방산구(벤트, 파열판)</li><li>안전거리, 방폭벽, 방유제</li></ul><b>최소산소농도(MOC)</b>: 연소에 필요한 최소 산소 농도 ≈ LEL × (완전연소에 필요한 산소 몰수)',
+ calc:'프로판 LEL 2.1%, 산소 몰수 5 → MOC ≈ 2.1 × 5 = <b>10.5%</b> → 산소를 이보다 낮게 불활성화',
+ exam:'<ul><li>퍼지 방법 구분</li><li>MOC 계산</li></ul>',
+ law:'안전보건기준규칙 제2편 제2장(폭발·화재 및 위험물 누출에 의한 위험 방지).'},
+
+{id:'a8',title:'8. 폭발하한계 및 폭발상한계의 계산',
+ core:'Jones {{LEL ≈ 0.55 Cst · UEL ≈ 3.5 Cst}} / 르샤틀리에 {{L = 100 ÷ (V₁/L₁ + V₂/L₂ + …)}} / 온도 보정 {{온도↑ → LEL↓·UEL↑}}',
+ def:'<ul><li>3번 카드의 계산식을 연습용으로 다시 모았습니다.</li></ul>',
+ detail:'<ul><li>C<sub>st</sub> = 100 ÷ (1 + 4.773 × O<sub>2</sub>), O<sub>2</sub> = n + (m − f − 2λ)/4</li><li>LEL ≈ 0.55 C<sub>st</sub>, UEL ≈ 3.5 C<sub>st</sub></li><li>르샤틀리에(혼합가스): L = 100 ÷ Σ(V<sub>i</sub>/L<sub>i</sub>) — 상한도 같은 식에 각 성분 UEL을 넣어 계산</li><li>Burgess-Wheeler: 온도가 오르면 LEL은 내려가고 UEL은 올라감</li></ul>',
+ calc:'① 메탄 CH<sub>4</sub>: O<sub>2</sub> = 1 + 4/4 = 2 → C<sub>st</sub> = 100 ÷ (1 + 9.546) ≈ 9.48% → LEL ≈ <b>5.2%</b>, UEL ≈ <b>33%</b>(실제 15%와 차이, 근사식)<br>② 수소 50%(4~75) + 메탄 50%(5~15) 하한 = 100 ÷ (12.5 + 10) ≈ <b>4.44%</b>, 상한 = 100 ÷ (0.667 + 3.333) = <b>25%</b>',
+ exam:'<ul><li>르샤틀리에 하한·상한 계산</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'a9',title:'키워드 카드 — 5과목 주요항목 1',tag:'암기',
+ core:'가·산·점·연 / 인화 < 연소 < 발화 / H = (U−L)/L / A백·B황·C청·D무 / 제·질·냉·억',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>불씨 있어야 불붙음</td><td>{{인화점}}</td></tr><tr><td>불씨 없이 스스로</td><td>{{발화점}}</td></tr><tr><td>숯·코크스·금속분</td><td>{{표면연소}}</td></tr><tr><td>목재·종이</td><td>{{분해연소}}</td></tr><tr><td>황·나프탈렌</td><td>{{증발연소}}</td></tr><tr><td>니트로셀룰로오스·TNT</td><td>{{자기연소}}</td></tr><tr><td>가스 탱크 외부 가열 파열</td><td>{{BLEVE}}</td></tr><tr><td>누출 증기 구름 폭발</td><td>{{UVCE}}</td></tr><tr><td>연소범위 가장 넓음</td><td>{{아세틸렌 2.5~81}}</td></tr><tr><td>수소</td><td>{{4~75}}</td></tr><tr><td>100/(1 + 4.773 O₂)</td><td>{{완전연소 조성농도}}</td></tr><tr><td>0.55 Cst</td><td>{{LEL}}</td></tr><tr><td>B급</td><td>{{유류, 황색}}</td></tr><tr><td>C급</td><td>{{전기, 청색}}</td></tr><tr><td>음속 이상, 충격파</td><td>{{폭굉}}</td></tr><tr><td>연쇄반응 차단</td><td>{{억제소화(화학적)}}</td></tr><tr><td>ABC 담홍색</td><td>{{제3종 분말(제1인산암모늄)}}</td></tr><tr><td>할론 효과 최대</td><td>{{1301}}</td></tr><tr><td>가압 후 방출 반복</td><td>{{압력 퍼지}}</td></tr><tr><td>LEL × 산소 몰수</td><td>{{MOC}}</td></tr></table>'}
+];
+
+var MN={
+a1:[
+ {k:'가 · 산 · 점 + 연',s:'"<b>가산점</b> 받으면 <b>연</b>속 합격" — 탈 것, 산소, 불씨 + 연쇄반응',m:'{{가연물}} · {{산소공급원}} · {{점화원}} + {{연쇄반응}}'},
+ {k:'인 < 연 < 발',s:'"<b>인</b>사(불씨 대면 반짝) → <b>연</b>애(계속 탐) → <b>발</b>광(혼자서도 불타오름)" — 온도 낮은 순',m:'{{인화점}} < {{연소점}} < {{발화점}}'}],
+a2:[
+ {k:'표 · 분 · 증 · 자',s:'"<b>숯</b>불은 표면에서 빨갛게(표면), <b>장작</b>은 연기 내며(분해), <b>양초</b>는 녹아 증발(증발), <b>다이너마이트</b>는 스스로(자기)"',m:'{{표면 숯·코크스}} · {{분해 목재·종이}} · {{증발 황·나프탈렌·파라핀}} · {{자기 니트로셀룰로오스·TNT}}'},
+ {k:'BLEVE = 끓는 탱크',s:'"<b>B</b>oiling <b>L</b>iquid — 불 위의 <b>압력솥</b>이 터지는 것"',m:'{{비등액체 팽창증기 폭발}}'}],
+a3:[
+ {k:'아 2.5~81 · 수 4~75',s:'"<b>아세틸렌</b>은 <b>이오팔일</b>(2.5~81), <b>수소</b>는 <b>사칠오</b>(4~75) — 둘 다 거의 모든 농도에서 탄다"',m:'아세틸렌 {{2.5~81}} · 수소 {{4~75}} · 메탄 {{5~15}} · 프로판 {{2.1~9.5}}'},
+ {k:'(U − L) ÷ L',s:'"<b>범위 폭</b>을 <b>하한</b>으로 나눈다 — 넓고 낮을수록 위험"',m:'H = {{(UEL − LEL) ÷ LEL}}'},
+ {k:'4.773 · 0.55 · 3.5',s:'"공기는 산소의 <b>4.773</b>배(1/0.21), 하한은 <b>반쯤</b>(0.55), 상한은 <b>세 배 반</b>(3.5)"',m:'Cst = {{100/(1 + 4.773 O₂)}} / LEL {{0.55 Cst}} / UEL {{3.5 Cst}}'}],
+a4:[
+ {k:'A백 · B황 · C청 · D무',s:'"<b>A</b>는 하얀 재(백), <b>B</b>는 노란 기름(황), <b>C</b>는 파란 전기 불꽃(청), <b>D</b>는 금속이라 무색"',m:'A {{백색 일반}} · B {{황색 유류}} · C {{청색 전기}} · D {{무색 금속}}'}],
+a5:[
+ {k:'폭연 < 음속 < 폭굉',s:'"<b>폭연</b>은 자전거(10m/s), <b>폭굉</b>은 총알(1,000m/s 이상)"',m:'폭연 {{0.1~10m/s}} / 폭굉 {{1,000~3,500m/s}}'}],
+a6:[
+ {k:'제 · 질 · 냉 · 억',s:'"<b>제질냉억</b> → \'제 질녀는 냉정하게 억누른다\'" — 치우고, 덮고, 식히고, 끊고',m:'{{제거}} · {{질식}} · {{냉각}} · {{억제(화학적)}}'},
+ {k:'3종 = ABC 분홍',s:'"<b>3</b>종은 <b>3</b>가지(ABC) 다 끄는 <b>분홍</b> 소화기 — 학교·사무실에 많은 그것"',m:'제3종 {{제1인산암모늄 · ABC · 담홍색}}'}],
+a7:[
+ {k:'예 · 국 · 방',s:'"<b>예국방</b> → 예방하고, 국한하고, 방호한다"',m:'{{예방}} → {{국한}} → {{방호}}'},
+ {k:'진 · 압 · 스 · 사',s:'"<b>진압</b>하러 <b>스</b>윽 <b>사</b>라짐" — 빨아내고, 불어넣고, 쓸어내고, 액체로 밀어냄',m:'{{진공}} · {{압력}} · {{스위프}} · {{사이펀}} 퍼지'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3과목 2. 기계분야 산업재해 조사 및 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 3과목 · 기계·기구 및 설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 2. 기계분야 산업재해 조사 및 관리 · 세세항목 13개 → 학습단위 10개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">3과목 목차</a><a href="p1.html">◀ 이전</a><a href="p3.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s3-p2-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'2-1. 재해조사'},
+{id:'b1',title:'1. 재해조사의 목적 · 유의사항',
+ core:'목적 {{동종·유사 재해 재발 방지}} (책임 추궁 X) / 유의 {{사실 수집·객관적·신속·2차 재해 방지·피해자·목격자 진술·책임 추궁보다 재발 방지}}',
+ def:'<ul><li><b>재해조사</b>: 재해의 원인과 경과를 밝혀 같은 재해가 다시 일어나지 않게 대책을 세우기 위한 조사</li></ul>',
+ why:'<ul><li>책임자를 찾는 조사가 되면 사람들이 사실을 숨겨 진짜 원인을 찾지 못합니다.</li></ul>',
+ detail:'<b>목적</b><ul><li>동종 재해 및 유사 재해의 <b>재발 방지</b></li><li>재해 원인 규명, 예방 자료 수집</li></ul><b>유의사항</b><ul><li>사실을 수집한다 (이유는 뒤에 확인)</li><li>목격자 등이 증언하는 사실 이외의 추측성 말은 참고로만</li><li>조사는 <b>신속</b>하게, 긴급조치 후 현장 보존 상태에서</li><li>사람·기계설비 양면의 원인을 모두 도출</li><li><b>객관적</b> 입장에서, 2인 이상이 조사</li><li>책임 추궁보다 재발 방지 우선</li><li>피해자에 대한 구급조치 우선, 2차 재해 예방, 보호구 착용</li></ul>',
+ exam:'<ul><li>재해조사 목적 ("책임자 처벌"은 틀림)</li><li>유의사항에 <b>맞지 않는</b> 것</li></ul>',
+ law:'산업안전보건법 제57조(산업재해 발생 보고), 1과목 6장.'},
+
+{id:'b2',title:'2. 재해발생시 조치사항',
+ core:'{{긴급처리 → 재해조사 → 원인 강구 → 대책 수립 → 실시계획 → 실시 → 평가}} / 긴급처리 {{기계 정지 → 피재자 구출·응급조치 → 관계자 통보 → 2차 재해 방지 → 현장 보존}}',
+ def:'<ul><li>재해가 일어났을 때 피해를 줄이고 원인을 밝히기 위해 순서대로 하는 조치</li></ul>',
+ detail:'<b>전체 순서</b><ol><li>{{긴급처리}}</li><li>{{재해조사}} (6하원칙에 따라)</li><li>{{원인 강구}} (직접·간접 원인)</li><li>{{대책 수립}} (동종·유사 재해 방지)</li><li>대책 실시계획</li><li>실시</li><li>평가</li></ol><b>긴급처리 순서</b><ol><li>피재 기계의 <b>정지</b> (전원 차단)</li><li>피재자 구출 및 <b>응급조치</b></li><li>관계자에게 <b>통보</b></li><li><b>2차 재해 방지</b></li><li><b>현장 보존</b></li></ol><ul><li>중대재해는 지체 없이 지방고용노동관서에 보고</li></ul>',
+ ex:'<ul><li>롤러기 말림 사고: 급정지 → 구조·119 → 관리자 보고 → 주변 출입 통제 → 현장 그대로 보존</li></ul>',
+ exam:'<ul><li>긴급처리 순서 (기계 정지가 먼저)</li><li>전체 조치 순서</li></ul>',
+ law:'산업안전보건법 제54조(중대재해 발생 시 사업주의 조치).'},
+
+{id:'b3',title:'3. 재해의 원인분석 및 조사기법',
+ core:'직접원인 {{불안전한 행동·불안전한 상태}} / 간접원인 {{기술적·교육적·작업관리상(관리적)}} + 신체적·정신적 / 조사 {{6하원칙·4M·특성요인도·파레토도}}',
+ def:'<ul><li>재해 원인을 직접원인(사고 바로 앞의 행동·상태)과 간접원인(그 배경)으로 나눠 분석</li></ul>',
+ detail:'<b>직접원인 (1차 원인)</b><table><tr><th>불안전한 행동 (인적)</th><th>불안전한 상태 (물적)</th></tr><tr><td>위험 장소 접근, 안전장치 기능 제거, 보호구 미착용, 운전 중 기계 손질, 불안전한 속도 조작, 위험물 취급 부주의, 불안전한 자세, 감독·연락 불충분</td><td>물(物) 자체 결함, 방호장치 결함, 물의 배치·작업 장소 불량, 보호구 결함, 작업환경 결함, 생산공정 결함, 경계표시·설비 결함</td></tr></table><b>간접원인 (2차 원인)</b><table><tr><th>원인</th><th>예</th></tr><tr><td>{{기술적}}</td><td>건물·기계 설계 불량, 구조·재료 부적합, 생산 방법 부적당, 점검·정비·보존 불량</td></tr><tr><td>{{교육적}}</td><td>안전 지식·경험 부족, 작업 방법 교육 불충분, 유해·위험 작업 교육 불충분</td></tr><tr><td>{{작업관리상(관리적)}}</td><td>안전관리 조직 결함, 안전수칙 미제정, 작업 준비 불충분, 인원 배치 부적당, 작업 지시 부적당</td></tr><tr><td>신체적·정신적</td><td>피로, 질병, 주의력 부족, 태도 불량</td></tr></table><b>조사 기법</b>: 6하원칙(누가·언제·어디서·무엇을·어떻게·왜) 사실 확인, 4M 분석, 특성요인도, 파레토도, FTA',
+ ex:'<ul><li>방호덮개를 떼고 작업(불안전 행동) + 덮개 인터록 없음(불안전 상태·기술적) + 교육 안 함(교육적)</li></ul>',
+ cmp:'<table><tr><th>불안전한 행동</th><th>불안전한 상태</th></tr><tr><td>사람이 한 것</td><td>물건·환경의 상태</td></tr></table>',
+ exam:'<ul><li>원인 분류 (불안전 행동 vs 상태, 간접원인 종류) — 자주 출제</li></ul>',
+ law:'법령 근거 없음(이론). 1과목 하인리히 이론과 연결.'},
+
+{grp:'2-2. 산재분류 및 통계 분석'},
+{id:'b4',title:'4. 산재분류의 이해',
+ core:'재해형태 {{떨어짐·넘어짐·깔림·부딪힘·물체에 맞음·무너짐·끼임·절단·감전·폭발·파열·화재·무리한 동작·이상온도 접촉}} / {{기인물}} = 원인이 된 물체, {{가해물}} = 직접 가해한 물체 / ILO 상해정도 {{사망·영구 전노동불능·영구 일부노동불능·일시 전·일시 일부·응급조치}}',
+ def:'<ul><li>재해를 형태·기인물·상해 정도로 분류해야 통계를 내고 비교할 수 있습니다.</li></ul>',
+ detail:'<b>재해 발생 형태</b><table><tr><th>형태</th><th>뜻</th></tr><tr><td>떨어짐(추락)</td><td>높은 곳에서 사람이 떨어짐</td></tr><tr><td>넘어짐(전도)</td><td>같은 평면에서 넘어짐</td></tr><tr><td>깔림·뒤집힘</td><td>물체가 쓰러지거나 뒤집혀 깔림</td></tr><tr><td>부딪힘(충돌)</td><td>사람이 물체에 부딪히거나 움직이는 물체와 충돌</td></tr><tr><td>물체에 맞음(낙하·비래)</td><td>떨어지거나 날아온 물체에 맞음</td></tr><tr><td>무너짐(붕괴·도괴)</td><td>건축물·쌓인 물건이 무너짐</td></tr><tr><td>끼임(협착)</td><td>물체 사이·기계에 끼임, 말림</td></tr><tr><td>절단·베임·찔림</td><td>날카로운 물체</td></tr><tr><td>감전, 폭발, 파열, 화재</td><td>—</td></tr><tr><td>불균형 및 무리한 동작</td><td>무리한 힘·자세로 근골격 손상</td></tr><tr><td>이상온도·화학물질 접촉, 산소결핍</td><td>—</td></tr></table><ul><li>두 가지 이상 겹치면 <b>발생 형태</b>(처음 일어난 것)를 기준으로 분류 — 예: 사다리에서 떨어지며 바닥에 부딪힘 → 떨어짐</li><li>{{기인물}}: 재해를 일으킨 근원이 된 기계·장치·물체 (불안전한 상태)</li><li>{{가해물}}: 사람에게 직접 접촉해 피해를 준 물체</li></ul><b>ILO 상해 정도 분류</b><table><tr><th>분류</th><th>내용</th></tr><tr><td>사망</td><td>—</td></tr><tr><td>영구 전노동불능</td><td>신체장해 1~3급</td></tr><tr><td>영구 일부노동불능</td><td>신체장해 4~14급</td></tr><tr><td>일시 전노동불능</td><td>장해 없이 일정 기간 노동 불능 (휴업)</td></tr><tr><td>일시 일부노동불능</td><td>일정 기간 일부 노동만 가능</td></tr><tr><td>응급(구급)조치 상해</td><td>1일 미만 치료 후 바로 작업 가능</td></tr></table>',
+ ex:'<ul><li>지게차에서 떨어진 화물에 발등을 맞음 → 형태: 물체에 맞음, 기인물: 지게차, 가해물: 화물</li></ul>',
+ cmp:'<table><tr><th>기인물</th><th>가해물</th></tr><tr><td>원인 제공 (지게차)</td><td>직접 때린 것 (화물)</td></tr></table>',
+ exam:'<ul><li>사례에서 기인물·가해물 구분 (자주 출제)</li><li>상해 정도 분류 (1~3급 = 영구 전노동불능)</li></ul>',
+ law:'산업재해 통계 업무처리규정(고용노동부 예규), 한국표준산업재해분류.'},
+
+{id:'b5',title:'5. 재해관련 통계의 정의 · 종류 및 계산',
+ core:'도수율 = {{재해건수 ÷ 연근로시간 × 10⁶}} / 강도율 = {{근로손실일수 ÷ 연근로시간 × 10³}} / 연천인율 = {{재해자수 ÷ 평균근로자수 × 10³}} = {{도수율 × 2.4}} / 종합재해지수 = {{√(도수율 × 강도율)}} / 사망·1~3급 {{7,500일}}, 휴업 {{× 300/365}}',
+ def:'<ul><li>재해 발생의 빈도와 강도를 근로시간·근로자 수로 표준화해 사업장끼리 비교할 수 있게 한 지표</li></ul>',
+ why:'<ul><li>사업장 규모가 다르면 재해 건수만으로 비교할 수 없어서, 근로시간당 비율로 바꿉니다. 도수율은 "얼마나 자주", 강도율은 "얼마나 심하게"입니다.</li></ul>',
+ detail:'<table><tr><th>지표</th><th>공식</th><th>뜻</th></tr><tr><td>재해율</td><td>재해자수 ÷ 상시근로자수 × 100</td><td>근로자 100명당 재해자</td></tr><tr><td>사망만인율</td><td>사망자수 ÷ 상시근로자수 × 10,000</td><td>1만 명당 사망자</td></tr><tr><td>{{도수율(빈도율)}}</td><td>재해건수 ÷ 연근로시간수 × 1,000,000</td><td>100만 시간당 재해 건수</td></tr><tr><td>{{강도율}}</td><td>근로손실일수 ÷ 연근로시간수 × 1,000</td><td>1,000시간당 근로손실일수</td></tr><tr><td>{{연천인율}}</td><td>재해자수 ÷ 연평균근로자수 × 1,000</td><td>1,000명당 재해자 (≈ 도수율 × 2.4)</td></tr><tr><td>{{종합재해지수}}</td><td>√(도수율 × 강도율)</td><td>빈도와 강도 종합</td></tr><tr><td>평균강도율</td><td>강도율 ÷ 도수율 × 1,000</td><td>재해 1건당 평균 근로손실일수</td></tr><tr><td>환산도수율</td><td>도수율 ÷ 10</td><td>평생(10만 시간) 근로 중 재해 건수</td></tr><tr><td>환산강도율</td><td>강도율 × 100</td><td>평생 근로 중 근로손실일수</td></tr><tr><td>Safe-T-Score</td><td>(현재 도수율 − 과거 도수율) ÷ √(과거 도수율 ÷ 현재 총근로시간 × 10⁶)</td><td>+2 이상 나빠짐, −2 이하 좋아짐</td></tr></table><b>근로손실일수</b><table><tr><th>장해등급</th><th>사망·1~3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th></tr><tr><td>일수</td><td>{{7,500}}</td><td>5,500</td><td>4,000</td><td>3,000</td><td>2,200</td><td>1,500</td><td>1,000</td><td>600</td><td>400</td><td>200</td><td>100</td><td>50</td></tr></table><ul><li>휴업일수는 <b>× 300/365</b>로 환산 (연간 근로일 300일 기준)</li><li>연근로시간이 주어지지 않으면 1인당 2,400시간(8시간 × 300일)으로 계산하는 문제가 많음</li></ul>',
+ calc:'근로자 400명, 연 2,400시간/인, 재해 6건(사망 1, 휴업 73일)<br>연근로시간 = 400 × 2,400 = 960,000<br>도수율 = 6 ÷ 960,000 × 10⁶ = <b>6.25</b><br>손실일수 = 7,500 + 73 × 300/365 = 7,500 + 60 = 7,560 → 강도율 = 7,560 ÷ 960,000 × 10³ = <b>7.875</b><br>연천인율 ≈ 6.25 × 2.4 = <b>15</b> / 종합재해지수 = √(6.25 × 7.875) ≈ <b>7.0</b>',
+ cmp:'<table><tr><th>도수율</th><th>강도율</th></tr><tr><td>건수, × 10⁶</td><td>손실일수, × 10³</td></tr><tr><td>사망 = 1건</td><td>사망 = 7,500일</td></tr></table>',
+ exam:'<ul><li>도수율·강도율·연천인율·종합재해지수 계산 (매회 출제)</li><li>휴업일수 × 300/365 빠뜨리기 함정</li><li>환산도수율·환산강도율</li></ul>',
+ law:'산업재해 통계 업무처리규정(고용노동부 예규).'},
+
+{id:'b6',title:'6. 재해손실비의 종류 및 계산',
+ core:'하인리히 {{직접비 : 간접비 = 1 : 4}} / 시몬즈 {{보험비 + 비보험비(휴업·통원·응급·무상해 × 평균비용)}} / 버드 {{1 : 5~50 : 1~3}} / 콤페스 {{공동비 + 개별비}}',
+ def:'<ul><li>재해로 생긴 손실을 돈으로 계산하는 방법 (1과목 1-1 생산성과 경제적 안전도와 같은 내용)</li></ul>',
+ detail:'<table><tr><th>방식</th><th>계산</th></tr><tr><td>{{하인리히}}</td><td>총 재해손실비 = 직접비 + 간접비 = 직접비 × 5 (직접 1 : 간접 4)</td></tr><tr><td>{{시몬즈}}</td><td>총 재해비용 = 보험비용 + 비보험비용<br>비보험비용 = A × 휴업상해 건수 + B × 통원상해 건수 + C × 응급조치 건수 + D × 무상해사고 건수</td></tr><tr><td>{{버드}}</td><td>보험비 : 비보험 재산비용 : 비보험 기타 재산비용 = 1 : 5~50 : 1~3</td></tr><tr><td>{{콤페스}}</td><td>총 재해비용 = 공동비용 + 개별비용</td></tr></table><b>직접비</b>(산재보험 급여): 요양급여, 휴업급여, 장해급여, 간병급여, 유족급여, 상병보상연금, 장례비, 직업재활급여<br><b>간접비</b>: 인적 손실(작업 중단), 물적 손실(설비·재료), 생산 손실, 특수 손실, 기타',
+ calc:'직접비 2,000만원 → 하인리히 총손실 = 2,000 × 5 = <b>1억원</b>',
+ exam:'<ul><li>하인리히 총손실 계산 (직접비 × 5)</li><li>시몬즈 비보험비용 4가지 항목</li></ul>',
+ law:'산업재해보상보험법 제36조(보험급여의 종류).'},
+
+{grp:'2-3. 안전점검·검사·인증 및 진단'},
+{id:'b7',title:'7. 안전점검의 정의 · 목적 · 종류',
+ core:'점검 종류 {{정기(계획)·수시(일상)·특별·임시}} / 특별점검 {{신설·변경·고장 수리·천재지변 후·장기 미사용}} / 방법 {{육안·기능·기기·정밀}}',
+ def:'<ul><li><b>안전점검</b>: 설비·작업·환경의 불안전한 상태와 불안전한 행동을 찾아내 사고를 미리 막기 위한 활동</li></ul>',
+ detail:'<b>목적</b>: 결함·불안전 요소 발견과 제거, 설비의 안전 확보·성능 유지, 안전 의식 고취, 재해 예방<br><b>점검의 종류</b><table><tr><th>종류</th><th>시기</th></tr><tr><td>{{정기점검}}(계획점검)</td><td>일정 기간마다 정기적으로 (주·월·분기·연)</td></tr><tr><td>{{수시점검}}(일상점검)</td><td>매일 작업 전·중·후 (작업 담당자·관리감독자)</td></tr><tr><td>{{특별점검}}</td><td>기계·기구 신설·변경·고장 수리 시, 천재지변(태풍·지진) 후, 장기간 사용하지 않은 설비 재사용 시, 안전강조 기간</td></tr><tr><td>{{임시점검}}</td><td>정기점검 사이에 이상 발견 시 임시로</td></tr></table><b>점검 방법</b>: 육안 점검(외관), 기능 점검(작동), 기기 점검(측정기·분해), 정밀 점검(비파괴 검사 등)',
+ ex:'<ul><li>태풍 지나간 다음 날 타워크레인 점검 → 특별점검</li></ul>',
+ exam:'<ul><li>특별점검 실시 시기</li></ul>',
+ law:'안전보건기준규칙 각 기계별 작업시작 전 점검(별표 3).'},
+
+{id:'b8',title:'8. 안전점검표의 작성',
+ core:'{{사업장 실정에 맞게·중점 항목 우선·쉬운 말·구체적 판정기준·정기 개정·점검 대상·부위·방법·주기 명시}}',
+ def:'<ul><li><b>안전점검표(체크리스트)</b>: 점검할 항목·방법·판정기준을 미리 정한 표</li></ul>',
+ detail:'<b>포함 사항</b>: 점검 대상, 점검 부분(부위), 점검 항목, 점검 방법, 점검 주기·시기, 판정 기준, 조치 사항, 점검자<br><b>작성 시 유의사항</b><ul><li>사업장에 <b>적합한 독자적</b> 내용</li><li>위험성이 높고 긴급을 요하는 항목부터 (중점도 순)</li><li>점검 항목은 이해하기 쉽게 구체적으로 표현</li><li>판정 기준을 명확하게 (가능하면 정량적)</li><li>정기적으로 검토·개정, 현장 의견 반영</li><li>점검 결과로 개선 조치까지 이어지게</li></ul>',
+ exam:'<ul><li>점검표 작성 유의사항에 <b>틀린</b> 것 (예: "모든 사업장에 동일한 표 사용")</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'b9',title:'9. 안전검사 및 안전인증 · 안전진단',
+ core:'안전인증 {{제조·수입 전}} / 안전검사 {{사용 사업주, 최초 3년 이내 → 2년마다, 건설현장 크레인·리프트·곤돌라 6개월}} / 안전보건진단 {{노동부장관 명령 → 진단기관}}, 종류 {{종합·안전기술·보건기술}}',
+ def:'<ul><li>1과목 6장(유해·위험 기계 관리)과 같은 제도입니다. 3과목에서는 기계 관점으로 다시 묻습니다.</li></ul>',
+ detail:'<b>안전인증</b>: 제조·수입자가 정부(인증기관) 심사를 받음 — 서면심사, 기술능력·생산체계 심사, 제품심사(개별·형식별), 확인심사(사후)<br><b>자율안전확인</b>: 제조·수입자가 스스로 기준 적합을 확인하고 신고<br><b>안전검사 주기</b><table><tr><th>대상</th><th>주기</th></tr><tr><td>크레인·리프트·곤돌라</td><td>설치 후 3년 이내 최초, 이후 2년마다 (건설현장은 최초 설치일부터 6개월마다)</td></tr><tr><td>이동식 크레인, 이삿짐운반용 리프트, 고소작업대</td><td>신규등록 후 3년 이내 최초, 이후 2년마다</td></tr><tr><td>프레스·전단기·압력용기·국소배기장치·원심기·롤러기·사출성형기·컨베이어·산업용 로봇·혼합기·파쇄기 등</td><td>설치 후 3년 이내 최초, 이후 2년마다 (PSM 압력용기 4년마다)</td></tr></table><ul><li>자율검사프로그램 인정 시 안전검사 면제 (자율안전검사)</li></ul><b>안전보건진단 (법 제47조)</b><ul><li>고용노동부장관이 추가 재해 위험이 큰 사업장(중대재해, 안전보건개선계획 대상 등)에 명령</li><li>안전보건진단기관이 실시</li><li>종류: 종합진단, 안전기술진단, 보건기술진단</li></ul>',
+ exam:'<ul><li>안전검사 주기</li><li>안전보건진단 종류</li></ul>',
+ law:'산업안전보건법 제47조, 제84조~제98조, 시행규칙 제126조.'},
+
+{id:'b10',title:'키워드 카드 — 3과목 주요항목 2',tag:'암기',
+ core:'도수 {{10⁶}}·강도 {{10³}}·연천인 {{× 2.4}} / 7,500 / 300/365 / 기인물·가해물',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>재해조사 목적</td><td>{{재발 방지}}</td></tr><tr><td>긴급처리 첫 단계</td><td>{{기계 정지}}</td></tr><tr><td>긴급처리 마지막</td><td>{{현장 보존}}</td></tr><tr><td>보호구 미착용</td><td>{{불안전한 행동}}</td></tr><tr><td>방호장치 결함</td><td>{{불안전한 상태}}</td></tr><tr><td>설계 불량</td><td>{{기술적 원인}}</td></tr><tr><td>원인이 된 물체</td><td>{{기인물}}</td></tr><tr><td>직접 때린 물체</td><td>{{가해물}}</td></tr><tr><td>1~3급</td><td>{{영구 전노동불능, 7,500일}}</td></tr><tr><td>4~14급</td><td>{{영구 일부노동불능}}</td></tr><tr><td>도수율 ÷ 10</td><td>{{환산도수율}}</td></tr><tr><td>강도율 × 100</td><td>{{환산강도율}}</td></tr><tr><td>±2</td><td>{{Safe-T-Score 판정}}</td></tr><tr><td>직접비 × 5</td><td>{{하인리히 총손실}}</td></tr><tr><td>태풍 후 점검</td><td>{{특별점검}}</td></tr><tr><td>종합·안전기술·보건기술</td><td>{{안전보건진단}}</td></tr></table>'}
+];
+
+var MN={
+b2:[
+ {k:'정 · 구 · 통 · 방 · 보',s:'"<b>정구통</b>(정구공 통)을 <b>방보</b>(방에 보관)" — 기계 멈추고, 사람 구하고, 알리고, 또 안 다치게 막고, 현장 그대로 두기',m:'{{기계 정지}} → {{구출·응급조치}} → {{통보}} → {{2차 재해 방지}} → {{현장 보존}}'}],
+b3:[
+ {k:'기 · 교 · 관',s:'"<b>기교</b> 있는 <b>관</b>리자가 없어서" — 기술적·교육적·관리적 (1과목 3E와 같은 글자)',m:'간접원인 {{기술적}} · {{교육적}} · {{작업관리상}}'}],
+b4:[
+ {k:'기인물 → 가해물',s:'"<b>범인</b>(기인물)이 던진 <b>돌</b>(가해물)" — 지게차가 원인, 떨어진 화물이 때림',m:'{{기인물 = 원인 제공}} / {{가해물 = 직접 가해}}'}],
+b5:[
+ {k:'도수 백만 · 강도 천',s:'"<b>도수</b>(횟수)는 <b>백만</b> 시간에 몇 번, <b>강도</b>(아픈 날)는 <b>천</b> 시간에 며칠 — 횟수는 드무니 큰 수로"',m:'도수율 {{× 10⁶}} / 강도율 {{× 10³}}'},
+ {k:'2.4 · 7,500 · 300/365',s:'"<b>이사</b>(2.4) 갈 때 <b>칠천오백</b> 원짜리 박스, 일 년 <b>삼백</b> 일만 일한다"',m:'연천인율 = {{도수율 × 2.4}} / 사망 {{7,500일}} / 휴업 {{× 300/365}}'},
+ {k:'환산 ÷10 · ×100',s:'"<b>평생 10만 시간</b> 기준 — 도수율(백만 기준)은 10으로 <b>나누고</b>, 강도율(천 기준)은 100을 <b>곱한다</b>"',m:'환산도수율 {{÷ 10}} / 환산강도율 {{× 100}}'}],
+b7:[
+ {k:'정 · 수 · 특 · 임',s:'"<b>정수기</b> <b>특임</b>(특별 임무)" — 정해진 날, 매일, 특별한 일 있을 때, 이상할 때 임시로',m:'{{정기}} · {{수시(일상)}} · {{특별}} · {{임시}}'}],
+b9:[
+ {k:'종 · 안 · 보',s:'"<b>종안보</b> → 종합검진, 안과, 보건소" — 진단은 종합·안전기술·보건기술',m:'{{종합진단}} · {{안전기술진단}} · {{보건기술진단}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

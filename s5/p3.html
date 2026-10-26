@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5과목 3. 화공안전 비상조치 계획·대응</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 5과목 · 화학설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 3. 화공안전 비상조치 계획·대응 · 세세항목 3개 → 학습단위 4개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">5과목 목차</a><a href="p2.html">◀ 이전</a><a href="p4.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s5-p3-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'3-1. 비상조치계획 및 평가'},
+{id:'c1',title:'1. 비상조치 계획',
+ core:'PSM 비상조치계획 {{장비·인력 보유현황 / 비상연락체계 / 비상조치 조직 임무·절차 / 교육훈련 계획 / 주민 홍보계획}} / 비상사태 구분 {{1단계(국부)·2단계(공장 전체)·3단계(외부 확산)}} 등',
+ def:'<ul><li><b>비상조치계획</b>: 화재·폭발·누출 같은 중대산업사고가 났을 때 피해를 최소화하기 위해 미리 정해 둔 대응 계획. 공정안전보고서(PSM)의 4대 구성 요소 중 하나입니다.</li></ul>',
+ why:'<ul><li>사고는 분 단위로 커지므로, 누가 무엇을 할지 미리 정해 두지 않으면 혼란 속에 2차 피해가 납니다.</li></ul>',
+ detail:'<b>비상조치계획에 포함할 사항 (공정안전보고서)</b><ol><li>비상조치를 위한 장비·인력 보유현황</li><li>사고 발생 시 각 부서·관련 기관과의 비상연락체계</li><li>사고 발생 시 비상조치를 위한 조직의 임무 및 수행 절차</li><li>비상조치계획에 따른 교육계획</li><li>주민 홍보계획</li><li>그 밖에 비상조치 관련 사항</li></ol><b>계획 수립 절차</b>: 잠재 사고 시나리오 파악(위험성평가) → 영향 범위 예측 → 비상 조직·역할 지정 → 대응 절차(경보·대피·차단·소화·응급) → 자원 확보 → 교육·훈련 → 평가·개선<br><b>비상사태 단계 예</b>: 국부적(설비 하나) → 공장 전체 → 외부 확산(지역 주민 대피)<br><b>필수 요소</b>: 경보 체계, 대피 경로·집결지, 인원 확인, 비상 정지(ESD), 외부 기관(소방·경찰·지자체) 연락',
+ exam:'<ul><li>비상조치계획 포함 사항</li></ul>',
+ law:'산업안전보건법 제44조(공정안전보고서), 시행규칙 제50조(공정안전보고서의 세부 내용).'},
+
+{id:'c2',title:'2. 비상대응 교육 훈련',
+ core:'{{정기 훈련}}(연 1회 이상 종합훈련 권장) · {{도상훈련}} · {{실제 훈련}} / 대상 {{근로자·협력업체·인근 주민·외부 기관}} / 훈련 후 {{평가·개선}}',
+ def:'<ul><li>비상조치계획이 실제로 작동하도록 정기적으로 교육하고 훈련하는 것</li></ul>',
+ detail:'<ul><li>교육 내용: 비상 경보 의미, 대피 경로·집결지, 개인 역할, 보호구(공기호흡기·방독마스크) 사용법, 비상 정지 조작, 응급처치·소화기 사용</li><li>훈련 방법<ul><li>도상(탁상) 훈련: 시나리오를 놓고 회의실에서 절차 확인</li><li>부분 훈련: 대피·소화·누출 차단 등 기능별</li><li>종합 훈련: 외부 기관과 합동, 실제 상황처럼</li></ul></li><li>협력업체 근로자, 신규 채용자, 방문자도 포함</li><li>훈련 후 강평 → 문제점 개선 → 계획 수정</li><li>훈련 기록 보존</li></ul>',
+ exam:'<ul><li>훈련 종류 (도상훈련)</li></ul>',
+ law:'공정안전보고서 비상조치계획(교육훈련 계획), 화학물질관리법(위해관리계획 참고).'},
+
+{id:'c3',title:'3. 자체매뉴얼 개발',
+ core:'{{사업장 실정에 맞는}} 사고 유형별 매뉴얼 — {{누출·화재·폭발·중독·정전·자연재해}} / 구성 {{초기 대응·보고·대피·차단·외부 지원 요청·복구}} / {{정기 개정}}',
+ def:'<ul><li>사업장에서 일어날 수 있는 사고 유형별로 구체적 대응 절차를 정리한 자체 매뉴얼</li></ul>',
+ detail:'<ul><li>사고 유형별 작성: 가스·액체 누출, 화재, 폭발, 독성물질 중독, 정전·유틸리티 중단, 태풍·지진 등</li><li>매뉴얼 구성<ol><li>사고 인지 및 초기 대응 (발견자 행동)</li><li>보고·전파 (비상연락망)</li><li>비상 정지·격리·차단</li><li>대피·인원 확인</li><li>소화·누출 방제·응급처치</li><li>외부 기관 지원 요청</li><li>복구·원인 조사·재발 방지</li></ol></li><li>설비별 비상 정지 절차서(ESD), 물질별 MSDS 응급조치와 연결</li><li>그림·흐름도로 쉽게, 현장 비치</li><li>설비 변경·사고 경험·훈련 결과를 반영해 정기 개정</li></ul>',
+ exam:'<ul><li>매뉴얼 작성 원칙 (사업장 실정, 정기 개정)</li></ul>',
+ law:'공정안전보고서 비상조치계획.'},
+
+{id:'c4',title:'키워드 카드 — 5과목 주요항목 3',tag:'암기',
+ core:'PSM 4요소 중 {{비상조치계획}} / 장·연·조·교·주',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>장비·인력 보유현황</td><td>{{비상조치계획}}</td></tr><tr><td>주민 홍보계획</td><td>{{비상조치계획}}</td></tr><tr><td>회의실 시나리오 훈련</td><td>{{도상훈련}}</td></tr><tr><td>외부 기관 합동</td><td>{{종합훈련}}</td></tr><tr><td>사고 유형별 절차서</td><td>{{자체매뉴얼}}</td></tr></table>'}
+];
+
+var MN={
+c1:[
+ {k:'장 · 연 · 조 · 교 · 주',s:'"<b>장연조</b> <b>교주</b>(장연조 교주님) — 장비·인력, 연락체계, 조직·절차, 교육, 주민 홍보"',m:'{{장비·인력}} · {{비상연락체계}} · {{조직 임무·절차}} · {{교육계획}} · {{주민 홍보}}'}],
+c2:[
+ {k:'도상 → 부분 → 종합',s:'"<b>지도 위</b>에서 연습 → <b>한 동작씩</b> → <b>실전처럼</b> 다 같이"',m:'{{도상훈련}} → {{부분훈련}} → {{종합훈련}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

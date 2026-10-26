@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4과목 3. 정전기 장·재해 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 4과목 · 전기설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 3. 정전기 장·재해 관리 · 세세항목 11개 → 학습단위 8개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">4과목 목차</a><a href="p2.html">◀ 이전</a><a href="p4.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s4-p3-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'3-1. 정전기 위험요소 파악'},
+{id:'c1',title:'1. 정전기 발생원리',
+ core:'{{접촉 → 전하 이동 → 분리}} 시 한쪽은 (+), 한쪽은 (−) 대전 / 영향 요인 {{물체 특성(대전서열)·표면 상태·이력·접촉 면적·압력·분리 속도}}',
+ def:'<ul><li><b>정전기</b>: 흐르지 않고 물체에 머물러 있는 전기. 서로 다른 두 물체가 접촉했다 떨어질 때 전자가 이동해 생깁니다.</li><li><b>대전</b>: 물체가 전기를 띠는 현상</li></ul>',
+ detail:'<b>발생 원리</b><ol><li>두 물체가 접촉 → 경계면에서 전자 이동(전기 이중층 형성)</li><li>분리 → 한쪽은 (+), 다른 쪽은 (−)로 대전</li><li>대전된 전하가 빠져나가지 못하고 쌓임 (특히 부도체)</li></ol><b>발생량에 영향을 주는 요인</b><table><tr><th>요인</th><th>영향</th></tr><tr><td>물체의 특성</td><td>대전서열에서 멀리 떨어진 두 물체일수록 많이 발생</td></tr><tr><td>표면 상태</td><td>오염·거칠수록, 산화될수록 많이 발생</td></tr><tr><td>물체의 이력</td><td>처음 접촉·분리할 때 가장 크고, 반복할수록 감소</td></tr><tr><td>접촉 면적·압력</td><td>클수록 많이 발생</td></tr><tr><td>분리 속도</td><td>빠를수록 많이 발생</td></tr></table>',
+ exam:'<ul><li>정전기 발생량 영향 요인 (처음 접촉 시 최대)</li></ul>',
+ law:'안전보건기준규칙 제325조(정전기로 인한 화재 폭발 등 방지).'},
+
+{id:'c2',title:'2. 정전기의 발생현상 (대전의 종류)',
+ core:'{{마찰·박리·유동·분출·충돌·파괴·교반(진동)·침강·유도}} 대전 / {{박리대전}} > 마찰대전 / {{유동대전}} 배관 내 액체 — 유속이 가장 큰 영향',
+ def:'<ul><li>정전기가 생기는 상황에 따라 대전을 여러 종류로 나눕니다.</li></ul>',
+ detail:'<table><tr><th>대전</th><th>상황</th><th>예</th></tr><tr><td>{{마찰대전}}</td><td>두 물체가 문질러짐</td><td>벨트와 풀리, 분체 이송</td></tr><tr><td>{{박리대전}}</td><td>붙어 있던 것이 떨어짐 (마찰보다 큼)</td><td>필름·테이프 벗기기, 옷 벗기</td></tr><tr><td>{{유동대전}}</td><td>액체가 배관 속을 흐름 — <b>유속</b>이 가장 큰 영향</td><td>유류 배관 이송</td></tr><tr><td>{{분출대전}}</td><td>기체·액체·분체가 작은 구멍으로 뿜어져 나옴</td><td>가스 누출, 스프레이</td></tr><tr><td>충돌대전</td><td>입자끼리 또는 벽에 부딪힘</td><td>분체 이송</td></tr><tr><td>파괴대전</td><td>고체가 부서짐</td><td>분쇄</td></tr><tr><td>교반·진동대전</td><td>탱크 내 액체 흔들림</td><td>탱크로리 운송</td></tr><tr><td>침강대전</td><td>액체 속 입자가 가라앉음</td><td>탱크 내 수분 침강</td></tr><tr><td>{{유도대전}}</td><td>대전체 가까이 있는 도체에 전하가 유도됨</td><td>절연된 사람·금속</td></tr></table>',
+ exam:'<ul><li>상황과 대전 종류 짝짓기 (배관 = 유동, 필름 = 박리)</li></ul>',
+ law:'교재 기준.'},
+
+{id:'c3',title:'3. 방전의 형태 및 영향',
+ core:'{{코로나}}(뾰족한 끝, 약함) · {{스트리머}}(나뭇가지) · {{불꽃}}(도체 간, 에너지 큼) · {{연면}}(절연물 표면) · {{브러시}} · {{뇌상}} / 방전 에너지 W = {{½CV²}} = ½QV = Q²/2C / W > {{최소착화에너지}} → 착화',
+ def:'<ul><li><b>방전</b>: 쌓인 정전기가 공기 중으로 한꺼번에 빠져나가는 현상. 방전 에너지가 가연물의 최소착화에너지보다 크면 화재·폭발이 납니다.</li></ul>',
+ detail:'<table><tr><th>방전</th><th>특징</th><th>위험</th></tr><tr><td>{{코로나 방전}}</td><td>뾰족한 도체 끝에서 약한 발광·소리</td><td>에너지 작음</td></tr><tr><td>{{스트리머 방전}}</td><td>나뭇가지 모양으로 뻗음</td><td>중간</td></tr><tr><td>브러시 방전</td><td>대전된 부도체와 도체 사이 다발 모양</td><td>가스 착화 가능</td></tr><tr><td>{{불꽃 방전}}</td><td>대전된 도체끼리 강한 빛·소리</td><td>에너지 커서 착화 위험 큼</td></tr><tr><td>{{연면 방전}}</td><td>대전된 절연물(필름·시트) 표면을 따라 별 모양</td><td>에너지 큼</td></tr><tr><td>뇌상 방전</td><td>대전된 분진 구름에서 번개 모양</td><td>대규모</td></tr></table><b>방전 에너지</b><ul><li>W = ½CV<sup>2</sup> = ½QV = Q<sup>2</sup>/(2C) — C: 정전용량(F), V: 전압(V), Q: 전하량(C)</li><li>W ≥ 최소착화에너지(MIE)이면 착화 (예: 수소 약 0.019mJ, 메탄 약 0.28mJ)</li></ul>',
+ calc:'사람 정전용량 200pF, 대전전압 10kV → W = ½ × 200×10<sup>−12</sup> × (10<sup>4</sup>)<sup>2</sup> = <b>0.01J = 10mJ</b> → 대부분 가연성 가스 착화 가능',
+ exam:'<ul><li>방전 에너지 계산 (자주 출제)</li><li>방전 형태 특징</li></ul>',
+ law:'교재 기준.'},
+
+{id:'c4',title:'4. 정전기의 장해',
+ core:'{{화재·폭발}}(가장 큰 위험) · {{전격}}(전기 충격 → 2차 재해) · {{생산 장해}}(먼지 흡착·필름 달라붙음·전자소자 파괴)',
+ def:'<ul><li>정전기가 일으키는 피해</li></ul>',
+ detail:'<ul><li>{{화재·폭발}}: 인화성 가스·증기·분진이 있는 곳에서 방전이 착화원</li><li>{{전격(전기 충격)}}: 대전된 사람·물체가 접지된 것에 닿을 때 순간 충격 → 놀라 추락 등 2차 재해 (정전기 자체로 사망은 드묾)</li><li>{{생산 장해}}: 먼지·이물 흡착, 필름·종이 달라붙음, 분체 막힘, 반도체·전자부품 파괴(ESD), 계측기 오작동</li></ul>',
+ exam:'<ul><li>정전기 장해 3가지</li></ul>',
+ law:'안전보건기준규칙 제325조.'},
+
+{grp:'3-2. 정전기 위험요소 제거'},
+{id:'c5',title:'5. 접지 · 본딩',
+ core:'{{접지}} = 도체를 대지와 연결해 전하 누설 — {{도체에 효과}}, 부도체엔 X / 정전기 접지저항 {{10⁶Ω 이하}}면 충분 / {{본딩}} = 도체끼리 연결해 {{같은 전위}}',
+ def:'<ul><li><b>접지</b>: 대전 물체를 땅과 전선으로 연결해 정전기를 땅으로 흘려보내는 것</li><li><b>본딩</b>: 금속 물체끼리 전선으로 연결해 전위차를 없애는 것 (방전 방지)</li></ul>',
+ why:'<ul><li>부도체(플라스틱 등)는 전하가 움직이지 못해 접지해도 빠지지 않습니다. 부도체는 가습·대전방지제·제전기를 씁니다.</li></ul>',
+ detail:'<ul><li>정전기 방지용 접지저항: 1MΩ(10<sup>6</sup>Ω) 이하면 충분 (감전 방지용보다 훨씬 커도 됨)</li><li>대상: 인화성 물질 탱크·배관, 탱크로리, 드럼, 분체 이송 설비, 혼합기 등</li><li>본딩: 탱크와 배관, 드럼과 깔때기, 탱크로리와 주유설비를 연결한 뒤 접지</li><li>인화성 액체를 옮겨 담을 때 용기와 주입구를 본딩 → 접지 → 주입</li></ul>',
+ cmp:'<table><tr><th>접지</th><th>본딩</th></tr><tr><td>물체 ↔ 땅</td><td>물체 ↔ 물체</td></tr></table>',
+ exam:'<ul><li>접지가 부도체에 효과 없음</li><li>본딩 정의</li></ul>',
+ law:'안전보건기준규칙 제325조.'},
+
+{id:'c6',title:'6. 유속의 제한',
+ core:'배관 내 유속 {{에테르·이황화탄소 등 1m/s 이하}} / {{물·기체 섞인 비수용성 위험물 1m/s 이하}} / 저항률 {{10¹⁰Ω·cm 미만 도전성 위험물 7m/s 이하}} / 유동대전은 {{유속}}에 가장 크게 좌우',
+ def:'<ul><li>배관 속 액체의 유동대전은 유속의 제곱에 가깝게 늘어나므로, 위험물 이송 속도를 제한합니다.</li></ul>',
+ detail:'<table><tr><th>대상</th><th>배관 내 유속</th></tr><tr><td>저항률 10<sup>10</sup>Ω·cm 미만 도전성 위험물</td><td>{{7m/s 이하}}</td></tr><tr><td>에테르·이황화탄소 등 폭발 위험이 높은 것</td><td>{{1m/s 이하}}</td></tr><tr><td>물이나 기체를 혼합한 비수용성 위험물</td><td>{{1m/s 이하}}</td></tr><tr><td>저항률 10<sup>10</sup>Ω·cm 이상 위험물</td><td>배관 지름에 따라 제한 (지름이 클수록 낮게)</td></tr></table><ul><li>주입 초기에는 저속으로 (탱크 바닥에 노즐이 잠길 때까지 1m/s 이하)</li><li>주입 후 정치 시간(완화 시간)을 두고 검척·샘플링</li></ul>',
+ exam:'<ul><li>이황화탄소·에테르 유속 1m/s</li></ul>',
+ law:'교재 기준(정전기 재해 예방 기술지침 KOSHA GUIDE). <span style="color:var(--sub)">수치는 교재로 확인.</span>'},
+
+{id:'c7',title:'7. 보호구의 착용 · 대전방지제 · 가습 · 제전기',
+ core:'보호구 {{대전방지 안전화·제전복·손목 접지대}} / {{대전방지제}} 계면활성제로 표면 전도성↑ / {{가습}} 상대습도 {{70% 이상}} / {{제전기}} 이온으로 중화 — {{전압인가식·자기방전식·방사선식}}',
+ def:'<ul><li>부도체·사람에 쌓인 정전기를 없애는 방법들</li></ul>',
+ detail:'<b>보호구</b><ul><li>대전방지(정전기) 안전화: 사람 몸의 정전기를 바닥으로</li><li>제전복(대전방지 작업복), 손목 접지대(전자 조립)</li><li>바닥도 도전성 바닥재로</li></ul><b>대전방지제</b>: 계면활성제를 표면에 바르거나 섞어 표면의 수분 흡착·전도성을 높임 (플라스틱 필름 등)<br><b>가습</b>: 상대습도를 {{70% 이상}}으로 → 표면에 얇은 물막이 생겨 전하가 누설 (겨울철 건조할 때 정전기 많음)<br><b>제전기</b> (공기 중에 이온을 만들어 반대 전하로 중화)<table><tr><th>종류</th><th>원리</th></tr><tr><td>{{전압인가식}}</td><td>침 전극에 고전압을 걸어 코로나 방전으로 이온 생성 — 제전 능력 큼</td></tr><tr><td>{{자기방전식}}</td><td>대전체 자체의 전계로 접지된 침 끝에서 코로나 방전 — 전원 불필요, 높은 대전에만 효과</td></tr><tr><td>{{방사선식}}(이온식)</td><td>방사성 동위원소의 전리작용 — 폭발 위험 장소에 사용 가능, 방사선 관리</td></tr></table>',
+ exam:'<ul><li>가습 기준 70%</li><li>제전기 종류와 원리</li></ul>',
+ law:'안전보건기준규칙 제325조.'},
+
+{id:'c8',title:'키워드 카드 — 4과목 주요항목 3',tag:'암기',
+ core:'박리 > 마찰 / 유동 = {{유속}} / ½CV² / 10⁶Ω / 70% / 전압인가·자기방전·방사선',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>처음 접촉 시 최대</td><td>{{물체의 이력}}</td></tr><tr><td>필름 벗기기</td><td>{{박리대전}}</td></tr><tr><td>배관 액체</td><td>{{유동대전}}</td></tr><tr><td>절연물 표면 별 모양</td><td>{{연면 방전}}</td></tr><tr><td>도체끼리 강한 방전</td><td>{{불꽃 방전}}</td></tr><tr><td>½CV²</td><td>{{방전 에너지}}</td></tr><tr><td>정전기 접지저항</td><td>{{10⁶Ω 이하}}</td></tr><tr><td>물체 ↔ 물체 연결</td><td>{{본딩}}</td></tr><tr><td>이황화탄소 유속</td><td>{{1m/s 이하}}</td></tr><tr><td>상대습도</td><td>{{70% 이상}}</td></tr><tr><td>계면활성제</td><td>{{대전방지제}}</td></tr><tr><td>전원 없이 코로나</td><td>{{자기방전식 제전기}}</td></tr><tr><td>방폭 장소 제전기</td><td>{{방사선식}}</td></tr></table>'}
+];
+
+var MN={
+c1:[
+ {k:'처음 · 거칠게 · 세게 · 빨리',s:'"<b>스티커</b>를 처음, 거친 면에서, 세게 눌렀다가, 빨리 떼면 정전기 최대"',m:'{{처음 접촉}} · {{거친 표면}} · {{큰 압력·면적}} · {{빠른 분리}}'}],
+c2:[
+ {k:'마 · 박 · 유 · 분 · 충 · 파',s:'"<b>마박</b>(마구 박박) 문지르고, <b>유분</b>(기름 분출), <b>충파</b>(부딪쳐 부숨)" + 흔들고 가라앉고 유도',m:'{{마찰}} · {{박리}} · {{유동}} · {{분출}} · {{충돌}} · {{파괴}} · 교반 · 침강 · 유도'}],
+c3:[
+ {k:'½CV²',s:'"<b>반(½)</b>만 <b>CV</b>(이력서) 제곱으로 쓴다 — 정전 에너지"',m:'W = {{½CV²}}'},
+ {k:'코 · 스 · 브 · 불 · 연 · 뇌',s:'"<b>코</b>끝 → <b>스</b>쳐 뻗고 → <b>브</b>러시 → <b>불</b>꽃 → <b>연</b>면(표면) → <b>뇌</b>(번개)" — 뒤로 갈수록 대체로 강해짐',m:'{{코로나}} · {{스트리머}} · {{브러시}} · {{불꽃}} · {{연면}} · {{뇌상}}'}],
+c5:[
+ {k:'접지 = 땅 / 본딩 = 손잡기',s:'"<b>접지</b>는 땅에 발 디디기, <b>본딩</b>은 옆 사람과 손잡기 — 부도체는 발이 없어서 접지가 안 통함"',m:'접지 {{도체만 효과}} / 본딩 {{물체끼리 같은 전위}}'}],
+c6:[
+ {k:'위험하면 1, 보통 7',s:'"<b>에테르·이황화탄소</b>는 <b>걷는 속도</b>(1m/s), 보통 기름은 <b>자전거 속도</b>(7m/s)"',m:'고위험 {{1m/s 이하}} / 도전성 {{7m/s 이하}}'}],
+c7:[
+ {k:'70%',s:'"<b>장마철</b>(습도 70%↑)엔 정전기가 없다"',m:'가습 {{상대습도 70% 이상}}'},
+ {k:'전 · 자 · 방',s:'"<b>전자방</b>(전자레인지 방) — 전기 걸어서, 스스로, 방사선으로 이온을 만든다"',m:'{{전압인가식}} · {{자기방전식}} · {{방사선식}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

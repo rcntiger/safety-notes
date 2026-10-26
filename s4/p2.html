@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4과목 2. 감전재해 및 방지대책</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 4과목 · 전기설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 2. 감전재해 및 방지대책 · 세세항목 9개 → 학습단위 9개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">4과목 목차</a><a href="p1.html">◀ 이전</a><a href="p3.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s4-p2-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'2-1. 감전재해 예방 및 조치'},
+{id:'b1',title:'1. 안전전압 · 허용접촉전압',
+ core:'안전전압 {{30V}}(국내 일반) / 허용접촉전압 {{1종 2.5V 이하(수중) · 2종 25V 이하(젖음) · 3종 50V 이하(통상) · 4종 제한 없음}}',
+ def:'<ul><li><b>안전전압</b>: 사람이 닿아도 위험한 전류가 흐르지 않는다고 보는 전압</li><li><b>허용접촉전압</b>: 사람이 처한 상태(젖음 등)에 따라 접촉해도 되는 최대 전압</li></ul>',
+ why:'<ul><li>같은 전압이라도 몸이 젖으면 저항이 크게 줄어 전류가 많이 흐릅니다. 그래서 상태별로 허용 전압을 나눕니다.</li></ul>',
+ detail:'<b>허용접촉전압 (상태별)</b><table><tr><th>종별</th><th>접촉 상태</th><th>허용접촉전압</th></tr><tr><td>제1종</td><td>인체 대부분이 수중에 있는 상태</td><td>{{2.5V 이하}}</td></tr><tr><td>제2종</td><td>인체가 현저히 젖은 상태, 금속성 기계·구조물에 신체 일부가 상시 접촉</td><td>{{25V 이하}}</td></tr><tr><td>제3종</td><td>제1·2종 외 통상의 인체 상태에서 접촉전압이 가해지면 위험성이 높은 상태</td><td>{{50V 이하}}</td></tr><tr><td>제4종</td><td>접촉전압이 가해질 우려가 없거나, 가해져도 위험성이 낮은 상태</td><td>제한 없음</td></tr></table><ul><li>국내 일반 안전전압: 30V (IEC 교류 50V 기준도 있음)</li><li>SELV·PELV(특별저전압): 교류 50V·직류 120V 이하 회로로 감전 보호</li></ul>',
+ ex:'<ul><li>수영장·욕조 내 조명 → 1종 상태 → 매우 낮은 전압·누전차단기</li></ul>',
+ exam:'<ul><li>종별 허용접촉전압 (2.5·25·50)</li></ul>',
+ law:'KEC(특별저전압), 교재 기준(허용접촉전압 분류).'},
+
+{id:'b2',title:'2. 허용접촉 및 보폭전압',
+ core:'{{접촉전압}} = 손과 발 사이 전압 / {{보폭전압}} = 두 발 사이(1m) 전압 / 허용 접촉전압 E = {{(Rb + 1.5ρs) × Ik}} / 허용 보폭전압 E = {{(Rb + 6ρs) × Ik}} / Ik = {{0.116 ÷ √t}}',
+ def:'<ul><li><b>접촉전압</b>: 지락 사고 시 사람이 기기 외함을 만졌을 때 손과 발 사이에 걸리는 전압</li><li><b>보폭전압</b>: 지락 전류가 땅으로 퍼질 때 사람의 두 발 사이(보폭 약 1m)에 걸리는 전압</li></ul>',
+ detail:'<ul><li>허용접촉전압 E<sub>t</sub> = (R<sub>b</sub> + 3ρ<sub>s</sub>/2) × I<sub>k</sub> = (R<sub>b</sub> + 1.5ρ<sub>s</sub>) × I<sub>k</sub></li><li>허용보폭전압 E<sub>s</sub> = (R<sub>b</sub> + 6ρ<sub>s</sub>) × I<sub>k</sub></li><li>R<sub>b</sub>: 인체 저항(보통 1,000Ω으로 계산), ρ<sub>s</sub>: 지표면 저항률(Ω·m), I<sub>k</sub>: 심실세동 한계전류 = 0.116 ÷ √t (A, 체중 50kg 기준, t: 통전 시간 초)</li><li>대책: 접지 저항 낮추기, 메시(망상) 접지, 지표면에 자갈(저항률↑), 고속 차단</li></ul>',
+ calc:'R<sub>b</sub> = 1,000Ω, ρ<sub>s</sub> = 100Ω·m, t = 1초 → I<sub>k</sub> = 0.116A<br>접촉전압 = (1,000 + 150) × 0.116 ≈ <b>133V</b> / 보폭전압 = (1,000 + 600) × 0.116 ≈ <b>186V</b>',
+ cmp:'<table><tr><th>접촉전압</th><th>보폭전압</th></tr><tr><td>손 ↔ 발, 1.5ρ</td><td>발 ↔ 발, 6ρ</td></tr></table>',
+ exam:'<ul><li>접촉전압·보폭전압 식의 계수 (1.5·6)</li></ul>',
+ law:'KEC(접지시스템), IEEE Std 80 (참고).'},
+
+{id:'b3',title:'3. 인체의 저항',
+ core:'인체 저항 약 {{5,000Ω}}(건조) / 피부 {{약 2,500Ω}}, 내부 {{300~500Ω}} / 젖으면 {{1/12}}, 땀 {{1/12~1/20}}, 물에 잠기면 {{1/25}}',
+ def:'<ul><li>전류가 몸을 지날 때의 저항. 대부분 피부 저항이고, 피부가 젖거나 벗겨지면 급격히 작아집니다.</li></ul>',
+ detail:'<ul><li>인체 전체 저항: 건조 상태 약 5,000Ω (교재 기준값), 감전 계산 시 보수적으로 500~1,000Ω을 쓰기도 함</li><li>피부 저항: 약 2,500Ω (건조), 내부 조직 저항: 약 300~500Ω</li><li>피부 상태에 따른 감소: 습기 있으면 약 1/12, 땀 흘리면 1/12~1/20, 물에 젖으면 1/25 정도</li><li>전압이 높아지면 피부가 파괴되어 저항이 더 떨어짐</li><li>옴의 법칙: I = V ÷ R → 저항이 작을수록 전류가 커져 위험</li></ul>',
+ calc:'220V에 젖은 손(저항 500Ω)으로 닿으면 I = 220 ÷ 500 = 0.44A = <b>440mA</b> → 심실세동 위험',
+ exam:'<ul><li>젖었을 때 저항 감소 비율</li></ul>',
+ law:'교재 기준값 (IEC 60479 참고).'},
+
+{grp:'2-2. 감전재해의 요인'},
+{id:'b4',title:'4. 감전요소',
+ core:'1차 요소 {{통전전류 크기(가장 중요)·통전경로·통전시간·전원 종류(교류 > 직류)}} / 2차 {{인체 조건·전압·계절·주파수}} / 경로 위험 최대 {{왼손 → 가슴}}(심장전류계수 1.5)',
+ def:'<ul><li>감전의 위험 정도를 결정하는 요소. 전압이 아니라 <b>몸을 지나는 전류</b>가 위험을 결정합니다.</li></ul>',
+ why:'<ul><li>같은 전류라도 심장을 지나면 훨씬 위험하므로, 경로에 따라 위험도가 다릅니다.</li></ul>',
+ detail:'<b>1차적 감전 위험 요소</b><ol><li>{{통전전류의 크기}} (가장 중요)</li><li>{{통전 경로}} (심장 통과 여부)</li><li>{{통전 시간}}</li><li>{{전원의 종류}} (같은 크기면 교류가 직류보다 위험)</li></ol><b>2차적 요소</b>: 인체 조건(저항·건강), 전압 크기, 계절(여름 땀), 주파수<br><b>통전경로별 심장전류계수</b> (클수록 위험)<table><tr><th>경로</th><th>계수</th></tr><tr><td>{{왼손 → 가슴}}</td><td>1.5</td></tr><tr><td>오른손 → 가슴</td><td>1.3</td></tr><tr><td>왼손 → 한 발 또는 양발</td><td>1.0</td></tr><tr><td>양손 → 양발</td><td>1.0</td></tr><tr><td>오른손 → 한 발 또는 양발</td><td>0.8</td></tr><tr><td>왼손 → 등</td><td>0.7</td></tr><tr><td>한 손 또는 양손 → 앉아 있는 자리</td><td>0.7</td></tr><tr><td>왼손 → 오른손</td><td>0.4</td></tr><tr><td>오른손 → 등</td><td>0.3</td></tr></table>',
+ exam:'<ul><li>1차 요소 4가지 (전압은 2차)</li><li>가장 위험한 경로 = 왼손 → 가슴</li></ul>',
+ law:'IEC 60479 (참고).'},
+
+{id:'b5',title:'5. 감전사고의 형태',
+ core:'{{직접접촉}}(충전부) / {{간접접촉}}(누전된 외함) / {{아크·섬락}} / {{정전·전자 유도}} / {{낙뢰}} / {{정전기}} / 2차 재해 {{추락·화상}}',
+ def:'<ul><li>사람이 감전되는 경로와 상황에 따른 분류</li></ul>',
+ detail:'<table><tr><th>형태</th><th>내용</th><th>대책</th></tr><tr><td>{{직접접촉}}</td><td>충전부(전선·단자)에 직접 닿음</td><td>충전부 방호(폐쇄·덮개·절연·격리), 절연 보호구, 정전 작업</td></tr><tr><td>{{간접접촉}}</td><td>절연이 나빠져 누전된 기기 외함에 닿음</td><td>보호접지, 누전차단기, 이중절연 기기, 비접지 방식</td></tr><tr><td>아크·섬락</td><td>고압 충전부에 가까이 갔을 때 공기를 뚫고 방전</td><td>접근한계거리 유지</td></tr><tr><td>유도</td><td>정전 중인 선로에 인근 활선의 정전유도·전자유도 전압</td><td>단락접지</td></tr><tr><td>낙뢰</td><td>번개</td><td>피뢰설비, 뇌우 시 작업 중지</td></tr><tr><td>정전기</td><td>대전된 몸·물체 방전</td><td>3장</td></tr></table><ul><li>감전 자체보다 놀라서 떨어지는 <b>추락</b>, 아크 <b>화상</b> 같은 2차 재해도 많음</li></ul>',
+ cmp:'<table><tr><th>직접접촉</th><th>간접접촉</th></tr><tr><td>원래 전기가 있는 곳</td><td>원래 없어야 할 곳(외함)</td></tr><tr><td>방호·절연</td><td>접지·누전차단기</td></tr></table>',
+ exam:'<ul><li>직접접촉 vs 간접접촉 대책 구분</li></ul>',
+ law:'안전보건기준규칙 제301조(전기기계·기구 등의 충전부 방호), 제302조(접지), 제304조(누전차단기).'},
+
+{id:'b6',title:'6. 전압의 구분',
+ core:'{{저압}} AC 1kV·DC 1.5kV 이하 / {{고압}} 그 초과 ~ 7kV 이하 / {{특고압}} 7kV 초과 (KEC)',
+ def:'<ul><li>전압 크기에 따라 설비 기준과 작업 방법이 달라지므로 구분합니다 (1장 전기 법령 카드와 같은 내용).</li></ul>',
+ detail:'<table><tr><th>구분</th><th>교류</th><th>직류</th></tr><tr><td>저압</td><td>1kV 이하</td><td>1.5kV 이하</td></tr><tr><td>고압</td><td>1kV 초과 7kV 이하</td><td>1.5kV 초과 7kV 이하</td></tr><tr><td>특고압</td><td colspan="2">7kV 초과</td></tr></table><ul><li>가정용 220V, 공장 380V → 저압 / 배전선로 22.9kV → 특고압</li><li>옛 기준: 저압 AC 600V·DC 750V 이하, 고압 7kV 이하 (2021년 이전)</li></ul>',
+ exam:'<ul><li>22.9kV는 특고압</li></ul>',
+ law:'한국전기설비규정(KEC) 111.1.'},
+
+{id:'b7',title:'7. 통전전류의 세기 및 그에 따른 영향',
+ core:'{{최소감지전류 1mA}} / {{고통한계 7~8mA}} / {{가수(이탈)전류 10~15mA}} / {{불수(이탈불능)전류 20~50mA}} / {{심실세동전류 I = 165 ÷ √T mA}} / 심실세동 에너지 {{약 13.6J}}(R = 500Ω)',
+ def:'<ul><li>몸을 지나는 전류(상용주파수 60Hz, 성인 남자 기준)의 크기에 따라 나타나는 반응</li></ul>',
+ detail:'<table><tr><th>전류</th><th>크기(교재 기준)</th><th>반응</th></tr><tr><td>{{최소감지전류}}</td><td>약 1mA</td><td>찌릿하게 느낌</td></tr><tr><td>{{고통한계전류}}</td><td>약 7~8mA</td><td>고통을 참을 수 있는 한계</td></tr><tr><td>{{가수전류}}(이탈전류)</td><td>약 10~15mA</td><td>스스로 손을 뗄 수 있는 한계</td></tr><tr><td>{{불수전류}}(이탈불능전류)</td><td>약 20~50mA</td><td>근육 경련으로 손을 못 뗌, 호흡 곤란</td></tr><tr><td>{{심실세동전류}}</td><td>I = 165 ÷ √T (mA)</td><td>심장이 불규칙하게 떨려 혈액 순환 정지 → 사망 위험</td></tr></table><ul><li>심실세동전류(Dalziel): I = 165/√T mA (T: 통전시간 초, 0.01~5초 범위)</li><li>심실세동을 일으키는 전기 에너지: W = I<sup>2</sup>RT = (0.165/√T)<sup>2</sup> × R × T ≈ 0.0272 × R → R = 500Ω이면 약 13.6J</li></ul>',
+ calc:'① 통전시간 1초 → I = 165 ÷ 1 = <b>165mA</b><br>② 통전시간 0.25초 → I = 165 ÷ 0.5 = <b>330mA</b><br>③ 심실세동 에너지 (R = 500Ω) = 0.165² × 500 ≈ <b>13.6J</b>',
+ exam:'<ul><li>전류 단계 이름 순서와 크기</li><li>심실세동전류·에너지 계산 (자주 출제)</li></ul>',
+ law:'교재 기준값 (Dalziel 실험, IEC 60479).'},
+
+{grp:'2-3. 절연용 안전장구'},
+{id:'b8',title:'8. 절연용 안전보호구 · 절연용 안전방호구',
+ core:'보호구(사람이 착용) {{절연안전모·절연장갑·절연장화·절연화·절연복}} / 방호구(충전부에 씌움) {{고무판·절연관·절연시트·절연커버·애자커버}} / 활선작업용 {{핫스틱}} / 정전작업 {{차단 → 잠금·표지 → 잔류전하 방전 → 검전 → 단락접지}}',
+ def:'<ul><li><b>절연용 보호구</b>: 작업자가 몸에 착용하는 절연 장비</li><li><b>절연용 방호구</b>: 충전부나 그 주변에 씌워 사람이 닿지 않게 하는 장비</li></ul>',
+ detail:'<b>절연용 안전보호구</b><ul><li>절연 안전모(AE·ABE), 절연 고무장갑(등급 00~4, 2과목), 절연장화(고압), 절연화(저압), 절연복·절연 소매</li><li>사용 전 점검(공기 누설 시험 등), 정기 내전압 시험(6개월마다)</li></ul><b>절연용 안전방호구</b><ul><li>고무판, 절연관, 절연시트, 절연커버, 애자커버 — 충전부·근접 전선에 씌움</li></ul><b>활선작업용 기구·장치</b>: 핫스틱(절연봉), 활선작업용 절연 작업대·버킷<br><b>정전작업 절차 (안전보건기준규칙 제319조)</b><ol><li>작업 전 전원 차단 (차단장치 개방)</li><li>차단장치에 잠금장치·꼬리표 부착</li><li>잔류 전하 완전 방전 (전력 케이블·콘덴서)</li><li>검전기로 정전 확인</li><li>단락 접지 (유도·오통전 대비)</li><li>작업 후 단락접지 제거 → 작업자 대피 확인 → 송전</li></ol><b>충전전로 접근한계거리 (일부)</b>: 0.3kV 이하 접촉 금지 / 0.3~0.75kV 30cm / 0.75~2kV 45cm / 2~15kV 60cm / 15~37kV 90cm (22.9kV 배전선 포함)',
+ cmp:'<table><tr><th>보호구</th><th>방호구</th></tr><tr><td>사람에게 (장갑·장화)</td><td>전선에게 (커버·시트)</td></tr></table>',
+ exam:'<ul><li>보호구 vs 방호구 구분</li><li>정전작업 순서 (자주 출제)</li></ul>',
+ law:'안전보건기준규칙 제319조(정전전로에서의 전기작업), 제321조(충전전로에서의 전기작업), 제323조(절연용 보호구 등의 사용).'},
+
+{id:'b9',title:'키워드 카드 — 4과목 주요항목 2',tag:'암기',
+ core:'2.5·25·50 / 1.5ρ·6ρ / 5,000Ω / 165/√T / 왼손-가슴',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>수중 상태</td><td>{{2.5V 이하}}</td></tr><tr><td>현저히 젖음</td><td>{{25V 이하}}</td></tr><tr><td>통상 상태</td><td>{{50V 이하}}</td></tr><tr><td>두 발 사이</td><td>{{보폭전압}}</td></tr><tr><td>0.116/√t</td><td>{{심실세동 한계전류 (IEEE)}}</td></tr><tr><td>물에 젖은 피부</td><td>{{저항 1/25}}</td></tr><tr><td>가장 중요한 감전 요소</td><td>{{통전전류 크기}}</td></tr><tr><td>심장전류계수 1.5</td><td>{{왼손 → 가슴}}</td></tr><tr><td>누전된 외함</td><td>{{간접접촉}}</td></tr><tr><td>22.9kV</td><td>{{특고압}}</td></tr><tr><td>1mA</td><td>{{최소감지전류}}</td></tr><tr><td>스스로 손 뗄 수 있음</td><td>{{가수전류}}</td></tr><tr><td>165/√T</td><td>{{심실세동전류}}</td></tr><tr><td>절연시트·애자커버</td><td>{{방호구}}</td></tr><tr><td>정전작업 마지막 준비</td><td>{{단락접지}}</td></tr></table>'}
+];
+
+var MN={
+b1:[
+ {k:'2.5 · 25 · 50',s:'"<b>목욕탕</b>(물속) 2.5, <b>땀범벅</b> 25, <b>보통</b> 50 — 0을 하나씩 붙여 가며 열 배, 두 배"',m:'1종 {{2.5V}} · 2종 {{25V}} · 3종 {{50V}}'}],
+b2:[
+ {k:'접촉 1.5 · 보폭 6',s:'"<b>손</b>으로 짚으면 한 발로 서 있는 셈(<b>1.5</b>), <b>두 발</b>을 벌리면 발밑 땅 저항이 크게(<b>6</b>)"',m:'접촉 {{Rb + 1.5ρs}} / 보폭 {{Rb + 6ρs}}'}],
+b3:[
+ {k:'5,000 · 1/12 · 1/25',s:'"마른 몸 <b>오천</b>, 땀나면 <b>열두 배</b> 약해지고, 물에 빠지면 <b>스물다섯 배</b> 약해진다"',m:'건조 {{약 5,000Ω}} / 땀 {{1/12}} / 물 {{1/25}}'}],
+b4:[
+ {k:'크 · 경 · 시 · 종',s:'"<b>크경시종</b> → \'크게, 경로, 시간, 종류\' — 전압은 1차가 아니다"',m:'{{전류 크기}} · {{경로}} · {{시간}} · {{전원 종류}}'},
+ {k:'왼손 → 가슴',s:'"<b>심장은 왼쪽</b> — 왼손에서 가슴으로 가는 길이 제일 위험"',m:'심장전류계수 최대 {{왼손 → 가슴 1.5}}'}],
+b7:[
+ {k:'1 · 8 · 15 · 50 · 165/√T',s:'"<b>찌릿</b>(1) → <b>아야</b>(8) → <b>겨우 뗌</b>(15) → <b>못 뗌</b>(50) → <b>심장 떨림</b>(165/√T)"',m:'{{감지 1mA}} · {{고통 7~8mA}} · {{가수 10~15mA}} · {{불수 20~50mA}} · {{심실세동 165/√T}}'}],
+b8:[
+ {k:'차 · 잠 · 방 · 검 · 접',s:'"<b>차잠방검접</b> → \'차 잠그고 방에서 검사 접수\'" — 끄고, 잠그고, 남은 전기 빼고, 확인하고, 땅에 묶고',m:'{{차단}} → {{잠금·표지}} → {{잔류전하 방전}} → {{검전}} → {{단락접지}}'},
+ {k:'보호구 = 몸 / 방호구 = 전선',s:'"<b>보호</b>구는 내가 <b>입는</b> 것, <b>방호</b>구는 전선에 <b>덮는</b> 것"',m:'보호구 {{장갑·장화·안전모}} / 방호구 {{커버·시트·고무판}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

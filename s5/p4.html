@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5과목 4. 화공 안전운전·점검</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 5과목 · 화학설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 4. 화공 안전운전·점검 · 세세항목 6개 → 학습단위 7개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">5과목 목차</a><a href="p3.html">◀ 이전</a><a href="../s6/index.html">6과목 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s5-p4-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'4-1. 공정안전 기술'},
+{id:'d1',title:'1. 공정안전의 개요 (PSM)',
+ core:'PSM 4요소 {{공정안전자료·공정위험성평가서·안전운전계획·비상조치계획}} / 제출 {{착공 30일 전}}까지 공단에 {{2부}} / 대상 {{원유정제·석유화학 기초·합성수지·질소·인산·칼리 비료·복합비료·농약 원제·화약}} 7개 업종 + {{규정량 이상 유해위험물질}} 설비',
+ def:'<ul><li><b>공정안전관리(PSM, Process Safety Management)</b>: 위험물질을 대량으로 다루는 사업장이 화재·폭발·누출 같은 <b>중대산업사고</b>를 막기 위해 공정 전체를 체계적으로 관리하는 제도</li><li><b>공정안전보고서</b>: 그 관리 내용을 문서로 정리해 제출하는 보고서</li></ul>',
+ why:'<ul><li>1984년 인도 보팔 가스 누출 사고 등 대형 화학사고를 계기로 도입되었습니다.</li></ul>',
+ detail:'<b>공정안전보고서 제출 대상 (시행령 제43조)</b><ul><li>업종: 원유 정제처리업, 기타 석유정제물 재처리업, 석유화학계 기초화학물질 또는 합성수지·기타 플라스틱물질 제조업, 질소·인산·칼리질 화학비료 제조업(단순 혼합 제외), 복합비료 제조업, 화학 살균·살충제 및 농업용 약제 제조업(원제 제조), 화약 및 불꽃제품 제조업</li><li>그 외 업종이라도 시행령 별표 13의 유해·위험물질을 <b>규정량 이상</b> 제조·취급·저장하는 설비</li></ul><b>공정안전보고서 4대 내용 (시행령 제44조)</b><table><tr><th>내용</th><th>세부</th></tr><tr><td>{{공정안전자료}}</td><td>물질·설비·도면 등 (다음 카드)</td></tr><tr><td>{{공정위험성 평가서}}</td><td>HAZOP 등으로 평가한 결과와 잠재위험 대책</td></tr><tr><td>{{안전운전계획}}</td><td>운전지침, 점검·정비, 작업허가, 변경관리 등</td></tr><tr><td>{{비상조치계획}}</td><td>3장</td></tr></table><b>제출</b>: 유해·위험설비 설치·이전·주요 구조부분 변경 공사 착공일 {{30일 전}}까지 한국산업안전보건공단에 2부<br><b>이행 상태 평가</b>: 확인 후 1년 경과 시, 이후 4년마다 정기 (등급에 따라 다름)',
+ exam:'<ul><li>PSM 4대 내용</li><li>제출 기한 (착공 30일 전)</li></ul>',
+ law:'산업안전보건법 제44조~제46조, 시행령 제43조·제44조·별표 13, 시행규칙 제50조~제54조.'},
+
+{id:'d2',title:'2. 각종 장치 (제어장치·송풍기·압축기·배관 및 피팅류)',
+ core:'송풍기 압력 {{팬 10kPa 미만 · 블로어 10~100kPa · 압축기 100kPa 이상}} / {{서징}}(맥동) · 펌프 {{캐비테이션}}(공동현상) · {{수격작용}} / 피팅 {{연결: 플랜지·유니온·커플링·니플 / 방향: 엘보·티·Y / 지름: 리듀서·부싱 / 막음: 플러그·캡}}',
+ def:'<ul><li>화학 공정에서 유체를 보내고 제어하는 장치와 그 이상 현상</li></ul>',
+ detail:'<b>송풍기·압축기 구분 (토출 압력)</b><table><tr><th>장치</th><th>압력</th></tr><tr><td>팬(fan)</td><td>10kPa 미만</td></tr><tr><td>블로어(blower)</td><td>10kPa 이상 100kPa 미만</td></tr><tr><td>압축기(compressor)</td><td>100kPa 이상</td></tr></table><b>이상 현상</b><table><tr><th>현상</th><th>뜻</th><th>방지</th></tr><tr><td>{{서징}}(surging)</td><td>원심 압축기·송풍기·펌프가 저유량 영역에서 압력·유량이 주기적으로 맥동하며 진동·소음</td><td>바이패스(방출)로 유량 확보, 회전수 조절, 안내깃 조정, 배관 내 공기 고임 방지</td></tr><tr><td>{{캐비테이션}}(공동현상)</td><td>펌프 흡입 압력이 액체 증기압보다 낮아 기포가 생겼다 터짐 → 소음·진동·임펠러 침식</td><td>흡입 양정을 작게(펌프를 낮게), 흡입관 지름 크게·짧게, 회전수 낮게, 양흡입 펌프</td></tr><tr><td>{{수격작용}}(워터해머)</td><td>밸브 급폐쇄로 배관 내 유속이 갑자기 변해 압력파 발생</td><td>밸브 천천히 조작, 유속 낮춤, 서지 탱크·에어챔버</td></tr></table><b>배관 피팅</b><table><tr><th>용도</th><th>피팅</th></tr><tr><td>두 관을 연결</td><td>플랜지, 유니온, 커플링, 니플, 소켓</td></tr><tr><td>방향 변경</td><td>엘보, 벤드</td></tr><tr><td>분기</td><td>티(T), Y, 크로스</td></tr><tr><td>지름 변경</td><td>리듀서, 부싱</td></tr><tr><td>끝을 막음</td><td>플러그, 캡</td></tr></table><b>제어장치</b>: 자동제어(피드백), 조절밸브, 인터록, 안전계장시스템(SIS)',
+ exam:'<ul><li>캐비테이션 방지 대책 (자주 출제)</li><li>피팅 용도 짝짓기 (리듀서 = 지름 변경)</li><li>팬·블로어·압축기 압력 구분</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'d3',title:'3. 안전장치의 종류',
+ core:'{{안전밸브}}(스프링·중추·지렛대식) / {{파열판}} 급격한 압력 상승·독성·부식·막힘 우려 시 / {{화염방지기}} / {{긴급차단밸브}} / {{통기밸브(브리더)}} / 안전밸브 검사 {{공정 유체 직접 접촉 매년 1회 · 파열판 뒤 2년 1회 · PSM 우수 4년 1회}}',
+ def:'<ul><li>압력·온도·화염 이상으로부터 설비를 지키는 장치</li></ul>',
+ detail:'<b>안전밸브 설치 대상 (안전보건기준규칙 제261조)</b><ul><li>압력용기, 정변위 압축기, 정변위 펌프(토출 측), 배관(2개 이상 밸브로 차단되어 열팽창으로 파열 우려), 그 밖에 최고사용압력 초과 우려 설비</li></ul><b>안전밸브 검사 주기 (작동 시험 후 봉인)</b><table><tr><th>조건</th><th>주기</th></tr><tr><td>화학공정 유체와 안전밸브 디스크·시트가 직접 접촉</td><td>매년 1회 이상</td></tr><tr><td>안전밸브 전단에 파열판 설치</td><td>2년마다 1회 이상</td></tr><tr><td>공정안전보고서 이행 상태 평가 우수</td><td>4년마다 1회 이상</td></tr></table><b>파열판 설치 대상 (제262조)</b><ul><li>반응 폭주 등 <b>급격한 압력 상승</b> 우려</li><li>급성 독성 물질 누출로 주위 오염 우려</li><li>운전 중 안전밸브에 이상 물질이 쌓여 작동하지 않을 우려</li></ul><b>기타 안전장치</b><ul><li>{{화염방지기}}: 인화성 액체·가스 저장탱크 통기관 (외부 화염 유입 차단)</li><li>통기밸브(브리더 밸브): 탱크 내 압력·진공 조절</li><li>긴급차단밸브, 체크밸브, 벤트스택, 플레어스택, 블로다운 설비</li></ul><b>안전밸브 형식</b>: 스프링식(가장 많이 씀), 중추식, 지렛대식, 파일럿식',
+ cmp:'<table><tr><th>안전밸브</th><th>파열판</th></tr><tr><td>압력이 내려가면 다시 닫힘 (재사용)</td><td>한 번 터지면 교체 (1회용)</td></tr><tr><td>작동 늦을 수 있음</td><td>순간 압력 상승에 빠름</td></tr></table>',
+ exam:'<ul><li>파열판 설치 대상 (자주 출제)</li><li>안전밸브 검사 주기</li></ul>',
+ law:'안전보건기준규칙 제261조~제269조.'},
+
+{grp:'4-2. 안전 점검 계획 수립'},
+{id:'d4',title:'4. 안전운전 계획',
+ core:'안전운전계획 {{운전지침서·설비 점검·검사·보수 계획·안전작업허가·도급업체 안전관리·근로자 교육·가동 전 점검·변경요소 관리·자체감사·공정사고 조사}}',
+ def:'<ul><li><b>안전운전계획</b>: PSM 4대 요소 중 하나로, 설비를 안전하게 운전·정비·변경하기 위한 관리 계획</li></ul>',
+ detail:'<b>안전운전계획 포함 사항 (시행규칙 제50조)</b><ol><li>안전운전지침서</li><li>설비 점검·검사 및 보수 계획, 유지 계획 및 지침서</li><li>{{안전작업허가}} (화기작업·밀폐공간·정전 작업 등)</li><li>도급업체 안전관리계획</li><li>근로자 등 교육계획</li><li>{{가동 전 점검지침}}</li><li>{{변경요소 관리계획}} (MOC: 설비·공정·원료 변경 시 위험성 검토)</li><li>자체감사 및 사고조사 계획</li><li>그 밖에 안전운전에 필요한 사항</li></ol><b>점검 계획</b>: 정기점검(일·주·월·연), 수시점검, 특별점검(정비 후·비상 정지 후·장기 휴지 후 재가동), 가동 전 점검(PSSR)',
+ exam:'<ul><li>안전운전계획 포함 사항 (변경요소 관리, 작업허가)</li></ul>',
+ law:'산업안전보건법 시행규칙 제50조.'},
+
+{grp:'4-3. 공정안전보고서 작성심사·확인'},
+{id:'d5',title:'5. 공정안전 자료',
+ core:'{{유해위험물질 종류·수량 / MSDS / 유해위험설비 목록·사양 / 운전방법 공정도면(PFD·P&ID) / 건물·설비 배치도 / 폭발위험장소 구분도·전기단선도 / 안전설계·제작·설치 지침서}}',
+ def:'<ul><li>공정을 이해하고 위험성평가를 하는 데 필요한 기초 자료</li></ul>',
+ detail:'<ol><li>취급·저장하고 있거나 취급·저장하려는 유해·위험물질의 종류 및 수량</li><li>유해·위험물질에 대한 물질안전보건자료(MSDS)</li><li>유해·위험설비의 목록 및 사양</li><li>유해·위험설비의 운전방법을 알 수 있는 공정도면 (공정흐름도 PFD, 배관·계장도 P&ID)</li><li>각종 건물·설비의 배치도</li><li>폭발위험장소 구분도 및 전기단선도</li><li>위험설비의 안전설계·제작 및 설치 관련 지침서</li></ol>',
+ cmp:'<table><tr><th>PFD</th><th>P&ID</th></tr><tr><td>공정 흐름·물질수지 개략</td><td>배관·밸브·계기·제어까지 상세</td></tr></table>',
+ exam:'<ul><li>공정안전자료에 해당하는 것 고르기</li></ul>',
+ law:'산업안전보건법 시행규칙 제50조 제1항 제1호.'},
+
+{id:'d6',title:'6. 위험성 평가 (공정위험성 평가)',
+ core:'기법 {{체크리스트·상대위험순위·작업자 실수분석·사고예상질문(What-if)·HAZOP·FMECA·FTA·ETA·원인결과분석(CCA)}} / HAZOP 가이드워드 {{No·More·Less·As well as·Part of·Reverse·Other than}}',
+ def:'<ul><li>공정안전보고서의 공정위험성 평가: 공정의 잠재 위험을 체계적으로 찾아내고 사고 빈도·피해를 평가해 대책을 세우는 것 (2과목 2장 분석 기법과 연결)</li></ul>',
+ detail:'<b>PSM 공정위험성 평가 기법</b><table><tr><th>기법</th><th>특징</th></tr><tr><td>체크리스트</td><td>미리 만든 점검표로 확인 (정성)</td></tr><tr><td>상대위험순위(Dow·Mond 지수)</td><td>설비의 상대적 위험도를 지수로 순위화</td></tr><tr><td>작업자 실수 분석(HEA)</td><td>운전원 실수 가능성과 영향</td></tr><tr><td>사고예상질문분석(What-if)</td><td>"만약 ~하면?" 질문으로 위험 도출</td></tr><tr><td>{{위험과 운전 분석(HAZOP)}}</td><td>공정 변수에 가이드워드를 붙여 이탈의 원인·결과·대책 검토 — 화학공장 대표 기법</td></tr><tr><td>이상위험도분석(FMECA)</td><td>부품 고장형태와 치명도</td></tr><tr><td>결함수분석(FTA)</td><td>정상사상에서 원인 연역 (정량)</td></tr><tr><td>사건수분석(ETA)</td><td>초기 사건에서 결과 귀납 (정량)</td></tr><tr><td>원인결과분석(CCA)</td><td>FTA + ETA 결합</td></tr></table><b>HAZOP 가이드워드</b><table><tr><th>가이드워드</th><th>뜻</th></tr><tr><td>No / Not</td><td>설계 의도의 완전한 부정 (유량 없음)</td></tr><tr><td>More / Less</td><td>양의 증가·감소 (압력·온도·유량)</td></tr><tr><td>As well as</td><td>성질상 증가 (불순물 추가)</td></tr><tr><td>Part of</td><td>성질상 감소 (일부만)</td></tr><tr><td>Reverse</td><td>반대 (역류)</td></tr><tr><td>Other than</td><td>완전한 대체 (다른 물질)</td></tr></table><b>HAZOP 진행</b>: 공정을 검토 구간(노드)으로 나눔 → 변수 + 가이드워드 = 이탈 → 원인 → 결과 → 기존 안전장치 → 개선 권고',
+ exam:'<ul><li>HAZOP 가이드워드 뜻 (자주 출제)</li><li>PSM 위험성평가 기법 종류</li></ul>',
+ law:'산업안전보건법 시행규칙 제50조, 공정안전보고서 작성 고시.'},
+
+{id:'d7',title:'키워드 카드 — 5과목 주요항목 4',tag:'암기',
+ core:'PSM {{자료·평가·운전·비상}} / 30일 전 / 팬 < 블로어 < 압축기 / 캐비테이션 / 파열판 / HAZOP',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>PSM 제출</td><td>{{착공 30일 전, 공단 2부}}</td></tr><tr><td>10kPa 미만</td><td>{{팬}}</td></tr><tr><td>100kPa 이상</td><td>{{압축기}}</td></tr><tr><td>저유량 맥동</td><td>{{서징}}</td></tr><tr><td>흡입 압력 &lt; 증기압, 기포</td><td>{{캐비테이션}}</td></tr><tr><td>펌프를 낮게, 흡입관 굵게</td><td>{{캐비테이션 방지}}</td></tr><tr><td>밸브 급폐쇄</td><td>{{수격작용}}</td></tr><tr><td>리듀서·부싱</td><td>{{관 지름 변경}}</td></tr><tr><td>플러그·캡</td><td>{{관 끝 막음}}</td></tr><tr><td>급격한 압력 상승·독성</td><td>{{파열판}}</td></tr><tr><td>공정 유체 직접 접촉 안전밸브</td><td>{{매년 1회 검사}}</td></tr><tr><td>MOC</td><td>{{변경요소 관리}}</td></tr><tr><td>P&ID</td><td>{{배관·계장도 (공정안전자료)}}</td></tr><tr><td>역류</td><td>{{Reverse}}</td></tr><tr><td>완전 대체</td><td>{{Other than}}</td></tr><tr><td>FTA + ETA</td><td>{{원인결과분석 CCA}}</td></tr></table>'}
+];
+
+var MN={
+d1:[
+ {k:'자 · 평 · 운 · 비',s:'"<b>자평운비</b> → \'자기 평가로 운영비\'" — 자료, 위험성평가, 안전운전, 비상조치',m:'{{공정안전자료}} · {{공정위험성 평가서}} · {{안전운전계획}} · {{비상조치계획}}'},
+ {k:'30일 · 2부',s:'"공사 <b>한 달 전</b>, <b>두 권</b> 제출"',m:'{{착공 30일 전}} · {{공단 2부}}'}],
+d2:[
+ {k:'팬 10 · 블로어 100 · 압축기',s:'"<b>선풍기</b>(팬)는 약하게(10kPa 미만), <b>헤어드라이어</b>(블로어)는 중간, <b>타이어 공기주입기</b>(압축기)는 세게(100kPa↑)"',m:'팬 {{< 10kPa}} · 블로어 {{10~100kPa}} · 압축기 {{≥ 100kPa}}'},
+ {k:'캐비테이션 = 빨대',s:'"<b>빨대를 너무 세게</b> 빨면 거품이 생긴다 — 흡입 압력이 너무 낮아서. 그러니 펌프를 낮게, 관은 굵게"',m:'캐비테이션 방지 {{흡입양정↓ · 흡입관 굵고 짧게 · 회전수↓}}'}],
+d3:[
+ {k:'파열판 = 급·독·막',s:'"<b>급</b>하게 오르거나, <b>독</b>이 새거나, 밸브가 <b>막</b>힐 것 같으면 파열판"',m:'{{급격한 압력 상승}} · {{독성 누출}} · {{안전밸브 막힘 우려}}'},
+ {k:'1 · 2 · 4년',s:'"직접 닿으면 <b>매년</b>, 파열판이 앞에서 지켜 주면 <b>2년</b>, 우등생(PSM 우수)은 <b>4년</b>"',m:'{{매년}} · {{2년}} · {{4년}}'}],
+d6:[
+ {k:'No · More · Less · As well as · Part of · Reverse · Other than',s:'"<b>없다·많다·적다·더 있다·일부만·거꾸로·딴것</b> — 공정 변수에 붙이는 7개 말꼬리"',m:'HAZOP 가이드워드 {{No·More·Less·As well as·Part of·Reverse·Other than}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

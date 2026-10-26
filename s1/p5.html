@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1과목 5. 안전보건교육의 내용 및 방법</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 1과목 · 산업재해 예방 및 안전보건교육</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 5. 안전보건교육의 내용 및 방법 · 세세항목 22개 → 학습단위 24개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">1과목 목차</a><a href="p4.html">◀ 이전</a><a href="p6.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s1-p5-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'5-1. 교육의 필요성과 목적'},
+{id:'g1',title:'1. 교육목적',
+ core:'안전교육 목적 {{인간정신·행동·환경·설비와 물자의 안전화}} / 필요성: 재해 원인의 대부분이 {{인적 요인}}',
+ def:'<ul><li><b>안전보건교육</b>: 근로자가 위험을 알고, 안전하게 작업하는 기능을 익히고, 안전한 태도를 몸에 붙이도록 하는 교육</li></ul>',
+ why:'<ul><li>하인리히 통계에서 불안전 행동이 88%이고, 불안전 행동의 원인은 대부분 지식·기능·태도 부족입니다. 그래서 교육은 가장 기본적인 재해 예방 대책(3E 중 Education)입니다.</li></ul>',
+ detail:'<b>안전교육의 목적</b><ol><li>{{인간정신}}의 안전화 (안전 의식)</li><li>{{행동}}의 안전화 (안전 행동 습관)</li><li>{{환경}}의 안전화 (작업환경 정비)</li><li>{{설비와 물자}}의 안전화</li></ol><b>교육의 필요성</b><ul><li>재해 원인 중 인적 요인 비중이 큼</li><li>신기술·신설비 도입, 작업 변경에 따른 새 위험</li><li>법정 의무 (산업안전보건법 제29조)</li></ul>',
+ ex:'<ul><li>신규 설비 도입 → 작업내용 변경 시 교육으로 새 위험 전달</li></ul>',
+ exam:'<ul><li>안전교육 목적에 해당하지 <b>않는</b> 것 (예: "생산성 극대화", "임금 향상")</li></ul>',
+ law:'산업안전보건법 제29조(근로자에 대한 안전보건교육).'},
+
+{id:'g2',title:'2. 교육의 개념',
+ core:'교육 3요소 {{주체(강사)·객체(수강자)·매개체(교재)}} / 교육 3단계 {{지식 → 기능 → 태도}}',
+ def:'<ul><li><b>교육</b>: 바람직한 방향으로 행동을 변화시키는 의도적·계획적 활동</li></ul>',
+ detail:'<b>교육의 3요소</b><table><tr><th>요소</th><th>형식적 교육</th><th>비형식적 교육</th></tr><tr><td>{{주체}}</td><td>교사·강사</td><td>부모·선배·사회 지식인</td></tr><tr><td>{{객체}}</td><td>학생·수강자</td><td>자녀·후배·청소년</td></tr><tr><td>{{매개체}}</td><td>교재(교육 내용)</td><td>교육 환경·인간관계</td></tr></table><b>안전교육의 3단계</b>: 지식교육 → 기능교육 → 태도교육 (5-4에서 자세히)<br><b>교육의 기본 원칙 (교육지도 원칙)</b><ul><li>상대방 입장에서 교육</li><li>동기부여를 중요하게</li><li>쉬운 것에서 어려운 것으로</li><li>반복</li><li>한 번에 하나씩</li><li>인상의 강화 (사진·견학·사고 사례)</li><li>오감 활용</li><li>기능적으로 이해시킴 (왜 그렇게 하는지)</li></ul>',
+ ex:'<ul><li>사고 사진을 보여주며 교육 → 인상의 강화, 오감 활용</li></ul>',
+ exam:'<ul><li>교육 3요소 짝짓기 (교재 = 매개체)</li><li>교육지도 원칙에 <b>틀린</b> 것 (예: "어려운 것부터", "한 번에 여러 가지")</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g3',title:'3. 학습지도 이론',
+ core:'학습지도 원리 {{자발성·개별화·목적·사회화·통합(+직관)}} / 행동주의 {{파블로프·손다이크·스키너}} / 인지주의 {{쾰러·톨만·레빈}}',
+ def:'<ul><li><b>학습</b>: 경험이나 연습으로 생긴 비교적 영속적인 행동 변화</li><li><b>학습지도</b>: 학습자가 목표에 도달하도록 돕는 활동</li></ul>',
+ detail:'<b>학습지도의 원리</b><table><tr><th>원리</th><th>뜻</th></tr><tr><td>{{자발성}}</td><td>학습자 스스로 학습에 참여</td></tr><tr><td>{{개별화}}</td><td>개인의 능력·요구에 맞춤</td></tr><tr><td>{{목적}}</td><td>목표를 분명히 인식시킴</td></tr><tr><td>{{사회화}}</td><td>협력·공동학습으로 사회성 기름</td></tr><tr><td>{{통합}}</td><td>학습을 종합적으로 지도 (전인적 발달)</td></tr><tr><td>직관</td><td>구체적 사물·경험으로 이해</td></tr></table><b>학습이론</b><table><tr><th>계열</th><th>학자</th><th>이론</th><th>핵심</th></tr><tr><td rowspan="3">행동주의(S-R)</td><td>{{파블로프}}</td><td>조건반사설</td><td>강도·일관성·시간·계속성의 원리 (종소리와 침)</td></tr><tr><td>{{손다이크}}</td><td>시행착오설</td><td>효과의 법칙, 연습의 법칙, 준비성의 법칙</td></tr><tr><td>{{스키너}}</td><td>조작적 조건화</td><td>강화(보상)·처벌로 행동을 만듦</td></tr><tr><td rowspan="3">인지주의</td><td>{{쾰러}}</td><td>통찰설</td><td>문제 상황 전체를 보고 갑자기 깨달음 (침팬지 바나나)</td></tr><tr><td>{{톨만}}</td><td>기호형태설</td><td>목표와 수단의 관계(인지 지도)를 학습</td></tr><tr><td>{{레빈}}</td><td>장(場)이론</td><td>심리적 생활공간 속에서 학습</td></tr></table>',
+ ex:'<ul><li>안전수칙을 지킨 팀에 포상 → 스키너 강화</li><li>시행착오 끝에 요령을 익힘 → 손다이크</li></ul>',
+ cmp:'<table><tr><th>행동주의</th><th>인지주의</th></tr><tr><td>자극-반응 연결, 반복·강화</td><td>이해·통찰, 전체 구조 파악</td></tr></table>',
+ exam:'<ul><li>학자와 이론 짝짓기 (쾰러 = 통찰설, 톨만 = 기호형태설)</li><li>손다이크 3법칙, 파블로프 4원리</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g4',title:'4. 교육심리학의 이해',
+ core:'기억 과정 {{기명 → 파지 → 재생 → 재인}} / 에빙하우스: 직후 망각이 {{가장 빠름}} → {{빨리 복습}} / 전이 = 앞 학습이 뒤 학습에 영향 / {{고원현상}} = 정체기',
+ def:'<ul><li><b>교육심리학</b>: 교육 과정에서 일어나는 학습·기억·망각·전이 등을 다루는 심리학</li></ul>',
+ detail:'<b>기억의 과정</b><table><tr><th>단계</th><th>뜻</th></tr><tr><td>{{기명}}</td><td>새로운 내용을 받아들여 새김</td></tr><tr><td>{{파지}}</td><td>새긴 내용을 간직(보존)</td></tr><tr><td>{{재생}}</td><td>간직한 내용을 다시 떠올림</td></tr><tr><td>{{재인}}</td><td>전에 경험한 것과 같은 것을 다시 보았을 때 알아봄</td></tr></table><b>망각 — 에빙하우스(Ebbinghaus) 망각곡선</b><ul><li>학습 <b>직후</b> 망각이 가장 빠르고, 시간이 지날수록 망각 속도가 느려짐</li><li>대략 1시간 뒤 절반 이상, 하루 뒤 2/3 정도를 잊음 (무의미 철자 실험)</li><li>→ 복습은 <b>빠를수록</b>, <b>여러 번 나눠서</b> 할수록 효과적 (이 노트의 5회독 간격이 1일·3일·1주인 이유)</li></ul><b>학습의 전이</b><ul><li>앞에서 배운 것이 뒤의 학습에 영향을 주는 것 (긍정적 전이·부정적 전이)</li><li>전이에 영향을 주는 조건: 학습 정도, 학습 내용의 유사성, 시간 간격, 학습자의 태도·지능</li></ul><b>학습곡선과 고원현상</b><ul><li>고원현상(plateau): 학습이 어느 정도 진행된 뒤 일시적으로 향상이 멈추는 정체기</li></ul>',
+ ex:'<ul><li>교육 다음 날 짧은 퀴즈 → 망각 직전에 재생시켜 파지를 강화</li></ul>',
+ cmp:'<table><tr><th>재생</th><th>재인</th></tr><tr><td>힌트 없이 떠올림 (주관식)</td><td>보면 알아봄 (객관식)</td></tr></table>',
+ exam:'<ul><li>기억 과정 순서</li><li>망각곡선 해석 ("시간이 지날수록 망각이 빨라진다" → 틀림)</li><li>전이 영향 요인</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'5-2. 교육방법'},
+{id:'g5',title:'5. 교육훈련기법',
+ core:'브레인스토밍 4원칙 {{비판금지·자유분방·대량발언·수정발언}} / {{역할연기·사례연구·인바스켓·감수성훈련(T그룹)·그리드훈련}}',
+ def:'<ul><li>관리자·근로자의 문제해결 능력, 인간관계 능력을 기르는 다양한 훈련 방법</li></ul>',
+ detail:'<b>브레인스토밍 (오스본)</b> — 아이디어를 많이 끌어내는 집단 기법<table><tr><th>원칙</th><th>뜻</th></tr><tr><td>{{비판금지}}</td><td>남의 의견을 비판하지 않음</td></tr><tr><td>{{자유분방}}</td><td>마음대로 자유롭게 발언</td></tr><tr><td>{{대량발언}}</td><td>무엇이든 많이 발언 (질보다 양)</td></tr><tr><td>{{수정발언}}</td><td>남의 아이디어에 덧붙이거나 고쳐 발언 가능</td></tr></table><b>그 외 기법</b><table><tr><th>기법</th><th>내용</th></tr><tr><td>역할연기(Role Playing)</td><td>실제 상황처럼 역할을 맡아 연기 → 태도·인간관계 훈련</td></tr><tr><td>사례연구(Case Study)</td><td>실제 사례를 분석·토의 → 문제해결 능력</td></tr><tr><td>인바스켓(In-Basket)</td><td>결재함에 쌓인 서류를 제한시간 안에 처리 → 의사결정 훈련</td></tr><tr><td>감수성 훈련(T-group)</td><td>소집단에서 자신과 타인의 감정·행동을 깨닫게 함</td></tr><tr><td>그리드 훈련</td><td>관리그리드 이론으로 (9,9)형 리더를 기름</td></tr><tr><td>행동모델링</td><td>모범 행동을 보고 따라 하며 익힘</td></tr></table>',
+ ex:'<ul><li>위험예지훈련 1라운드에서 "어떤 위험이 있나" 아이디어를 마구 냄 → 브레인스토밍</li></ul>',
+ exam:'<ul><li>브레인스토밍 원칙에 해당하지 <b>않는</b> 것 (예: "비판 허용", "소량 발언")</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g6',title:'6. 안전보건교육방법 (TWI · MTP · ATT · CCS · OJT · Off JT)',
+ core:'TWI {{감독자}} 대상 {{JIT·JMT·JRT·JST}} / MTP {{관리자}} / ATT {{대상 제한 없음}} / CCS {{최고경영자}} / OJT {{현장 개별}} vs Off JT {{집합}}',
+ def:'<ul><li><b>TWI(Training Within Industry)</b>: 감독자(현장 관리자)를 위한 정형화된 훈련 프로그램</li><li><b>OJT(On the Job Training)</b>: 일하면서 직속 상사가 개별 지도</li><li><b>Off JT(Off the Job Training)</b>: 업무를 떠나 집합교육</li></ul>',
+ detail:'<b>TWI 4개 과정</b> (감독자 대상, 1회 2시간 × 5일 = 10시간)<table><tr><th>과정</th><th>내용</th></tr><tr><td>{{JIT}} (Job Instruction)</td><td>작업지도 기법</td></tr><tr><td>{{JMT}} (Job Methods)</td><td>작업개선 기법</td></tr><tr><td>{{JRT}} (Job Relations)</td><td>인간관계 관리 기법 (부하 통솔)</td></tr><tr><td>{{JST}} (Job Safety)</td><td>작업안전 기법</td></tr></table><b>관리자 교육 프로그램</b><table><tr><th>프로그램</th><th>대상</th><th>특징</th></tr><tr><td>{{MTP}} (Management Training Program)</td><td>TWI보다 상위 관리자</td><td>1회 2시간 × 20회 = 40시간, 관리 기능·조직·통제</td></tr><tr><td>{{ATT}} (American Telephone & Telegraph)</td><td>대상 계층 제한 없음</td><td>토의식, 1차 훈련 1일 8시간씩 2주, 2차 문제 발생 시</td></tr><tr><td>{{CCS}} (Civil Communication Section)</td><td>최고경영자</td><td>정책 수립·조직·통제, 강의법·토의법</td></tr></table><b>OJT vs Off JT</b><table><tr><th></th><th>{{OJT}}</th><th>{{Off JT}}</th></tr><tr><td>방법</td><td>현장에서 직속 상사가 개별 지도</td><td>현장 밖 집합교육, 외부 전문 강사</td></tr><tr><td>장점</td><td>개개인 맞춤, 즉시 업무에 적용, 효과 바로 확인, 상사·부하 신뢰, 비용 적음</td><td>다수를 한 번에 통일적으로, 전문가 지도, 업무를 떠나 집중, 다른 직장 사람과 경험 교류</td></tr><tr><td>단점</td><td>지도자 능력에 좌우, 체계적 교육 어려움</td><td>업무 공백, 현장 적용까지 시간</td></tr></table>',
+ ex:'<ul><li>선임 반장이 신입에게 기계 조작을 옆에서 가르침 → OJT, JIT 방식</li><li>외부 연수원 3일 관리감독자 교육 → Off JT</li></ul>',
+ cmp:'<table><tr><th>JMT</th><th>JRT</th></tr><tr><td>작업 <b>방법</b> 개선(Methods)</td><td>사람 <b>관계</b>(Relations)</td></tr></table>',
+ exam:'<ul><li>TWI 과정 이름과 내용 (JRT = 인간관계)</li><li>프로그램별 대상 (CCS = 최고경영자, ATT = 제한 없음)</li><li>OJT 장점 vs Off JT 장점 바꿔치기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g7',title:'7. 학습목적의 3요소',
+ core:'{{목표·주제·학습정도}} / 학습정도 4단계 {{인지 → 지각 → 이해 → 적용}}',
+ def:'<ul><li>학습 목적을 정할 때 반드시 들어가야 하는 세 가지 요소</li></ul>',
+ detail:'<table><tr><th>요소</th><th>뜻</th></tr><tr><td>{{목표}}</td><td>학습을 통해 달성하려는 지표 (최종 도달점)</td></tr><tr><td>{{주제}}</td><td>목표 달성을 위한 중심 내용</td></tr><tr><td>{{학습정도}}</td><td>주제를 어디까지 학습시킬지의 범위·깊이</td></tr></table><b>학습정도의 4단계</b><ol><li>{{인지}}(to acquaint): ~을 알게 됨</li><li>{{지각}}(to know): ~을 알아차림</li><li>{{이해}}(to understand): ~을 이해함</li><li>{{적용}}(to apply): ~을 적용할 수 있음</li></ol>',
+ ex:'<ul><li>목표: 산소결핍 재해 0 / 주제: 밀폐공간 작업 절차 / 학습정도: 산소농도 측정을 직접 할 수 있을 때까지(적용)</li></ul>',
+ exam:'<ul><li>3요소에 <b>속하지 않는</b> 것 (예: "학습방법", "교재")</li><li>학습정도 4단계 순서</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g8',title:'8. 교육법의 4단계',
+ core:'{{도입(준비) → 제시(설명) → 적용(응용) → 확인(평가)}} / 강의식은 {{제시}}, 토의식은 {{적용}}에 시간을 가장 많이',
+ def:'<ul><li>한 번의 교육(수업)을 진행하는 표준 순서</li></ul>',
+ detail:'<table><tr><th>단계</th><th>내용</th><th>강의식(분)</th><th>토의식(분)</th></tr><tr><td>1. {{도입}}(준비)</td><td>마음의 준비, 학습 목적·동기 부여, 관심 유도</td><td>5</td><td>5</td></tr><tr><td>2. {{제시}}(설명)</td><td>작업·내용을 설명하고 보여 줌, 한 번에 하나씩</td><td><b>40</b></td><td>10</td></tr><tr><td>3. {{적용}}(응용)</td><td>직접 해 보게 함, 실습·토의</td><td>10</td><td><b>40</b></td></tr><tr><td>4. {{확인}}(평가)</td><td>이해·습득 여부 확인, 시험·질문</td><td>5</td><td>5</td></tr></table><span style="color:var(--sub);font-size:13px">※ 1시간 기준 시간 배분은 교재에서 흔히 쓰는 예시값입니다.</span>',
+ ex:'<ul><li>사고 영상으로 시작(도입) → 절차 설명(제시) → 직접 해 보기(적용) → 퀴즈(확인)</li></ul>',
+ exam:'<ul><li>4단계 순서</li><li>강의식에서 시간이 가장 많은 단계 = 제시, 토의식 = 적용</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g9',title:'9. 교육훈련의 평가방법',
+ core:'평가 방법 {{관찰·면접·질문·평정법·테스트·노트·상호평가}} / 커크패트릭 4수준 {{반응 → 학습 → 행동 → 결과}}',
+ def:'<ul><li>교육이 목표를 달성했는지 확인하는 방법</li></ul>',
+ detail:'<b>평가 방법</b><ul><li>관찰, 면접, 질문, 평정법(척도로 평가), 테스트(시험), 노트, 상호평가, 결과 평가(재해율 변화 등)</li></ul><b>평가 대상별 적합한 방법</b><table><tr><th>평가 대상</th><th>적합한 방법</th></tr><tr><td>지식</td><td>시험(테스트), 질문</td></tr><tr><td>기능</td><td>관찰, 실기 테스트</td></tr><tr><td>태도</td><td>관찰, 면접, 평정법</td></tr></table><b>커크패트릭(Kirkpatrick) 4수준</b><ol><li>{{반응}}: 교육에 만족했는가 (설문)</li><li>{{학습}}: 지식·기능을 얻었는가 (시험)</li><li>{{행동}}: 현장에서 행동이 바뀌었는가 (관찰)</li><li>{{결과}}: 재해 감소 등 조직 성과로 이어졌는가</li></ol><b>평가의 기준</b>: 타당도, 신뢰도, 객관도, 실용도 (심리검사와 같음)',
+ ex:'<ul><li>교육 3개월 뒤 보호구 착용률 관찰 → 행동 수준 평가</li></ul>',
+ exam:'<ul><li>태도 평가에 적합한 방법 (관찰·면접)</li><li>4수준 순서</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'5-3. 교육실시 방법'},
+{id:'g10',title:'10. 강의법',
+ core:'{{다수}}에게 {{짧은 시간}}에 {{많은 내용}} / 단점 {{일방적·개별화 어려움·참여 낮음}} / {{도입·초기}} 단계에 적합',
+ def:'<ul><li>강사가 말로 설명하고 학습자는 듣는 가장 일반적인 교육 방법</li></ul>',
+ detail:'<table><tr><th>장점</th><th>단점</th></tr><tr><td>다수를 한 번에 교육<br>짧은 시간에 많은 내용 전달<br>시간 계획·통제가 쉬움<br>새로운 내용·개념 도입에 적합</td><td>일방적 전달, 학습자 참여 낮음<br>개인차 고려 어려움<br>기능·태도 교육에는 부적합<br>집중력 유지 어려움</td></tr></table><ul><li>적합한 경우: 교육 초기, 새 개념 소개, 대상자가 많을 때, 시간이 짧을 때</li></ul>',
+ exam:'<ul><li>강의법 장점에 해당하지 <b>않는</b> 것 (예: "개인차 고려 용이", "참여도 높음")</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g11',title:'11. 토의법',
+ core:'{{포럼}} 문제 제기 → 토의 / {{심포지엄}} 전문가 발표 → 질문 / {{패널}} 전문가끼리 토의 → 전원 참여 / {{버즈세션}} 6명 6분(6-6 회의)',
+ def:'<ul><li>학습자가 서로 의견을 나누며 문제를 해결하는 방법. 이미 기초 지식이 있는 사람에게 적합합니다.</li></ul>',
+ detail:'<table><tr><th>방식</th><th>내용</th></tr><tr><td>{{포럼(Forum)}}</td><td>새로운 자료나 교재를 제시하고 문제점을 피교육자가 제기하게 한 뒤, 다시 깊이 파고들어 토의</td></tr><tr><td>{{심포지엄(Symposium)}}</td><td>몇 사람의 전문가가 과제에 대한 견해를 발표한 뒤, 참가자가 의견·질문을 하게 함</td></tr><tr><td>{{패널 디스커션(Panel)}}</td><td>패널 멤버(전문가 4~5명)가 피교육자 앞에서 자유롭게 토의하고, 뒤에 피교육자 전원이 참여해 토의</td></tr><tr><td>{{버즈세션(Buzz)}}</td><td>6-6 회의: 6명씩 소집단으로 나눠 6분간 토의 후 종합</td></tr><tr><td>자유토의</td><td>주제에 대해 자유롭게 의견 교환</td></tr><tr><td>사례연구·역할연기</td><td>5-2 교육훈련기법 참고</td></tr></table><b>토의법 장단점</b><ul><li>장점: 참여·흥미 높음, 태도 변화에 효과적, 다양한 의견 교환</li><li>단점: 시간 많이 걸림, 인원 제한, 진행자 능력에 좌우</li><li>적합한 경우: 태도 교육, 기초 지식이 있는 대상, 문제해결</li></ul>',
+ ex:'<ul><li>전문가 3명이 각각 위험성평가 방법을 발표한 뒤 청중 질문 → 심포지엄</li></ul>',
+ cmp:'<table><tr><th>심포지엄</th><th>패널</th></tr><tr><td>전문가가 각자 <b>발표</b></td><td>전문가끼리 <b>토의</b></td></tr></table>',
+ exam:'<ul><li>설명 문장을 보고 방식 이름 고르기 (가장 자주 나옴)</li><li>버즈세션 = 6-6</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g12',title:'12. 실연법',
+ core:'이미 설명 들은 내용을 {{지도자 감독 아래 직접 연습}} → {{기능 숙달}}',
+ def:'<ul><li>학습자가 이미 설명을 듣거나 시범을 본 내용을 교사의 지휘·감독 아래 직접 연습해 적용해 보는 방법</li></ul>',
+ detail:'<ul><li>장점: 기능·기술 습득에 가장 효과적, 학습자가 직접 해 보므로 기억이 오래 감</li><li>단점: 시간·장비·비용이 많이 듦, 다수 교육이 어려움, 교사 1명이 볼 수 있는 인원 제한</li><li>적합한 경우: 기능교육(2단계), 장비 조작, 보호구 착용법</li></ul>',
+ ex:'<ul><li>강사 시범 후 교육생이 직접 공기호흡기 착용 → 실연법</li></ul>',
+ cmp:'<table><tr><th>시범</th><th>실연</th></tr><tr><td>강사가 보여 줌</td><td>학습자가 직접 해 봄</td></tr></table>',
+ exam:'<ul><li>실연법 정의 고르기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g13',title:'13. 프로그램학습법',
+ core:'학습자가 {{자기 속도}}로 {{스스로}} 학습하는 {{개별 학습}} / 단점 {{교육 내용 고정·개발비·집단 사고 어려움}}',
+ def:'<ul><li>학습 내용을 작은 단계로 나눈 프로그램(교재)을 학습자가 스스로 풀어 가며 즉시 피드백을 받는 방법</li></ul>',
+ detail:'<ul><li>장점: 개인차 고려(자기 능력·속도), 즉시 확인·강화, 지도자 없이도 학습, 학습 진도 파악 쉬움</li><li>단점: 교육 내용이 고정되어 융통성 부족, 프로그램 개발에 시간·비용, 집단 사고·사회성 교육 어려움</li><li>원리: 작은 단계, 적극적 반응, 즉시 확인(피드백), 자기 진도</li></ul>',
+ ex:'<ul><li>온라인 안전교육 앱에서 문제를 맞혀야 다음 단계로 진행 → 프로그램학습법</li></ul>',
+ exam:'<ul><li>프로그램학습법 장단점 (단점: "교육 내용이 고정")</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g14',title:'14. 모의법',
+ core:'{{실제와 비슷한 상황}}을 만들어 훈련 (시뮬레이션) / 단점 {{시설·비용·시간}}',
+ def:'<ul><li>실제 상황과 비슷한 조건을 인위적으로 만들어 학습자가 직접 체험하게 하는 방법</li></ul>',
+ detail:'<ul><li>장점: 실제로 하기 위험하거나 비싼 상황을 안전하게 경험, 실전 대응 능력 향상</li><li>단점: 시설·장비 비용 큼, 준비 시간 많이 듦, 단위 시간당 교육비 높음, 교사 대 학습자 비율이 높아야 함</li><li>예: 비상대피 훈련, 화재 진압 모의훈련, 크레인 운전 시뮬레이터</li></ul>',
+ ex:'<ul><li>VR로 추락 상황 체험 → 모의법</li></ul>',
+ exam:'<ul><li>모의법 단점 (비용·시간)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g15',title:'15. 시청각교육법 등',
+ core:'영상·사진·모형·실물로 {{오감}}을 자극 / 장점 {{흥미·이해·기억↑, 다수 교육}} / 단점 {{장비·자료 준비, 일방적}}',
+ def:'<ul><li>시각·청각 매체(영상, 슬라이드, 사진, 모형, 실물)를 활용하는 교육 방법</li></ul>',
+ detail:'<ul><li>장점: 흥미 유발, 추상적 내용을 구체적으로, 오래 기억, 다수에게 균일한 내용</li><li>단점: 장비·자료 준비 비용, 매체에 의존하면 일방적·수동적</li><li>매체 선택: 교육 목적·대상·내용에 맞게</li><li>교육방법 정리: 지식은 <b>강의·시청각</b>, 기능은 <b>시범·실연</b>, 태도는 <b>토의·역할연기</b></li></ul>',
+ ex:'<ul><li>실제 사고 영상(재연) 시청 후 토의 → 시청각 + 토의 병행</li></ul>',
+ exam:'<ul><li>교육 단계별 적합한 방법 연결</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'5-4. 안전보건교육계획 수립 및 실시'},
+{id:'g16',title:'16. 안전보건교육의 기본방향',
+ core:'{{사고사례 중심}} · {{표준작업(안전작업) 중심}} · {{안전의식 향상}}',
+ def:'<ul><li>안전보건교육을 어떤 방향으로 진행해야 하는지에 대한 원칙</li></ul>',
+ detail:'<ol><li>{{사고사례 중심}}의 안전교육: 실제 사고를 분석해 재발 방지</li><li>{{표준작업}}을 위한 안전교육: 안전한 작업 방법을 표준화해 몸에 익힘</li><li>{{안전의식 향상}}을 위한 안전교육: 태도·습관 형성</li></ol><ul><li>교육은 1회성이 아니라 반복·계속, 현장 실정에 맞게, 대상자 수준에 맞게</li></ul>',
+ ex:'<ul><li>동종 업계 사망사고 사례로 TBM → 사고사례 중심</li></ul>',
+ exam:'<ul><li>기본방향 3가지</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g17',title:'17. 안전보건교육의 단계별 교육과정',
+ core:'{{지식}}(1단계, 강의·시청각) → {{기능}}(2단계, 시범·실습) → {{태도}}(3단계, 습관화) / 태도교육 {{청취 → 이해·납득 → 모범 → 권장 → 칭찬·벌}}',
+ def:'<ul><li>안전교육은 알고(지식) → 할 수 있고(기능) → 늘 하는(태도) 순서로 진행합니다.</li></ul>',
+ why:'<ul><li>알아도 할 줄 모르면 소용없고, 할 줄 알아도 습관이 안 되면 결국 생략합니다. 마지막 태도교육이 가장 어렵고 중요합니다.</li></ul>',
+ detail:'<table><tr><th>단계</th><th>목표</th><th>방법</th><th>내용</th></tr><tr><td>1. {{지식교육}}</td><td>안다</td><td>강의, 시청각</td><td>위험 인식, 법령·규정, 작업 위험성</td></tr><tr><td>2. {{기능교육}}</td><td>할 수 있다</td><td>시범, 실습(실연), 현장훈련</td><td>작업 방법, 장비 조작, 점검 방법</td></tr><tr><td>3. {{태도교육}}</td><td>늘 한다</td><td>토의, 역할연기, 지도·감독, 상담</td><td>안전 습관화, 작업 동기</td></tr></table><b>기능교육의 3원칙</b>: 준비, 위험작업의 규제, 안전작업의 표준화<br><b>태도교육의 기본 과정</b><ol><li>청취한다</li><li>이해·납득시킨다</li><li>모범을 보인다</li><li>권장한다</li><li>칭찬한다 / 벌을 준다</li></ol>',
+ ex:'<ul><li>안전대 교육: 왜 필요한지(지식) → 걸고 푸는 법(기능) → 감독·칭찬으로 매번 걸게(태도)</li></ul>',
+ exam:'<ul><li>단계 순서와 각 단계의 방법</li><li>태도교육 과정 순서</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'g18',title:'18. 안전보건교육 계획',
+ core:'계획 포함 {{목표·대상·과목·기간·장소·방법·강사}} / 수립 순서 {{요구 파악 → 목표 → 내용·방법 → 실행 → 평가}}',
+ def:'<ul><li>누구에게, 무엇을, 언제, 어디서, 어떻게, 누가 가르칠지 미리 정하는 것</li></ul>',
+ detail:'<b>교육계획에 포함할 사항</b><ul><li>교육 목표(첫째 과제)</li><li>교육 종류 및 대상</li><li>교육 과목 및 교육 내용</li><li>교육 기간 및 시간</li><li>교육 장소</li><li>교육 방법</li><li>교육 담당자 및 강사</li></ul><b>수립 순서</b>: 교육 요구사항 파악 → 교육 목표 설정 → 교육 내용·방법 결정 → 교육 실행 → 교육 평가<br><b>준비 사항</b>: 교육 목표 설정, 교육 대상자 범위 결정, 교육 과정 결정, 교육 방법 결정, 강사·조교 편성, 교육 보조자료 준비',
+ ex:'<ul><li>연간 안전보건교육 계획표에 법정 교육(정기·채용·특별) 일정과 강사를 미리 배정</li></ul>',
+ exam:'<ul><li>교육계획에 포함할 사항이 <b>아닌</b> 것</li></ul>',
+ law:'산업안전보건법 제29조, 시행규칙 제26조·별표 4·별표 5.'},
+
+{grp:'5-5. 교육내용 (법정 교육)'},
+{id:'g19',title:'19. 교육과정별 교육시간 (현행)',tag:'법정',
+ core:'정기: 사무·판매 {{매반기 6h}}, 그 외 {{매반기 12h}}, 관리감독자 {{연 16h}} / 채용 시 일용 {{1h}}·1개월 이하 {{4h}}·그 외 {{8h}} / 변경 시 {{1h·2h}} / 특별 {{2h·16h}} / 건설 기초 {{4h}}',
+ def:'<ul><li>산업안전보건법 시행규칙 별표 4에 정한 근로자 안전보건교육의 최소 시간</li><li><b>2023년 개정으로 정기교육이 "매분기"에서 "매반기"로 바뀌었습니다.</b> 옛 교재·기출의 매분기 3시간·6시간은 현행과 다릅니다.</li></ul>',
+ detail:'<table><tr><th>교육과정</th><th>대상</th><th>시간</th></tr><tr><td rowspan="4">{{정기교육}}</td><td>사무직 종사 근로자</td><td>매반기 {{6시간}} 이상</td></tr><tr><td>판매업무 직접 종사 근로자</td><td>매반기 {{6시간}} 이상</td></tr><tr><td>그 외 근로자</td><td>매반기 {{12시간}} 이상</td></tr><tr><td>관리감독자</td><td>연간 {{16시간}} 이상</td></tr><tr><td rowspan="3">{{채용 시}}</td><td>일용근로자, 1주일 이하 기간제</td><td>{{1시간}} 이상</td></tr><tr><td>1주일 초과 1개월 이하 기간제</td><td>{{4시간}} 이상</td></tr><tr><td>그 외 근로자</td><td>{{8시간}} 이상</td></tr><tr><td rowspan="2">{{작업내용 변경 시}}</td><td>일용근로자, 1주일 이하 기간제</td><td>{{1시간}} 이상</td></tr><tr><td>그 외 근로자</td><td>{{2시간}} 이상</td></tr><tr><td rowspan="3">{{특별교육}}</td><td>일용·1주일 이하 기간제 (타워크레인 신호작업 제외)</td><td>{{2시간}} 이상</td></tr><tr><td>일용·1주일 이하 기간제 중 타워크레인 신호작업</td><td>{{8시간}} 이상</td></tr><tr><td>그 외 근로자</td><td>{{16시간}} 이상 (최초 작업 전 4시간, 나머지 12시간은 3개월 이내 분할 가능), 단기·간헐 작업은 2시간 이상</td></tr><tr><td>{{건설업 기초안전보건교육}}</td><td>건설 일용근로자</td><td>{{4시간}} 이상</td></tr></table><ul><li>관리감독자: 전년도 무재해 사업장은 정기교육 시간을 줄일 수 있는 특례가 있음</li><li>원격교육은 일부만 시간으로 인정되는 등 세부 기준은 안전보건교육규정(고시)</li></ul><b>직무교육 (선임된 사람 대상)</b> <span style="color:var(--sub);font-size:13px">— 교재와 함께 확인</span><table><tr><th>대상</th><th>신규</th><th>보수</th></tr><tr><td>안전보건관리책임자</td><td>6시간 이상</td><td>6시간 이상</td></tr><tr><td>안전관리자, 보건관리자 등</td><td>34시간 이상</td><td>24시간 이상</td></tr><tr><td>안전보건관리담당자</td><td>—</td><td>8시간 이상</td></tr></table><ul><li>신규교육: 선임 후 3개월 이내 / 보수교육: 신규교육 이수 후 매 2년마다</li></ul>',
+ ex:'<ul><li>사무직 10명 → 상반기 6시간, 하반기 6시간 = 연 12시간</li><li>1주일 계약 단기 아르바이트 → 채용 시 1시간</li></ul>',
+ cmp:'<table><tr><th></th><th>일용·1주 이하</th><th>그 외</th></tr><tr><td>채용 시</td><td>1h</td><td>8h (1개월 이하 4h)</td></tr><tr><td>변경 시</td><td>1h</td><td>2h</td></tr><tr><td>특별</td><td>2h</td><td>16h</td></tr></table>',
+ calc:'생산직 근로자 1명의 연간 정기교육 = 매반기 12h × 2 = <b>24시간</b>',
+ exam:'<ul><li>표의 숫자를 바꾼 보기 (가장 많이 출제)</li><li><b>옛 기출 해설의 "매분기 3h/6h"는 현행 기준이 아님</b> — 문제 보기가 매반기인지 확인</li></ul>',
+ law:'산업안전보건법 제29조·제31조·제32조, 시행규칙 제26조·별표 4(안전보건교육 교육과정별 교육시간). 2023.9.28 시행 개정본 기준.'},
+
+{id:'g20',title:'20. 근로자 정기교육 내용',
+ core:'{{산업안전·사고예방 / 산업보건·직업병 예방 / 위험성평가 / 건강증진·질병예방 / 유해·위험 작업환경 관리 / 법령·산재보상 / 직무스트레스 / 직장 내 괴롭힘·고객 폭언}}',
+ def:'<ul><li>모든 근로자가 정기적으로 받는 교육에 들어가야 할 내용 (시행규칙 별표 5)</li></ul>',
+ detail:'<ol><li>산업안전 및 사고 예방에 관한 사항</li><li>산업보건 및 직업병 예방에 관한 사항</li><li>위험성평가에 관한 사항</li><li>건강증진 및 질병 예방에 관한 사항</li><li>유해·위험 작업환경 관리에 관한 사항</li><li>산업안전보건법령 및 산업재해보상보험 제도에 관한 사항</li><li>직무스트레스 예방 및 관리에 관한 사항</li><li>직장 내 괴롭힘, 고객의 폭언 등으로 인한 건강장해 예방 및 관리에 관한 사항</li></ol>',
+ cmp:'<table><tr><th>정기교육</th><th>채용 시 교육에만 있는 것</th></tr><tr><td>건강증진·질병예방, 작업환경 관리</td><td>기계·기구 위험성과 작업 순서, 작업 개시 전 점검, 정리정돈, 긴급조치, MSDS</td></tr></table>',
+ exam:'<ul><li>근로자 정기교육 내용에 해당하지 <b>않는</b> 것 (예: "작업 개시 전 점검" — 채용 시 교육 내용)</li></ul>',
+ law:'산업안전보건법 시행규칙 별표 5 제1호 가목.'},
+
+{id:'g21',title:'21. 관리감독자 정기교육 내용',
+ core:'근로자 공통 내용 + {{작업공정 유해·위험·예방대책 / 표준안전작업방법·지도요령 / 관리감독자 역할·임무 / 안전보건관리체제·조치 현황 / 교육능력 배양 / 비상시 긴급조치}}',
+ def:'<ul><li>관리감독자가 연간 16시간 이상 받는 정기교육의 내용</li></ul>',
+ detail:'<b>근로자 정기교육과 공통</b>: 산업안전·사고예방, 산업보건·직업병 예방, 위험성평가, 유해·위험 작업환경 관리, 법령·산재보상, 직무스트레스, 직장 내 괴롭힘·고객 폭언<br><b>관리감독자에게 추가되는 내용</b><ul><li>작업공정의 유해·위험과 재해 예방대책</li><li>사업장 내 안전보건관리체제 및 안전·보건조치 현황</li><li>표준안전 작업방법 결정 및 지도·감독 요령</li><li>현장근로자와의 의사소통능력 및 강의능력 등 안전보건교육 능력 배양 (전체 교육시간의 <b>1/3 이하</b>에서 가능)</li><li>비상시 또는 재해 발생 시 긴급조치</li><li>관리감독자의 역할과 임무</li><li>그 밖의 관리감독자의 직무에 관한 사항</li></ul>',
+ exam:'<ul><li>관리감독자 교육에만 있는 항목 고르기 ("표준안전 작업방법 지도요령", "교육능력 배양")</li></ul>',
+ law:'산업안전보건법 시행규칙 별표 5 제1호 나목(관리감독자 정기교육), 다목(관리감독자 채용·변경 시).'},
+
+{id:'g22',title:'22. 채용 시 · 작업내용 변경 시 교육내용',
+ core:'{{기계·기구 위험성과 작업 순서·동선 / 작업 개시 전 점검 / 정리정돈·청소 / 사고 시 긴급조치·대피 / MSDS}} + 공통(사고예방·직업병·위험성평가·법령·직무스트레스·괴롭힘)',
+ def:'<ul><li>처음 일을 시작하거나 작업이 바뀔 때 받는 교육의 내용. 정기교육보다 <b>현장 작업 그 자체</b>에 초점</li></ul>',
+ detail:'<ol><li>산업안전 및 사고 예방에 관한 사항</li><li>산업보건 및 직업병 예방에 관한 사항</li><li>위험성평가에 관한 사항</li><li>산업안전보건법령 및 산업재해보상보험 제도에 관한 사항</li><li>직무스트레스 예방 및 관리에 관한 사항</li><li>직장 내 괴롭힘, 고객 폭언 등으로 인한 건강장해 예방 및 관리</li><li>기계·기구의 위험성과 작업의 순서 및 동선에 관한 사항</li><li>작업 개시 전 점검에 관한 사항</li><li>정리정돈 및 청소에 관한 사항</li><li>사고 발생 시 긴급조치에 관한 사항</li><li>물질안전보건자료(MSDS)에 관한 사항</li></ol>',
+ cmp:'<table><tr><th>정기</th><th>채용·변경 시</th></tr><tr><td>건강증진·질병예방, 작업환경 관리</td><td>기계 위험성·작업순서, 개시 전 점검, 정리정돈, 긴급조치, MSDS</td></tr></table>',
+ exam:'<ul><li>채용 시 교육 내용에 해당하지 <b>않는</b> 것 (예: "건강증진 및 질병 예방" — 정기교육 내용)</li></ul>',
+ law:'산업안전보건법 시행규칙 별표 5 제1호 다목.'},
+
+{id:'g23',title:'23. 특별교육 대상 작업별 교육내용',
+ core:'유해·위험 작업 {{39종}} / 공통 내용 + 작업별 내용 / 예: 밀폐공간 {{산소농도 측정·환기·보호구·응급처치·작업허가}}',
+ def:'<ul><li>유해하거나 위험한 작업에 근로자를 배치할 때 그 작업에 특화해서 하는 교육 (시행규칙 별표 5)</li></ul>',
+ detail:'<b>대상 작업 예</b> (총 39종)<ul><li>고압실 내 작업(잠함·잠수 등), 아세틸렌 용접장치·가스집합 용접장치 사용 금속 용접·용단</li><li>밀폐된 장소에서 하는 용접, 폭발성·물반응성·인화성 물질 취급</li><li>화학설비 탱크 내 작업, 건조설비 취급</li><li>목재가공용 기계(5대 이상) 취급, 운반용 등 하역기계(5대 이상) 사용</li><li>1톤 이상 크레인 사용, 타워크레인 설치·해체, 건설용 리프트·곤돌라</li><li>거푸집 동바리 조립·해체, 비계 조립·해체·변경, 굴착(2m 이상)</li><li>프레스기계 금형 조정, 로봇 작업, 전압 75V 이상 정전·활선 작업</li><li><b>밀폐공간</b>에서의 작업, 석면 해체·제거, 허가·관리대상 유해물질 취급, 방사선 업무 등</li></ul><b>예시 — 밀폐공간 작업 특별교육 내용</b><ul><li>산소농도 측정 및 작업환경에 관한 사항</li><li>사고 시의 응급처치 및 비상시 구출에 관한 사항</li><li>보호구 착용 및 보호 장비 사용에 관한 사항</li><li>작업내용·안전작업방법 및 절차에 관한 사항</li><li>장비·설비 및 시설 등의 안전점검에 관한 사항</li></ul><span style="color:var(--sub);font-size:13px">※ 작업별 세부 내용은 3~6과목에서 해당 작업을 공부할 때 같이 보면 효율적입니다.</span>',
+ ex:'<ul><li>맨홀 내부 점검자 배치 전 → 밀폐공간 작업 특별교육 16시간(일용직은 2시간)</li></ul>',
+ exam:'<ul><li>특별교육 대상 작업이 <b>아닌</b> 것 고르기</li><li>밀폐공간 특별교육 내용</li></ul>',
+ law:'산업안전보건법 시행규칙 별표 5 제1호 라목(특별교육 대상 작업별 교육).'},
+
+{id:'g24',title:'키워드 카드 — 주요항목 5 짝짓기',tag:'암기',
+ core:'지식→{{기능}}→태도 / 도입→{{제시}}→적용→확인 / 정기 {{매반기}} / 특별 {{16h}}',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>주체·객체·매개체</td><td>{{교육 3요소}}</td></tr><tr><td>쾰러</td><td>{{통찰설}}</td></tr><tr><td>톨만</td><td>{{기호형태설}}</td></tr><tr><td>효과·연습·준비성</td><td>{{손다이크 시행착오설}}</td></tr><tr><td>기명→파지→재생→재인</td><td>{{기억 과정}}</td></tr><tr><td>정체기</td><td>{{고원현상}}</td></tr><tr><td>비판금지·자유분방·대량·수정</td><td>{{브레인스토밍}}</td></tr><tr><td>결재 서류 처리 훈련</td><td>{{인바스켓}}</td></tr><tr><td>JRT</td><td>{{인간관계 관리}}</td></tr><tr><td>CCS</td><td>{{최고경영자}}</td></tr><tr><td>ATT</td><td>{{대상 제한 없음}}</td></tr><tr><td>MTP</td><td>{{관리자, 40시간}}</td></tr><tr><td>목표·주제·학습정도</td><td>{{학습목적 3요소}}</td></tr><tr><td>인지→지각→이해→적용</td><td>{{학습정도 4단계}}</td></tr><tr><td>반응→학습→행동→결과</td><td>{{커크패트릭 4수준}}</td></tr><tr><td>전문가 발표 후 질문</td><td>{{심포지엄}}</td></tr><tr><td>전문가끼리 토의 후 전원</td><td>{{패널}}</td></tr><tr><td>문제 제기 후 깊이 토의</td><td>{{포럼}}</td></tr><tr><td>6명 6분</td><td>{{버즈세션}}</td></tr><tr><td>감독 아래 직접 연습</td><td>{{실연법}}</td></tr><tr><td>스스로 단계별 학습</td><td>{{프로그램학습법}}</td></tr><tr><td>청취→납득→모범→권장→칭찬·벌</td><td>{{태도교육 과정}}</td></tr><tr><td>사무직 정기</td><td>{{매반기 6시간}}</td></tr><tr><td>관리감독자 정기</td><td>{{연간 16시간}}</td></tr><tr><td>건설 기초</td><td>{{4시간}}</td></tr><tr><td>MSDS·작업 개시 전 점검</td><td>{{채용 시 교육내용}}</td></tr><tr><td>교육능력 배양 (1/3 이하)</td><td>{{관리감독자 정기교육}}</td></tr></table>'}
+];
+
+var MN={
+g1:[
+ {k:'정·행·환·설',s:'"<b>정행</b>(正行)하는 <b>환설</b>(환한 설날)" — 마음(정신)이 바르고, 행동이 바르고, 환경이 깨끗하고, 설비가 튼튼',m:'{{인간정신}} · {{행동}} · {{환경}} · {{설비·물자}}의 안전화'}],
+g2:[
+ {k:'주·객·매',s:'"<b>주객</b>이 <b>매</b>개로 만난다" — 가르치는 사람(주체), 배우는 사람(객체), 둘을 잇는 교재(매개체)',m:'{{주체(강사)}} · {{객체(수강자)}} · {{매개체(교재)}}'}],
+g3:[
+ {k:'자·개·목·사·통',s:'"<b>자개</b>장 <b>목</b>수가 <b>사통</b>팔달" — 스스로(자발성), 각자 맞게(개별화), 목표 뚜렷이(목적), 함께(사회화), 종합적으로(통합)',m:'{{자발성}} · {{개별화}} · {{목적}} · {{사회화}} · {{통합}}'},
+ {k:'행동 = 파·손·스 / 인지 = 쾰·톨·레',s:'"<b>파손</b>된 <b>스</b>마트폰은 <b>행동</b>으로 고친다(반복 연습) / <b>쾰톨레</b>는 머리로 깨닫는다" — 쾰러 침팬지가 바나나 보고 \'아하!\'',m:'행동주의 {{파블로프·손다이크·스키너}} / 인지주의 {{쾰러(통찰)·톨만(기호형태)·레빈(장)}}'},
+ {k:'손다이크 효·연·준',s:'"<b>효연준</b> — 효자 연준이는 시행착오 끝에 효도를 배웠다"',m:'{{효과}} · {{연습}} · {{준비성}}의 법칙'}],
+g4:[
+ {k:'기·파·재·재',s:'"<b>기</b>록하고(새기고) <b>파</b>일로 보관하고 <b>재</b>생(재생 버튼)하고 <b>재</b>인(다시 보면 앎)" — 파일 저장 → 보관 → 재생 → 알아보기',m:'{{기명}} → {{파지}} → {{재생}} → {{재인}}'},
+ {k:'직후가 제일 빨리 잊힘',s:'"아이스크림은 <b>꺼내자마자</b> 제일 빨리 녹는다 — 그러니 바로 먹어라(바로 복습)"',m:'에빙하우스: {{학습 직후 망각이 가장 빠름}} → 빠른 복습'}],
+g5:[
+ {k:'비·자·대·수',s:'"<b>비자</b> 받으려면 <b>대수</b>(大數)로 신청" — 비판 말고, 자유롭게, 많이, 덧붙여도 됨',m:'{{비판금지}} · {{자유분방}} · {{대량발언}} · {{수정발언}}'}],
+g6:[
+ {k:'JIT · JMT · JRT · JST',s:'"<b>I</b>nstruction 가르치고 · <b>M</b>ethods 고치고 · <b>R</b>elations 사람 챙기고 · <b>S</b>afety 안전 챙긴다" — 머리글자 그대로',m:'{{작업지도}} · {{작업개선}} · {{인간관계}} · {{작업안전}}'},
+ {k:'TWI · MTP · ATT · CCS',s:'"현장 반장은 <b>T</b>WI, 중간 관리자는 <b>M</b>TP, 누구나 <b>A</b>TT(All), 꼭대기 사장님은 <b>C</b>CS(CEO)"',m:'TWI {{감독자}} · MTP {{관리자}} · ATT {{제한 없음}} · CCS {{최고경영자}}'},
+ {k:'OJT = 옆자리 · Off = 연수원',s:'"<b>On</b> = 일 <b>위에서</b>(현장에서 선배가 옆에서) / <b>Off</b> = 일에서 <b>벗어나</b>(연수원에 모여서)"',m:'OJT {{현장·개별·즉시 적용}} / Off JT {{집합·전문강사·다수}}'}],
+g7:[
+ {k:'목·주·학 / 인·지·이·적',s:'"<b>목주</b>(木柱, 나무기둥)를 <b>학</b>습 / <b>인지이적</b> — 인지(알게) → 지각(알아차림) → 이해 → 적용, 점점 깊어짐"',m:'{{목표}} · {{주제}} · {{학습정도}} / {{인지 → 지각 → 이해 → 적용}}'}],
+g8:[
+ {k:'도·제·적·확',s:'"<b>도제</b>(徒弟, 견습생)가 <b>적확</b>(的確)하게 배운다" — 시작하고, 보여 주고, 해 보게 하고, 확인',m:'{{도입}} → {{제시}} → {{적용}} → {{확인}}'},
+ {k:'강의 = 제시 40 / 토의 = 적용 40',s:'"<b>강의</b>는 강사가 <b>말하는(제시)</b> 시간이 길고, <b>토의</b>는 학생이 <b>해 보는(적용)</b> 시간이 길다"',m:'강의식 {{제시}} 최다 / 토의식 {{적용}} 최다'}],
+g9:[
+ {k:'반·학·행·결',s:'"<b>반</b>장이 <b>학</b>교에서 <b>행</b>실을 <b>결</b>정한다" — 좋았나? → 배웠나? → 바뀌었나? → 성과 났나?',m:'{{반응}} → {{학습}} → {{행동}} → {{결과}}'}],
+g10:[
+ {k:'강의 = 많이·빨리·한꺼번에',s:'"<b>확성기</b> — 많은 사람에게 빨리 많이 전하지만, 대답은 못 듣는다"',m:'장점 {{다수·단시간·많은 내용}} / 단점 {{일방적·개인차 무시}}'}],
+g11:[
+ {k:'포 · 심 · 패 · 버',s:'"<b>포럼</b>은 <b>포</b>문을 연다(문제 제기) / <b>심포지엄</b>은 <b>심</b>사위원 발표 후 질문 / <b>패널</b>은 <b>패</b>거리(전문가끼리) 수다 후 전원 / <b>버즈</b>는 벌(buzz) 떼처럼 6명씩 웅성웅성 6분"',m:'포럼 {{문제 제기 → 토의}} / 심포지엄 {{전문가 발표 → 질문}} / 패널 {{전문가 토의 → 전원}} / 버즈 {{6-6}}'}],
+g12:[
+ {k:'실연 = 실제로 연습',s:'"<b>실</b>제로 <b>연</b>습 — 운전학원 도로 연수(강사 옆자리 감독)"',m:'{{지도자 감독 아래 직접 연습}}'}],
+g13:[
+ {k:'프로그램 = 혼자 게임',s:'"<b>게임</b>처럼 한 판 깨야 다음 판 — 내 속도로, 혼자서, 바로 정답 확인, 단 스토리(내용)는 고정"',m:'{{자기 속도·개별·즉시 확인}} / 단점 {{내용 고정·개발비}}'}],
+g14:[
+ {k:'모의 = 비행 시뮬레이터',s:'"<b>모의</b>고사, <b>비행 시뮬레이터</b> — 진짜처럼 해 보지만 장비가 비싸다"',m:'{{실제와 비슷한 상황}} / 단점 {{비용·시간}}'}],
+g15:[
+ {k:'지식 = 강·시 / 기능 = 시·실 / 태도 = 토·역',s:'"<b>알려면 듣고 보고</b>(강의·시청각), <b>하려면 보고 따라 하고</b>(시범·실연), <b>바뀌려면 말하고 연기하고</b>(토의·역할연기)"',m:'지식 {{강의·시청각}} / 기능 {{시범·실연}} / 태도 {{토의·역할연기}}'}],
+g16:[
+ {k:'사·표·의',s:'"<b>사표</b>를 낼 <b>의</b>향" — 사고사례, 표준작업, 의식 향상',m:'{{사고사례}} · {{표준작업}} · {{안전의식 향상}}'}],
+g17:[
+ {k:'지 → 기 → 태',s:'"<b>지기태</b> → \'지기(知己)는 태도로 안다\'" — 알고 → 할 줄 알고 → 늘 한다',m:'{{지식}} → {{기능}} → {{태도}}'},
+ {k:'청·이·모·권·칭',s:'"<b>청</b>년 <b>이</b>장이 <b>모</b>범을 보이며 <b>권</b>하고 <b>칭</b>찬" — 듣고, 납득시키고, 보여 주고, 권하고, 상벌',m:'{{청취}} → {{이해·납득}} → {{모범}} → {{권장}} → {{칭찬·벌}}'},
+ {k:'기능교육 준·위·표',s:'"<b>준위표</b> — 준비하고, 위험 작업 막고, 표준화"',m:'{{준비}} · {{위험작업 규제}} · {{안전작업 표준화}}'}],
+g18:[
+ {k:'6하원칙',s:'"교육계획은 <b>육하원칙</b> — 왜(목표), 누구(대상), 무엇(과목·내용), 언제(기간·시간), 어디(장소), 어떻게(방법), 누가 가르치나(강사)"',m:'{{목표·대상·내용·기간·장소·방법·강사}}'}],
+g19:[
+ {k:'반기 6 · 12 / 연 16',s:'"<b>앉아 있는</b> 사무·판매는 반년에 <b>6</b>, <b>몸 쓰는</b> 생산직은 두 배 <b>12</b>, 반장(관리감독자)은 일 년에 <b>16</b>(스무 살 전 열여섯)"',m:'사무·판매 {{매반기 6h}} / 그 외 {{매반기 12h}} / 관리감독자 {{연 16h}}'},
+ {k:'채용 1 · 4 · 8',s:'"하루짜리 <b>1</b>, 한 달짜리 <b>4</b>, 정식 직원 <b>8</b>(하루 근무시간)" — 오래 일할수록 길게',m:'일용·1주 이하 {{1h}} / 1개월 이하 {{4h}} / 그 외 {{8h}}'},
+ {k:'변경 1 · 2 / 특별 2 · 16',s:'"일 바뀌면 <b>1·2</b>, 위험한 일이면 <b>2·16</b> — 특별교육은 일용직 2, 정규직은 하루 8시간 × 2일 = 16"',m:'변경 {{1h·2h}} / 특별 {{2h·16h}} (타워크레인 신호 일용 {{8h}})'},
+ {k:'건설 기초 4',s:'"건설은 <b>사</b>(4)방이 위험 — 기초 4시간"',m:'건설업 기초안전보건교육 {{4h}}'}],
+g20:[
+ {k:'정기 = 몸·마음·법',s:'"정기교육은 <b>건강검진</b>처럼 — 다치지 않게(안전), 병 안 나게(보건·건강증진·작업환경), 위험성평가, 법·보험, 마음(스트레스·괴롭힘)"',m:'{{사고예방}} · {{직업병 예방}} · {{위험성평가}} · {{건강증진}} · {{작업환경}} · {{법령·산재보상}} · {{직무스트레스}} · {{괴롭힘·폭언}}'}],
+g21:[
+ {k:'관리감독자 + 지·체·역·교·긴',s:'"반장은 <b>지</b>도요령, <b>체</b>제, <b>역</b>할, <b>교</b>육능력, <b>긴</b>급조치까지 — \'지체 없이 역교 긴급\'"',m:'+ {{표준작업 지도요령}} · {{안전보건관리체제}} · {{역할·임무}} · {{교육능력 배양}} · {{긴급조치}}'}],
+g22:[
+ {k:'채용 = 기·점·정·긴·M',s:'"신입 첫날: <b>기</b>계 보고, <b>점</b>검하고, <b>정</b>리하고, <b>긴</b>급하면 대피, <b>M</b>SDS 읽기" — 현장 첫날 체크리스트',m:'{{기계 위험성·작업순서}} · {{작업 개시 전 점검}} · {{정리정돈}} · {{긴급조치}} · {{MSDS}}'}],
+g23:[
+ {k:'39종 · 밀폐 = 산·응·보·절',s:'"특별교육은 <b>39</b>(삼구 = 삼가고 구해라) / 밀폐공간은 <b>산</b>소 재고, <b>응</b>급처치, <b>보</b>호구, <b>절</b>차"',m:'특별교육 대상 {{39종}} / 밀폐공간 {{산소농도·응급처치·보호구·작업절차}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

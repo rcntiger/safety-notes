@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1과목 3. 산업안전심리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 1과목 · 산업재해 예방 및 안전보건교육</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 3. 산업안전심리 · 세세항목 16개 → 학습단위 17개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">1과목 목차</a><a href="p2.html">◀ 이전</a><a href="p4.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s1-p3-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'3-1. 산업심리와 심리검사'},
+{id:'e1',title:'1. 심리검사의 종류',
+ core:'구비조건 {{표·타·신·객·실}}(표준화·타당도·신뢰도·객관도·실용도) / 작업검사 = {{크레펠린}} / Y-G 성격검사 {{A평균·B불안정적극·C안정소극·D안정적극·E불안정소극}}',
+ def:'<ul><li><b>심리검사</b>: 지능·적성·성격·흥미 등 사람의 심리적 특성을 객관적으로 측정하는 도구</li><li><b>타당도</b>: 측정하려는 것을 제대로 재는가 / <b>신뢰도</b>: 같은 사람을 여러 번 재도 결과가 일정한가</li></ul>',
+ why:'<ul><li>사고를 잘 내는 사람을 미리 가려 적합한 작업에 배치하려면, 믿을 수 있는 검사 도구가 필요합니다. 그래서 "좋은 검사의 조건"이 단골 문제입니다.</li></ul>',
+ detail:'<b>좋은 심리검사의 구비조건</b><table><tr><th>조건</th><th>뜻</th></tr><tr><td>{{표준화}}</td><td>검사 절차·채점이 일정하게 정해져 있음</td></tr><tr><td>{{타당도}}</td><td>측정하려는 것을 정확히 측정</td></tr><tr><td>{{신뢰도}}</td><td>반복 측정해도 결과가 일관됨</td></tr><tr><td>{{객관도}}</td><td>채점자가 달라도 같은 결과</td></tr><tr><td>{{실용도}}</td><td>실시·채점이 쉽고 경제적</td></tr></table><ul><li>타당도 종류: 내용타당도, 준거관련타당도(예언·공인), 구성타당도</li><li>신뢰도 측정: 검사-재검사법, 동형검사법, 반분법, 내적 일관성</li></ul><b>검사의 종류</b><table><tr><th>종류</th><th>예</th></tr><tr><td>지능검사</td><td>일반 지적 능력</td></tr><tr><td>적성검사</td><td>GATB 등 (직업적성 카드)</td></tr><tr><td>성격검사</td><td>{{Y-G 성격검사}}, MMPI(다면적 인성검사), 로르샤흐 잉크반점검사, TAT(주제통각검사)</td></tr><tr><td>흥미검사</td><td>직업 흥미</td></tr><tr><td>작업검사</td><td>{{크레펠린(Kraepelin) 검사}}: 연속 덧셈으로 작업곡선을 보고 성격·작업태도 판단</td></tr></table><b>Y-G(矢田部-Guilford) 성격검사 유형</b><table><tr><th>유형</th><th>특징</th></tr><tr><td>A형(평균형)</td><td>조화적·적응적</td></tr><tr><td>B형(우편형)</td><td>정서 불안정, 활동적·외향적 — <b>불안정·적극형</b></td></tr><tr><td>C형(좌편형)</td><td>안정, 온순, 소극적·내향적 — <b>안정·소극형</b></td></tr><tr><td>D형(우하형)</td><td>정서 안정, 사회 적응, 활동적 — <b>안정·적극형</b> (관리자형)</td></tr><tr><td>E형(좌하형)</td><td>불안정, 부적응, 소극적 — <b>불안정·소극형</b></td></tr></table>',
+ ex:'<ul><li>같은 직원에게 한 달 간격으로 검사했는데 결과가 크게 다르면 → <b>신뢰도</b>가 낮은 검사</li><li>운전 적성검사 점수가 높은 사람이 실제로 사고가 적으면 → 예언<b>타당도</b>가 높은 검사</li></ul>',
+ cmp:'<table><tr><th>타당도</th><th>신뢰도</th><th>객관도</th></tr><tr><td>맞는 것을 재는가</td><td>잴 때마다 같은가</td><td>채점자가 달라도 같은가</td></tr></table>',
+ exam:'<ul><li>구비조건에 <b>속하지 않는</b> 것 (예: "주관성", "난해성")</li><li>Y-G 유형 특징 짝짓기, 특히 D형 = 안정·적극(관리자 적합)</li><li>크레펠린 = 작업검사</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e2',title:'2. 심리학적 요인',
+ core:'레빈 {{B = f(P·E)}} — B 행동, P {{개체(사람)}}, E {{환경}} / 사고 유발 심리 {{망각·주변적 동작·의식의 우회·생략행위·억측판단·장면행동·착오·피로}}',
+ def:'<ul><li><b>레빈(K. Lewin)의 행동법칙</b>: 인간의 행동(B)은 개체(P)와 심리적 환경(E)의 상호작용 함수라는 이론</li></ul>',
+ why:'<ul><li>사고를 "부주의한 사람 탓"으로만 보면 대책이 없습니다. 사람의 상태(P)와 작업 환경(E)을 함께 바꿔야 불안전 행동이 줄어든다는 근거가 됩니다.</li></ul>',
+ detail:'<b>B = f(P·E)</b><table><tr><th>기호</th><th>뜻</th><th>예</th></tr><tr><td>B</td><td>Behavior (인간의 행동)</td><td>불안전 행동</td></tr><tr><td>f</td><td>function (함수 관계)</td><td>—</td></tr><tr><td>{{P}}</td><td>Person (개체)</td><td>연령, 경험, 심신 상태, 성격, 지능, 소질</td></tr><tr><td>{{E}}</td><td>Environment (심리적 환경)</td><td>인간관계, 작업 조건, 감독, 온도·조명 등</td></tr></table><b>사고를 일으키는 심리 요인</b><ul><li>{{억측판단}}: "괜찮겠지" 하고 자기 멋대로 판단 (예: 신호가 바뀌기 전에 건너면 되겠지)</li><li>{{생략행위}}: 정해진 순서·절차를 빼먹음</li><li>{{의식의 우회}}: 걱정·고민 등으로 의식이 작업에서 벗어남</li><li>{{장면행동}}: 급박한 상황에서 주변을 보지 못하고 목표만 보고 행동</li><li>주변적 동작: 의식하지 않은 동작이 주위 물체에 닿음</li><li>망각, 착오, 피로, 소질적 결함 등</li></ul><b>안전사고의 정신적 요소</b><ul><li>안전의식 부족, 주의력 부족, 방심·공상, 판단력 부족</li><li>개성적 결함: 과도한 자존심·자만심, 다혈질·인내력 부족, 도전적 성격, 나약한 마음 등</li></ul>',
+ ex:'<ul><li>지게차 운전자가 "사람이 없겠지" 하고 경적 없이 후진 → <b>억측판단</b></li><li>떨어지는 공구를 잡으려고 손을 뻗다 회전체에 말려듦 → <b>장면행동</b></li></ul>',
+ cmp:'<table><tr><th>억측판단</th><th>생략행위</th></tr><tr><td>상황을 "괜찮겠지"로 추측</td><td>절차를 빼먹음</td></tr></table>',
+ exam:'<ul><li>B = f(P·E)에서 P에 해당하는 것(연령·성격 등) vs E(인간관계·조명 등) 구분</li><li>억측판단의 사례 고르기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e3',title:'3. 지각과 정서',
+ core:'지각 = 감각 정보의 {{해석}} / {{선택적 지각}}, {{지각 항상성}} / 게슈탈트 {{근접·유사·폐쇄·연속}} / 정서 불안정 → {{주의 범위 축소}}',
+ def:'<ul><li><b>감각</b>: 자극을 받아들이는 것 / <b>지각</b>: 받아들인 감각을 의미 있게 <b>해석·조직</b>하는 것</li><li><b>정서</b>: 기쁨·공포·분노 등 비교적 강하고 일시적인 감정 상태</li></ul>',
+ why:'<ul><li>사람은 보이는 그대로가 아니라 <b>해석한 대로</b> 행동합니다. 지각이 틀리면(착시·착각) 행동도 틀려 사고가 납니다. 정서가 격하면 주의가 한 곳으로 좁아져 주변 위험을 놓칩니다.</li></ul>',
+ detail:'<b>지각의 특성</b><ul><li>{{선택적 지각}}: 관심 있거나 기대하는 정보만 골라 지각</li><li>{{지각의 항상성}}: 거리·조명이 바뀌어도 크기·색·모양을 일정하게 지각</li><li>지각의 체제화(게슈탈트 원리): <b>근접성</b>(가까운 것끼리), <b>유사성</b>(비슷한 것끼리), <b>폐쇄성</b>(끊긴 도형을 완성해서), <b>연속성</b>(이어지는 것끼리), 단순성</li><li>지각의 오류는 착시·착각(3-3)으로 이어짐</li></ul><b>정서와 안전</b><ul><li>공포·분노·흥분 등 정서가 강하면 주의 범위가 좁아지고 판단이 흐려짐</li><li>정서 안정성은 Y-G 성격검사 등에서 측정하는 핵심 요소</li><li>감각 정보 중 <b>시각</b>이 차지하는 비중이 가장 큼</li></ul>',
+ ex:'<ul><li>매일 같은 길만 다니는 작업자가 새로 설치된 장애물을 못 봄 → 선택적 지각·기대에 의한 지각</li><li>동료와 다툰 직후 작업하다 경고음을 놓침 → 정서로 인한 주의 축소</li></ul>',
+ cmp:'<table><tr><th>감각</th><th>지각</th></tr><tr><td>자극 수용(눈에 빛이 들어옴)</td><td>의미 해석("빨간불이다")</td></tr></table>',
+ exam:'<ul><li>게슈탈트 원리 이름과 그림 짝짓기</li><li>지각 항상성 정의</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e4',title:'4. 동기 · 좌절 · 갈등',
+ core:'갈등 3유형 {{접근-접근·회피-회피·접근-회피}} / 좌절 반응 {{공격·퇴행·고착·체념}} / 적응기제 {{방어(보상·합리화·승화·동일시·투사)·도피(고립·퇴행·억압·백일몽)·공격}}',
+ def:'<ul><li><b>동기</b>: 행동을 일으키고 방향을 정하는 내적 힘 (욕구 → 동기 → 행동 → 목표)</li><li><b>좌절</b>: 욕구 충족이 방해받는 상태</li><li><b>갈등</b>: 둘 이상의 욕구가 동시에 생겨 선택하기 어려운 상태</li><li><b>적응기제</b>: 욕구불만·갈등에서 자신을 지키려는 무의식적 반응</li></ul>',
+ why:'<ul><li>욕구불만이 해소되지 않으면 공격·퇴행 같은 부적응 행동이 나오고, 이것이 불안전 행동의 원인이 됩니다.</li></ul>',
+ detail:'<b>갈등의 유형 (레빈)</b><table><tr><th>유형</th><th>상황</th><th>예</th></tr><tr><td>{{접근-접근}}</td><td>좋은 것 두 개 중 하나를 골라야 함</td><td>승진 부서 두 곳 중 선택</td></tr><tr><td>{{회피-회피}}</td><td>싫은 것 두 개 중 하나를 골라야 함</td><td>야근하거나 주말 출근하거나</td></tr><tr><td>{{접근-회피}}</td><td>한 대상에 좋은 점과 싫은 점이 함께 있음</td><td>수당은 많지만 위험한 작업</td></tr></table><b>좌절에 대한 반응</b>: 공격(직접·간접), 퇴행, 고착, 체념(무감동)<br><b>적응기제</b><table><tr><th>분류</th><th>기제</th><th>뜻</th></tr><tr><td rowspan="5">{{방어기제}}</td><td>보상</td><td>약점을 다른 장점으로 메움</td></tr><tr><td>합리화</td><td>그럴듯한 핑계로 정당화 ("신 포도")</td></tr><tr><td>승화</td><td>억압된 욕구를 사회적으로 가치 있는 행동으로 바꿈</td></tr><tr><td>동일시</td><td>훌륭한 사람과 자신을 같다고 여김</td></tr><tr><td>투사</td><td>자기 결점을 남의 탓으로 돌림</td></tr><tr><td rowspan="4">{{도피기제}}</td><td>고립</td><td>현실에서 물러나 자기 안에 숨음</td></tr><tr><td>퇴행</td><td>어린 시절 행동으로 돌아감</td></tr><tr><td>억압</td><td>불쾌한 기억을 의식에서 밀어냄</td></tr><tr><td>백일몽</td><td>공상 속에서 욕구를 충족</td></tr><tr><td>{{공격기제}}</td><td>직접적·간접적 공격</td><td>폭행·욕설, 비난·험담</td></tr></table>',
+ ex:'<ul><li>사고를 낸 작업자가 "장비가 원래 불량이었다"고 함 → 합리화 또는 투사</li><li>운동을 못하는 학생이 공부로 인정받으려 함 → 보상</li></ul>',
+ cmp:'<table><tr><th>합리화</th><th>투사</th></tr><tr><td>자기 행동을 그럴듯하게 <b>변명</b></td><td>자기 결점을 <b>남에게 덮어씌움</b></td></tr></table>',
+ exam:'<ul><li>적응기제 분류: 방어 vs 도피 (특히 <b>억압·퇴행</b>은 도피, <b>승화·보상</b>은 방어)</li><li>갈등 유형 사례 짝짓기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e5',title:'5. 불안과 스트레스',
+ core:'스트레스와 성과는 {{역U자}}(여키스-도슨) / 셀리에 GAS {{경고기 → 저항기 → 탈진기}} / 직무스트레스 {{역할 갈등·역할 모호성·과부하·통제력 부족}}',
+ def:'<ul><li><b>불안</b>: 막연한 위협을 느끼는 불쾌한 정서</li><li><b>스트레스</b>: 외부 자극(스트레서)에 대해 몸과 마음이 적응하려는 반응</li></ul>',
+ why:'<ul><li>스트레스가 너무 적으면 각성이 낮아 방심하고, 너무 많으면 판단력이 떨어집니다. 적정 수준에서 성과가 가장 좋다는 것이 핵심입니다.</li></ul>',
+ detail:'<b>스트레스와 성과 — 여키스-도슨 법칙</b><ul><li>각성(스트레스) 수준과 성과는 <b>역U자</b> 관계: 적정 수준에서 성과 최대</li></ul><b>셀리에(Selye)의 일반적응증후군(GAS)</b><ol><li>{{경고기}}(경고 반응기): 스트레스에 처음 노출, 신체 저항력 일시 저하 후 방어 시작</li><li>{{저항기}}: 적응·저항 상태 유지</li><li>{{탈진기}}(소진기): 오래 지속되면 저항력이 바닥나 질병·소진</li></ol><b>스트레스 요인</b><table><tr><th>내적(자기 안에서)</th><th>외적(밖에서)</th></tr><tr><td>자존심 손상, 출세욕, 지나친 경쟁심, 업무상 죄책감, 현실 부적응</td><td>경제적 어려움, 가족의 죽음·질병, 직장 대인관계 갈등, 가정불화, 과도한 업무</td></tr></table><b>직무 스트레스 요인</b>: 역할 갈등, 역할 모호성, 업무 과부하·과소, 작업 통제력 부족, 교대근무, 열악한 작업환경<br><b>관리</b>: 휴식·운동, 업무 재설계, 상담, 사회적 지지',
+ ex:'<ul><li>지시하는 상사가 두 명이라 서로 다른 지시를 받음 → 역할 갈등</li><li>내 업무 범위가 어디까지인지 모름 → 역할 모호성</li></ul>',
+ cmp:'<table><tr><th>역할 갈등</th><th>역할 모호성</th></tr><tr><td>요구가 서로 <b>충돌</b></td><td>요구가 <b>불명확</b></td></tr></table>',
+ exam:'<ul><li>GAS 3단계 순서</li><li>스트레스 요인 내적 vs 외적 구분 (자존심 손상 = 내적)</li></ul>',
+ law:'직무스트레스 예방은 산업안전보건법 제4조·제5조(사업주 의무)와 관련 지침. 시험은 이론 위주.'},
+
+{grp:'3-2. 직업적성과 배치'},
+{id:'e6',title:'6. 직업적성의 분류',
+ core:'{{기계적 적성}} = 손·팔 솜씨, 공간 시각화, 기계적 이해 / {{사무적 적성}} = 지능, 지각 속도, 정확성',
+ def:'<ul><li><b>적성</b>: 특정 일을 배우고 잘 해낼 수 있는 잠재적 능력</li></ul>',
+ why:'<ul><li>적성에 맞지 않는 작업에 배치하면 실수·피로가 늘어 사고 위험이 커집니다.</li></ul>',
+ detail:'<table><tr><th>적성</th><th>구성 요소</th></tr><tr><td>{{기계적 적성}}</td><td>손과 팔의 솜씨, 공간 시각화, 기계적 이해</td></tr><tr><td>{{사무적 적성}}</td><td>지능, 지각 속도, 정확성</td></tr></table><b>적성 발견 방법</b><ul><li>자기 이해(자기 관찰), 계발적 경험(직접 해 봄), 적성검사</li></ul><b>적성 요인</b><ul><li>지능, 흥미, 성격(인간성), 직업 적성 등이 함께 작용</li></ul>',
+ ex:'<ul><li>설비 정비원 선발 → 공간 시각화·기계적 이해 평가</li><li>자재 관리 사무 → 지각 속도·정확성 평가</li></ul>',
+ cmp:'<table><tr><th>기계적</th><th>사무적</th></tr><tr><td>공간 시각화</td><td>지각 속도</td></tr></table>',
+ exam:'<ul><li>기계적 적성 요소가 <b>아닌</b> 것 (예: "지각 속도" — 사무적)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e7',title:'7. 적성검사의 종류',
+ core:'GATB 9요인 {{지능(G)·언어(V)·수리(N)·사무지각(Q)·공간판단(S)·형태지각(P)·운동조절(K)·손가락 재치(F)·손 재치(M)}} / 검사 유형 {{시각적 판단·정확도·기민성·계산·속도}}',
+ def:'<ul><li><b>적성검사</b>: 직무 수행에 필요한 잠재 능력을 재는 검사</li><li><b>GATB(일반적성검사)</b>: 미국 노동부가 만든 대표적 적성검사, 9개 적성 요인 측정</li></ul>',
+ detail:'<b>적성검사의 유형</b><ul><li>시각적 판단 검사 (형태 비교, 입체 도형 판단 등)</li><li>정확도 및 기민성 검사 (정밀성 검사)</li><li>계산에 의한 검사</li><li>속도 검사</li><li>그 외: 직무 견본 검사, 기계적성 검사</li></ul><b>GATB 9가지 적성 요인</b><table><tr><th>기호</th><th>적성</th></tr><tr><td>G</td><td>지능</td></tr><tr><td>V</td><td>언어능력</td></tr><tr><td>N</td><td>수리능력</td></tr><tr><td>Q</td><td>사무지각</td></tr><tr><td>S</td><td>공간판단력</td></tr><tr><td>P</td><td>형태지각</td></tr><tr><td>K</td><td>운동조절(눈과 손의 협응)</td></tr><tr><td>F</td><td>손가락 재치</td></tr><tr><td>M</td><td>손 재치</td></tr></table>',
+ ex:'<ul><li>정밀 조립 라인 → F(손가락 재치), K(운동조절) 점수 중시</li></ul>',
+ cmp:'<table><tr><th>F</th><th>M</th><th>K</th></tr><tr><td>손가락 재치(Finger)</td><td>손 재치(Manual)</td><td>운동조절(Kinetic)</td></tr></table>',
+ exam:'<ul><li>GATB 요인이 <b>아닌</b> 것 고르기</li><li>기호와 요인 짝짓기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e8',title:'8. 직무분석 및 직무평가',
+ core:'직무분석 → {{직무기술서}}(일 중심)·{{직무명세서}}(사람 요건) / 분석 방법 {{면접·관찰·설문지·결정적 사건·작업일지·체험}} / 직무평가 {{서열·분류·점수·요소비교}}',
+ def:'<ul><li><b>직무분석</b>: 직무의 내용·책임·필요 자격을 체계적으로 조사하는 것</li><li><b>직무평가</b>: 직무분석 결과로 각 직무의 <b>상대적 가치</b>를 정하는 것 (임금 결정의 근거)</li></ul>',
+ why:'<ul><li>어떤 일에 어떤 능력이 필요한지 알아야 맞는 사람을 뽑아 배치하고(적정 배치), 공정한 보수를 정할 수 있습니다.</li></ul>',
+ detail:'<b>직무분석의 결과물</b><table><tr><th>문서</th><th>중심</th><th>내용</th></tr><tr><td>{{직무기술서}}</td><td>직무(일)</td><td>직무 명칭, 과업 내용, 책임, 작업 조건</td></tr><tr><td>{{직무명세서}}</td><td>사람</td><td>필요한 지식·기술·능력, 학력·경력·자격 요건</td></tr></table><b>직무분석 방법</b><ul><li>면접법, 관찰법, 설문지(질문지)법, 결정적 사건법(중요 사건 기록), 작업일지법, 체험법(직접 해 봄), 비교확인법</li></ul><b>직무평가 방법</b><table><tr><th>구분</th><th>방법</th><th>내용</th></tr><tr><td rowspan="2">비계량적</td><td>{{서열법}}</td><td>직무 전체를 비교해 순위 매김</td></tr><tr><td>{{분류법}}</td><td>미리 정한 등급에 직무를 분류</td></tr><tr><td rowspan="2">계량적</td><td>{{점수법}}</td><td>평가 요소별 점수를 합산</td></tr><tr><td>{{요소비교법}}</td><td>기준 직무와 요소별로 비교</td></tr></table>',
+ ex:'<ul><li>크레인 운전원 채용 공고에 "자격증, 3년 경력" → 직무<b>명세서</b> 내용</li><li>"화물 인양, 신호수와 교신, 일일 점검" → 직무<b>기술서</b> 내용</li></ul>',
+ cmp:'<table><tr><th>직무분석</th><th>직무평가</th></tr><tr><td>일의 <b>내용</b>을 조사</td><td>일의 <b>가치</b>를 비교</td></tr></table>',
+ exam:'<ul><li>직무기술서 vs 직무명세서 구분</li><li>직무평가 방법 중 계량적인 것 (점수법·요소비교법)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e9',title:'9. 선발 및 배치',
+ core:'선발 도구 {{시험·면접·적성검사·경력 조회}} / 배치 원칙 {{적재적소·능력주의·균형주의·인재육성}}',
+ def:'<ul><li><b>선발</b>: 지원자 중 직무에 맞는 사람을 고르는 것 / <b>배치</b>: 뽑은 사람을 맞는 직무에 보내는 것</li></ul>',
+ why:'<ul><li>적성에 맞는 배치는 그 자체로 재해 예방 대책입니다. 사고 경향이 높은 사람을 위험 작업에서 빼는 것도 배치의 문제입니다.</li></ul>',
+ detail:'<b>선발 과정</b><ul><li>모집 → 서류 심사 → 필기·적성검사 → 면접 → 신체검사 → 결정</li><li>선발 도구는 신뢰도와 타당도가 확보되어야 함 (심리검사 카드)</li></ul><b>배치의 원칙</b><ul><li>{{적재적소주의}}: 능력·적성에 맞는 곳에</li><li>{{능력주의}}: 능력 발휘 기회를 주고 성과에 맞게 보상</li><li>{{균형주의}}: 개인과 조직 전체의 조화</li><li>{{인재육성주의}}: 배치를 통해 성장 유도</li></ul><b>안전 측면의 배치 고려사항</b><ul><li>적성검사 결과, 경험·숙련도, 신체 조건(시력·청력·체력), 건강진단 결과, 성격·정서 안정성</li><li>사고 경향이 높은 사람은 위험 작업 배치 지양 → 교육·상담 병행</li></ul>',
+ ex:'<ul><li>색약 근로자를 신호 색으로 판단하는 작업에서 제외 → 신체 조건을 고려한 배치</li></ul>',
+ exam:'<ul><li>배치 원칙에 해당하지 <b>않는</b> 것 (예: "연공서열주의")</li></ul>',
+ law:'건강진단 결과에 따른 작업 전환 등은 산업안전보건법 제132조(건강진단에 관한 사업주의 의무).'},
+
+{id:'e10',title:'10. 인사관리의 기초',
+ core:'인사관리 중요 기능 {{조직과 리더십·선발·배치·작업분석과 업무평가·상담 및 노사 간 이해}} / 평가 오류 {{후광·관대화·중심화·논리적·대비}}',
+ def:'<ul><li><b>인사관리</b>: 사람을 뽑고, 배치하고, 평가하고, 키우는 조직 관리 활동</li></ul>',
+ detail:'<b>인사관리의 중요한 기능</b><ol><li>조직과 리더십</li><li>선발 (적성검사, 시험)</li><li>배치</li><li>작업분석과 업무평가</li><li>상담 및 노사 간의 이해</li></ol><b>인사평가(고과)의 오류</b><table><tr><th>오류</th><th>뜻</th></tr><tr><td>{{후광효과}}</td><td>한 가지 좋은(나쁜) 인상이 다른 평가까지 영향</td></tr><tr><td>{{관대화 경향}}</td><td>전반적으로 점수를 후하게 줌</td></tr><tr><td>{{중심화 경향}}</td><td>대부분을 보통(중간)으로 평가</td></tr><tr><td>논리적 오류</td><td>관련 있어 보이는 항목을 비슷하게 평가</td></tr><tr><td>대비 오류</td><td>평가자 자신 또는 앞 사람과 비교해 평가</td></tr><tr><td>근접 오류</td><td>최근 사건이나 시간적으로 가까운 항목에 영향받음</td></tr></table>',
+ ex:'<ul><li>말 잘하는 직원을 안전 실적까지 높게 평가 → 후광효과</li></ul>',
+ cmp:'<table><tr><th>관대화</th><th>중심화</th></tr><tr><td>모두 높게</td><td>모두 중간으로</td></tr></table>',
+ exam:'<ul><li>인사관리 기능에 해당하지 <b>않는</b> 것</li><li>평가 오류 사례 짝짓기</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'3-3. 인간의 특성과 안전과의 관계'},
+{id:'e11',title:'11. 안전사고 요인',
+ core:'인적 요인 = {{심리적·생리적·직장적}} / 4M {{Man·Machine·Media·Management}} / 심리적 요인 {{망각·걱정·무의식·위험감각·지름길반응·생략·억측·착오}}',
+ def:'<ul><li>사고를 일으키는 원인 중 사람에게서 비롯되는 <b>인적 요인</b>과, 기계·환경·관리 등의 요인을 체계화한 것</li></ul>',
+ why:'<ul><li>하인리히 통계에서 불안전 행동이 88%를 차지하므로 인적 요인을 세분해서 대책을 세웁니다.</li></ul>',
+ detail:'<b>인적 요인</b><table><tr><th>분류</th><th>내용</th></tr><tr><td>{{심리적 요인}}</td><td>망각, 걱정거리, 무의식 행동, 위험 감각 부족, 지름길 반응, 생략 행위, 억측 판단, 착오</td></tr><tr><td>{{생리적 요인}}</td><td>피로, 수면 부족, 신체 기능 저하, 알코올, 질병, 나이(노화)</td></tr><tr><td>{{직장적 요인}}</td><td>직장 인간관계, 리더십, 팀워크, 의사소통</td></tr></table><b>4M (휴먼에러 배후 요인)</b><table><tr><th>M</th><th>내용</th></tr><tr><td>Man(인간)</td><td>심리·생리·직장적 요인</td></tr><tr><td>Machine(기계)</td><td>설계 결함, 방호장치 불량, 점검 부족</td></tr><tr><td>Media(작업 매체)</td><td>작업 정보, 작업 방법, 작업 환경</td></tr><tr><td>Management(관리)</td><td>관리 조직, 규정, 교육·훈련, 감독</td></tr></table><ul><li>지름길 반응: 정해진 길 대신 가까운 길로 가려는 행동 (안전 통로 무시)</li></ul>',
+ ex:'<ul><li>야간 교대 후 졸음 상태에서 작업 → 생리적 요인</li><li>작업 표지판이 잘 안 보임 → Media</li></ul>',
+ cmp:'<table><tr><th>Machine</th><th>Media</th></tr><tr><td>설비 자체</td><td>작업 정보·방법·환경</td></tr></table>',
+ exam:'<ul><li>4M 각 항목 사례 짝짓기 (특히 Media)</li><li>생리적 vs 심리적 요인 구분</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e12',title:'12. 산업안전심리의 5요소',
+ core:'{{동기·기질·감정·습성·습관}} (동·기·감·습·습)',
+ def:'<ul><li>안전과 관련된 인간 행동에 영향을 주는 심리적 요소 5가지</li></ul>',
+ why:'<ul><li>이 다섯 가지를 관리·교육해야 안전한 행동이 몸에 붙는다는 관점입니다. 특히 <b>습관</b>은 앞의 네 가지의 영향을 받아 형성됩니다.</li></ul>',
+ detail:'<table><tr><th>요소</th><th>뜻</th></tr><tr><td>{{동기}}</td><td>행동을 일으키는 원동력 (능동적 감각에 의한 자극)</td></tr><tr><td>{{기질}}</td><td>타고난 성격적 특성, 생활환경에 영향받음</td></tr><tr><td>{{감정}}</td><td>희로애락 등 의식 상태, 행동에 직접 영향</td></tr><tr><td>{{습성}}</td><td>동기·기질·감정이 밀접하게 연관되어 형성된 인간의 특성</td></tr><tr><td>{{습관}}</td><td>반복으로 굳어진 행동 — 동기·기질·감정·습성의 영향을 받음</td></tr></table>',
+ ex:'<ul><li>안전모 착용이 반복 교육으로 자동화됨 → 습관 형성</li></ul>',
+ exam:'<ul><li>5요소에 해당하지 <b>않는</b> 것 고르기 (예: "지능", "개성", "피로")</li><li>습관에 영향을 주는 요소 = 동기·기질·감정·습성</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e13',title:'13. 착상심리',
+ core:'겉모습·고정관념으로 사람을 판단하는 {{착각 경향}} / 예 "얼굴 보면 {{지능}}을 알 수 있다", "아래턱 발달 = {{의지 강함}}"',
+ def:'<ul><li><b>착상심리</b>: 근거 없는 고정관념이나 외모 등으로 사람의 능력·성격을 판단하는 잘못된 심리 경향</li></ul>',
+ why:'<ul><li>관리자가 착상심리로 근로자를 판단하면 엉뚱한 사람을 위험 작업에 배치하거나 교육 대상에서 빠뜨리게 됩니다.</li></ul>',
+ detail:'<b>착상심리의 대표 예</b><ul><li>얼굴을 보면 지능 정도를 알 수 있다</li><li>아래턱이 마른 사람은 의지가 약하다 / 아래턱이 발달한 사람은 의지가 강하다</li><li>눈동자가 자주 움직이는 사람은 정직하지 못하다</li><li>인간의 능력은 태어날 때부터 정해져 있다</li><li>민첩한 사람은 착실하지 못하다</li><li>대머리인 사람은 머리가 좋다</li></ul>→ 모두 과학적 근거가 없는 <b>잘못된 판단</b>',
+ ex:'<ul><li>"인상이 성실해 보이니 위험 작업도 잘하겠지" → 착상심리에 의한 배치 오류</li></ul>',
+ exam:'<ul><li>"착상심리에 해당하는 것" 고르기 — 외모·고정관념으로 판단하는 문장이 정답</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e14',title:'14. 착오',
+ core:'착오 3과정 {{인지·판단·조치}} / 리즌 휴먼에러 {{실수(slip)·망각(lapse)·착오(mistake)·위반(violation)}} / 스웨인 {{생략·실행·불필요·순서·시간}}',
+ def:'<ul><li><b>착오</b>: 상황을 잘못 인식하거나 판단해 의도와 다른 행동을 하는 것</li></ul>',
+ why:'<ul><li>착오가 어느 단계(인지·판단·조치)에서 생기는지 알아야 맞는 대책(표시 개선·교육·훈련)을 고를 수 있습니다.</li></ul>',
+ detail:'<b>착오의 요인 (발생 과정별)</b><table><tr><th>과정</th><th>요인</th></tr><tr><td>{{인지과정}} 착오</td><td>생리·심리적 능력의 한계, 정보량 저장 능력의 한계, 감각 차단 현상, 정서 불안정</td></tr><tr><td>{{판단과정}} 착오</td><td>합리화, 능력 부족, 정보 부족, 환경 조건 불비</td></tr><tr><td>{{조치과정}} 착오</td><td>작업자의 기능 미숙, 경험 부족, 피로</td></tr></table><b>휴먼에러 분류</b><table><tr><th>분류</th><th>종류</th></tr><tr><td>리즌(Reason)</td><td>실수(slip): 의도는 맞았는데 행동이 틀림 / 망각(lapse): 기억 실패로 빠뜨림 / 착오(mistake): 의도(판단) 자체가 틀림 / 위반(violation): 알면서 규칙을 어김</td></tr><tr><td>스웨인(Swain) 심리적 분류</td><td>생략 에러(omission), 실행 에러(commission), 불필요한 행동 에러(extraneous), 순서 에러(sequential), 시간 에러(time)</td></tr><tr><td>라스무센(Rasmussen) 행동 수준</td><td>숙련 기반, 규칙 기반, 지식 기반 에러</td></tr></table><span style="color:var(--sub);font-size:13px">※ 휴먼에러 분류는 2과목(인간공학)에서 더 자세히 나옵니다.</span>',
+ ex:'<ul><li>밸브 A를 열려다 손이 미끄러져 옆 밸브 B를 엶 → slip</li><li>절차를 잘못 알아 순서대로 정확히 했지만 틀린 작업 → mistake</li></ul>',
+ cmp:'<table><tr><th>실수(slip)</th><th>착오(mistake)</th></tr><tr><td>판단은 맞고 <b>실행</b>이 틀림</td><td><b>판단</b> 자체가 틀림</td></tr></table>',
+ exam:'<ul><li>착오 요인이 어느 과정에 속하는가 (예: "정보 부족" = 판단과정)</li><li>slip과 mistake 사례 구분</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e15',title:'15. 착시',
+ core:'{{뮐러-라이어}} 길이 / {{헬름홀츠}} 가로·세로줄 사각형 / {{헤링}} 평행선 휨 / {{쾰러}} 윤곽(호) / {{포겐도르프}} 사선 어긋남 / {{죌너}} 평행선 기울어짐',
+ def:'<ul><li><b>착시</b>: 물체의 실제 크기·길이·방향·모양과 다르게 보이는 시각적 착각</li></ul>',
+ why:'<ul><li>계기·표시판·작업장 설계에서 착시가 생기면 잘못 읽어 사고가 납니다. 그래서 대표 착시 이름과 현상을 짝지어 묻습니다.</li></ul>',
+ detail:'<table><tr><th>착시</th><th>현상</th></tr><tr><td>{{뮐러-라이어(Müller-Lyer)}}</td><td>같은 길이의 선이 양 끝 화살표 방향(<b>&lt;—&gt; vs &gt;—&lt;</b>)에 따라 길이가 달라 보임 — 바깥쪽으로 벌어진 쪽이 더 길어 보임</td></tr><tr><td>{{헬름홀츠(Helmholtz)}}</td><td>같은 크기의 정사각형도 가로줄 무늬는 세로로 길어 보이고, 세로줄 무늬는 가로로 길어 보임</td></tr><tr><td>{{헤링(Hering)}}</td><td>방사선 위에 그린 평행한 두 직선이 휘어 보임</td></tr><tr><td>{{쾰러(Köhler)}}</td><td>윤곽 착오 — 호(곡선)를 보다가 직선을 보면 직선이 반대 방향으로 휘어 보임</td></tr><tr><td>{{포겐도르프(Poggendorff)}}</td><td>사선이 두 평행선(띠)에 가려 끊기면, 양쪽 사선이 일직선이 아닌 것처럼 어긋나 보임</td></tr><tr><td>{{죌너(Zöllner)}}</td><td>짧은 사선이 그어진 평행선들이 서로 기울어 보임</td></tr></table>',
+ ex:'<ul><li>줄무늬가 있는 계기판 눈금 → 길이·간격을 잘못 읽을 수 있어 단순한 표시 디자인 권장</li></ul>',
+ cmp:'<table><tr><th>길이가 달라 보임</th><th>선이 휘어 보임</th><th>선이 어긋남</th></tr><tr><td>뮐러-라이어</td><td>헤링·쾰러</td><td>포겐도르프</td></tr></table>',
+ exam:'<ul><li>착시 그림을 보여주고 이름 묻기 (특히 뮐러-라이어·헬름홀츠·포겐도르프)</li><li>헬름홀츠: 가로줄은 <b>세로로</b> 길어 보임 (반대로 바꾼 함정)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e16',title:'16. 착각현상 (운동의 착각)',
+ core:'{{자동운동}} 암실 광점이 움직여 보임 / {{유도운동}} 정지한 것이 움직여 보임(열차) / {{가현운동}} 연속 제시로 움직여 보임(영화, β운동)',
+ def:'<ul><li><b>운동의 착각</b>: 실제로는 움직이지 않는 것이 움직이는 것처럼 보이는 현상</li></ul>',
+ why:'<ul><li>운전·크레인·야간 작업에서 착각이 생기면 거리·속도 판단을 잘못해 충돌·협착이 납니다.</li></ul>',
+ detail:'<table><tr><th>종류</th><th>현상</th><th>예</th></tr><tr><td>{{자동운동}}</td><td>암실에서 정지한 작은 광점을 계속 보면 움직이는 것처럼 보임</td><td>밤하늘의 별이 흔들려 보임</td></tr><tr><td>{{유도운동}}</td><td>실제로는 움직이지 않는 것이 주변의 움직임 때문에 움직여 보임</td><td>옆 열차가 출발하면 내 열차가 움직이는 것 같음, 달이 구름 사이로 흘러가 보임</td></tr><tr><td>{{가현운동}}</td><td>정지한 대상을 짧은 간격으로 연속 제시하면 움직여 보임 (β운동)</td><td>영화, 네온사인</td></tr></table><b>자동운동이 잘 일어나는 조건</b><ul><li>광점이 <b>작을수록</b></li><li>시야의 다른 부분이 <b>어두울수록</b>(단조로울수록)</li><li>광의 강도가 <b>작을수록</b></li><li>대상이 <b>단순할수록</b></li></ul>',
+ ex:'<ul><li>야간 크레인 작업 중 멀리 있는 작은 경고등이 흔들려 보임 → 자동운동</li></ul>',
+ cmp:'<table><tr><th>유도운동</th><th>가현운동</th></tr><tr><td>주변이 움직여서 <b>내가/대상이</b> 움직여 보임</td><td>정지 화면의 <b>연속</b>으로 움직여 보임</td></tr></table>',
+ exam:'<ul><li>자동운동 발생 조건 (광점이 클수록 → 틀림)</li><li>영화 = 가현운동, 열차 = 유도운동</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{id:'e17',title:'키워드 카드 — 주요항목 3 짝짓기',tag:'암기',
+ core:'B = f({{P·E}}) / 5요소 {{동·기·감·습·습}} / GAS {{경고→저항→탈진}} / 착시 {{뮐러-라이어·헬름홀츠·헤링·쾰러·포겐도르프·죌너}}',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>표·타·신·객·실</td><td>{{좋은 심리검사 구비조건}}</td></tr><tr><td>크레펠린</td><td>{{작업검사}}(연속 덧셈)</td></tr><tr><td>Y-G D형</td><td>{{안정·적극형}}(관리자형)</td></tr><tr><td>Y-G E형</td><td>{{불안정·소극형}}</td></tr><tr><td>B = f(P·E)</td><td>{{레빈}}의 행동법칙</td></tr><tr><td>접근-회피</td><td>{{한 대상에 장단점이 공존하는 갈등}}</td></tr><tr><td>승화·보상·합리화</td><td>{{방어기제}}</td></tr><tr><td>억압·퇴행·고립·백일몽</td><td>{{도피기제}}</td></tr><tr><td>역U자</td><td>{{여키스-도슨}}(스트레스-성과)</td></tr><tr><td>경고기→저항기→탈진기</td><td>{{셀리에 GAS}}</td></tr><tr><td>공간 시각화</td><td>{{기계적 적성}}</td></tr><tr><td>지각 속도·정확성</td><td>{{사무적 적성}}</td></tr><tr><td>F·M·K</td><td>{{GATB 손가락 재치·손 재치·운동조절}}</td></tr><tr><td>직무명세서</td><td>{{사람 요건}}(지식·기술·자격)</td></tr><tr><td>점수법·요소비교법</td><td>{{계량적 직무평가}}</td></tr><tr><td>후광효과</td><td>{{인사평가 오류}}</td></tr><tr><td>Media</td><td>{{4M 중 작업정보·방법·환경}}</td></tr><tr><td>동·기·감·습·습</td><td>{{산업안전심리 5요소}}</td></tr><tr><td>얼굴로 지능 판단</td><td>{{착상심리}}</td></tr><tr><td>정보 부족</td><td>{{판단과정 착오}}</td></tr><tr><td>slip vs mistake</td><td>{{실행 실수 vs 판단 착오}}</td></tr><tr><td>화살표 선 길이</td><td>{{뮐러-라이어}}</td></tr><tr><td>끊긴 사선 어긋남</td><td>{{포겐도르프}}</td></tr><tr><td>영화</td><td>{{가현운동}}</td></tr><tr><td>옆 열차 출발</td><td>{{유도운동}}</td></tr></table>'}
+];
+
+var MN={
+e1:[
+ {k:'표·타·신·객·실',s:'"<b>표</b>(票)를 <b>타</b>고 <b>신</b>칸센 <b>객실</b>에 앉는다" — 좋은 검사는 기차표처럼 정해져 있고, 정확하고, 믿을 수 있다',m:'{{표준화}} · {{타당도}} · {{신뢰도}} · {{객관도}} · {{실용도}}'},
+ {k:'Y-G A·B·C·D·E',s:'"<b>A</b>verage(보통) · <b>B</b>ad mood(불안정한데 나댐) · <b>C</b>alm(차분·소극) · <b>D</b>irector(안정·적극, 관리자) · <b>E</b>scape(불안정·도망)"',m:'A {{평균형}} · B {{불안정·적극}} · C {{안정·소극}} · D {{안정·적극}} · E {{불안정·소극}}'},
+ {k:'크레펠린 = 덧셈',s:'"<b>크레</b>파스로 <b>덧셈</b> 숙제" — 연속 덧셈 작업곡선',m:'크레펠린 = {{작업검사}}'}],
+e2:[
+ {k:'B = f(P · E)',s:'"행동(<b>B</b>ehavior)은 사람(<b>P</b>erson)과 환경(<b>E</b>nvironment)의 합작품" — 사람만 탓하지 말 것',m:'P {{개체: 연령·경험·성격·심신상태}} / E {{환경: 인간관계·작업조건}}'}],
+e3:[
+ {k:'근·유·폐·연',s:'"<b>근유</b>(근육) <b>폐연</b>(폐 연기)" — 가까우면 묶고, 닮으면 묶고, 빈 곳은 채우고, 이어지면 잇는다',m:'{{근접성}} · {{유사성}} · {{폐쇄성}} · {{연속성}}'}],
+e4:[
+ {k:'접접 · 회회 · 접회',s:'"짜장 vs 짬뽕(<b>둘 다 좋음</b>) / 치과 vs 주사(<b>둘 다 싫음</b>) / 맛있는 케이크인데 살찜(<b>좋고 싫음</b>)"',m:'{{접근-접근}} · {{회피-회피}} · {{접근-회피}}'},
+ {k:'방어 = 보·합·승·동·투',s:'"<b>보합</b>세인 주식, <b>승</b>부는 <b>동투</b>(동시 투자)로 <b>방어</b>" — 체면을 지키는 기술',m:'{{보상}} · {{합리화}} · {{승화}} · {{동일시}} · {{투사}}'},
+ {k:'도피 = 고·퇴·억·백',s:'"<b>고</b>향으로 <b>퇴</b>근해서 <b>억</b>지로 <b>백</b>일몽" — 현실에서 숨는 기술: 숨고, 어려지고, 묻고, 꿈꾼다',m:'{{고립}} · {{퇴행}} · {{억압}} · {{백일몽}}'}],
+e5:[
+ {k:'경 → 저 → 탈',s:'"<b>경</b>찰이 쫓아와 → <b>저</b>항하다 → <b>탈</b>진" — 스트레스 3단계',m:'{{경고기}} → {{저항기}} → {{탈진기}}'},
+ {k:'역U자',s:'"기타 줄은 <b>너무 느슨해도, 너무 팽팽해도</b> 소리가 안 난다" — 적당한 긴장에서 최고 성과',m:'{{여키스-도슨}} 법칙: 각성과 성과는 {{역U자}}'}],
+e6:[
+ {k:'기계 = 손·공·이 / 사무 = 지·속·정',s:'"<b>기계</b>공은 <b>손</b>으로 <b>공</b>간을 <b>이</b>해, <b>사무</b>원은 <b>지</b>혜롭게 <b>속</b>도 내고 <b>정</b>확하게"',m:'기계적 {{손·팔 솜씨·공간 시각화·기계적 이해}} / 사무적 {{지능·지각 속도·정확성}}'}],
+e7:[
+ {k:'GATB 9',s:'"<b>머리</b>(G 지능·V 언어·N 수리) → <b>눈</b>(Q 사무지각·S 공간·P 형태) → <b>손</b>(K 운동조절·F 손가락·M 손)" — 머리·눈·손 3개씩',m:'{{G·V·N}} / {{Q·S·P}} / {{K·F·M}}'}],
+e8:[
+ {k:'기술서 = 일 / 명세서 = 사람',s:'"기<b>술</b>서는 <b>술</b>(術, 기술) — 무슨 일을 하나 / <b>명</b>세서는 <b>명</b>함 — 어떤 사람이 필요한가"',m:'직무기술서 {{과업·책임·조건}} / 직무명세서 {{지식·기술·자격 요건}}'},
+ {k:'서·분 / 점·요',s:'"<b>말로</b> 줄 세우기(서열)·반 나누기(분류) vs <b>숫자로</b> 점수 매기기(점수)·요소별 비교(요소비교)"',m:'비계량 {{서열법·분류법}} / 계량 {{점수법·요소비교법}}'}],
+e9:[
+ {k:'적·능·균·육',s:'"<b>적</b>당한 <b>능</b>력자를 <b>균</b>형 있게 <b>육</b>성"',m:'{{적재적소}} · {{능력주의}} · {{균형주의}} · {{인재육성}}'}],
+e10:[
+ {k:'조·선·배·작·상',s:'"<b>조선</b>(朝鮮) <b>배</b>에서 <b>작</b>은 <b>상</b>을 받았다"',m:'{{조직과 리더십}} · {{선발}} · {{배치}} · {{작업분석·업무평가}} · {{상담·노사 이해}}'},
+ {k:'후·관·중',s:'"<b>후</b>광이 비치니 <b>관</b>대하게, 귀찮으니 <b>중</b>간으로"',m:'{{후광효과}} · {{관대화}} · {{중심화}}'}],
+e11:[
+ {k:'심·생·직',s:'"<b>마음</b>(심리) · <b>몸</b>(생리) · <b>직장</b>(인간관계)" — 사람이 사고 내는 세 가지 이유',m:'{{심리적}} · {{생리적}} · {{직장적}} 요인'},
+ {k:'4M',s:'"<b>사람</b>(Man)이 <b>기계</b>(Machine)를 <b>매</b>뉴얼(Media)대로 <b>관리</b>(Management)"',m:'Man · Machine · {{Media(작업정보·방법·환경)}} · Management'}],
+e12:[
+ {k:'동·기·감·습·습',s:'"<b>동기</b>(同期) 친구가 <b>감</b>으로 <b>습습</b>(쓱쓱) 해낸다" — 마지막 습관은 앞 네 개가 쌓여 만들어짐',m:'{{동기}} · {{기질}} · {{감정}} · {{습성}} · {{습관}}'}],
+e13:[
+ {k:'착상 = 첫인상',s:'"<b>착</b>각한 <b>상</b>(相, 얼굴)" — 관상으로 사람을 판단하는 오류',m:'{{외모·고정관념으로 판단하는 착오}}'}],
+e14:[
+ {k:'인 → 판 → 조',s:'"<b>인</b>(認)식하고 <b>판</b>단하고 <b>조</b>작" — 정보 입력 → 처리 → 출력 순서',m:'{{인지과정}} · {{판단과정}} · {{조치과정}}'},
+ {k:'slip vs mistake',s:'"<b>slip</b>은 <b>미끄러짐</b> — 마음은 맞는데 손이 미끄러짐 / <b>mistake</b>는 <b>잘못 앎</b> — 처음부터 틀린 계획"',m:'실수 {{실행 오류}} / 착오 {{판단 오류}}'}],
+e15:[
+ {k:'착시 6인방',s:'"<b>뮐러</b>(mill, 방앗간) 화살표 / <b>헬</b>멧 <b>름</b> 줄무늬 / <b>헤링</b>(herring, 청어) 뼈처럼 퍼진 선 위의 휜 평행선 / <b>쾰러</b>는 굽은 <b>호</b>의 잔상 / <b>포겐</b>(포장도로)이 끊겨 어긋난 사선 / <b>죌너</b>는 <b>졸</b>려서 기울어진 선"',m:'{{뮐러-라이어 길이}} · {{헬름홀츠 줄무늬}} · {{헤링 휨}} · {{쾰러 윤곽}} · {{포겐도르프 어긋남}} · {{죌너 기울어짐}}'}],
+e16:[
+ {k:'자 · 유 · 가',s:'"<b>자</b>(自)기 혼자 움직이는 별빛 / 남이 <b>유</b>도해서 움직이는 내 열차 / <b>가</b>(假)짜로 나타나(現) 움직이는 영화"',m:'{{자동운동}} · {{유도운동}} · {{가현운동}}'},
+ {k:'작·어·약·단',s:'"자동운동은 <b>작</b>고 <b>어</b>둡고 <b>약</b>하고 <b>단</b>순할수록 — \'작어약단\' = 작은 어린 약단(藥丹)"',m:'광점 {{작을수록}} · 시야 {{어두울수록}} · 광 {{약할수록}} · 대상 {{단순할수록}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

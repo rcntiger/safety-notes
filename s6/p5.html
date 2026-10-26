@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6과목 5. 비계·거푸집 가시설 위험방지</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 6과목 · 건설공사 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 5. 비계·거푸집 가시설 위험방지 · 세세항목 4개 → 학습단위 5개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">6과목 목차</a><a href="p4.html">◀ 이전</a><a href="p6.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s6-p5-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'5-1. 건설 가시설물 설치 및 관리'},
+{id:'e1',title:'1. 비계',
+ core:'강관비계 기둥 간격 {{띠장 방향 1.85m · 장선 방향 1.5m 이하}} / 띠장 {{2m 이하}} / 최상부에서 {{31m}} 아래 기둥은 {{2개 강관}}으로 / 기둥 간 적재하중 {{400kg}} 이하 / 벽이음 {{강관 5m×5m · 강관틀 6m×8m}} / 달비계 와이어로프 안전계수 {{10}} / 이동식비계 {{250kg}} 이하',
+ def:'<ul><li><b>비계</b>: 높은 곳에서 작업할 수 있도록 임시로 설치하는 가설 구조물 (작업발판과 통로를 지지)</li></ul>',
+ why:'<ul><li>비계 붕괴나 비계에서의 추락은 건설업 대형 재해의 주요 원인이라, 간격·이음·하중 기준이 세밀하게 정해져 있습니다.</li></ul>',
+ detail:'<b>강관비계 (안전보건기준규칙 제60조)</b><ul><li>비계기둥 간격: 띠장 방향 {{1.85m 이하}}, 장선 방향 {{1.5m 이하}}</li><li>띠장 간격: {{2.0m 이하}}</li><li>비계기둥 제일 윗부분에서 {{31m}} 되는 지점 밑부분의 비계기둥은 2개의 강관으로 묶어 세움</li><li>비계기둥 간 적재하중 {{400kg}} 초과 금지</li><li>밑둥잡이·받침철물, 교차가새</li></ul><b>벽이음 간격</b><table><tr><th>비계</th><th>수직 방향</th><th>수평 방향</th></tr><tr><td>단관(강관)비계</td><td>5m</td><td>5m</td></tr><tr><td>틀(강관틀)비계 (높이 5m 미만 제외)</td><td>6m</td><td>8m</td></tr><tr><td>통나무비계</td><td>5.5m</td><td>7.5m</td></tr></table><b>강관틀비계 (제62조)</b>: 높이 20m 초과·중량 작업 시 주틀 간 간격 1.8m 이하, 주틀 간 교차가새, 길이 띠장 방향 4m 이하·높이 5m 이상이면 10m 이내마다 띠장 방향 버팀기둥<br><b>달비계 (제63조) 안전계수</b><table><tr><th>부재</th><th>안전계수</th></tr><tr><td>달기 와이어로프·달기 강선</td><td>{{10 이상}}</td></tr><tr><td>달기 체인·달기 훅</td><td>{{5 이상}}</td></tr><tr><td>달기 강대·달비계 하부·상부 지점</td><td>강재 2.5 이상, 목재 5 이상</td></tr></table><b>말비계 (제67조)</b>: 지주부재 하단 미끄럼 방지, 지주부재와 수평면 기울기 75° 이하, 높이 2m 초과 시 작업발판 폭 40cm 이상<br><b>이동식비계 (제68조)</b>: 바퀴 브레이크·쐐기·아웃트리거, 승강용 사다리, 최상부 안전난간, 작업발판 최대적재하중 {{250kg}} 이하, 작업발판 위에서 사다리 사용 금지<br><b>시스템비계 (제69조)</b>: 수직재·수평재·가새재로 구성, 수직재와 받침철물 연결부 겹침 길이는 받침철물 전체 길이의 1/3 이상<br><b>비계 점검 (악천후 후, 조립·해체·변경 후)</b>: 발판재료 손상·부착, 연결부·접속부 풀림, 연결재료·철물 손상·부식, 손잡이 탈락, 기둥 침하·변형·변위·흔들림, 로프 부착 상태·매단 장치 흔들림',
+ ex:'<ul><li>40m 아파트 외부 강관비계 → 상부 31m 아래 기둥은 쌍기둥, 벽이음 5m 간격</li></ul>',
+ exam:'<ul><li>강관비계 수치 (1.85·1.5·2.0·31·400) — 자주 출제</li><li>벽이음 간격, 달비계 안전계수</li></ul>',
+ law:'안전보건기준규칙 제54조~제71조(비계). <span style="color:var(--sub)">2023년 개정으로 일부 수치 변경 — 교재 확인.</span>'},
+
+{id:'e2',title:'2. 작업통로 및 발판',
+ core:'작업발판 {{폭 40cm 이상·틈 3cm 이하·2 이상 지지물에 고정}} / 가설통로 {{경사 30° 이하·15° 초과 시 미끄럼막이·8m 이상 비계다리 7m마다 계단참}} / 사다리식 통로 {{상단 60cm 연장·10m 이상이면 5m마다 계단참·기울기 75° 이하}}',
+ def:'<ul><li>근로자가 이동하고 작업하는 통로·발판의 기준 (1과목 6장 기준규칙과 연결)</li></ul>',
+ detail:'<b>작업발판 (제56조)</b> — 높이 2m 이상 작업장소<ul><li>발판재료는 작업 시 하중을 견딜 수 있도록 견고하게</li><li>작업발판 폭 {{40cm 이상}}, 발판재료 간 틈 {{3cm 이하}}</li><li>추락 위험 장소에 안전난간</li><li>발판재료는 뒤집히거나 떨어지지 않도록 2 이상의 지지물에 연결·고정</li><li>작업발판을 옮길 때 근로자 추락 방지</li></ul><b>가설통로 (제23조)</b><ul><li>경사 {{30° 이하}} (계단 설치 또는 높이 2m 미만 튼튼한 손잡이 시 예외)</li><li>경사 {{15° 초과}}면 미끄러지지 않는 구조</li><li>추락 위험 장소에 안전난간</li><li>수직갱에 가설된 통로 길이 15m 이상이면 10m 이내마다 계단참</li><li>건설공사 높이 {{8m 이상}} 비계다리는 {{7m 이내}}마다 계단참</li></ul><b>사다리식 통로 (제24조)</b><ul><li>발판 간격 일정, 발판과 벽 사이 15cm 이상, 폭 30cm 이상</li><li>사다리 상단은 걸쳐놓은 지점부터 {{60cm 이상}} 올라가게</li><li>길이 10m 이상이면 {{5m 이내}}마다 계단참</li><li>기울기 {{75° 이하}} (고정식 90° 이하, 높이 7m 이상이면 바닥에서 2.5m 지점부터 등받이울)</li></ul>',
+ exam:'<ul><li>작업발판 40cm·3cm</li><li>가설통로 30°·15°, 비계다리 8m·7m</li></ul>',
+ law:'안전보건기준규칙 제21조~제30조(통로), 제56조(작업발판의 구조).'},
+
+{id:'e3',title:'3. 거푸집 및 동바리',
+ core:'{{조립도}} 작성 (재질·단면규격·설치간격·이음방법) / 파이프서포트 {{3개 이상 이어 사용 금지}}, 이을 때 {{4개 이상 볼트·전용철물}} / 높이 {{3.5m 초과}} → {{2m 이내마다 수평연결재 2방향}} / 측압 증가 {{타설속도 빠름·슬럼프 큼·온도 낮음·다짐 과다·벽 두꺼움}}',
+ def:'<ul><li><b>거푸집</b>: 콘크리트를 원하는 모양으로 굳히기 위한 틀</li><li><b>동바리</b>: 거푸집과 그 위 콘크리트·작업 하중을 아래에서 받쳐 주는 가설 지주</li></ul>',
+ why:'<ul><li>콘크리트를 붓는 동안 하중이 급격히 커지므로, 동바리가 하나만 무너져도 슬래브 전체가 붕괴합니다.</li></ul>',
+ detail:'<b>조립도 (제331조)</b>: 거푸집·동바리 조립 시 조립도 작성 — 부재의 재질, 단면규격, 설치간격, 이음방법 명시<br><b>동바리 조립 시 준수사항 (제332조 등)</b><ul><li>받침목·깔판으로 침하 방지, 상하 고정</li><li>개구부 상부에 동바리 설치 시 견고한 받침대</li><li>U헤드 등으로 멍에 등을 동바리 상단에 고정</li></ul><b>파이프 서포트</b><ul><li>{{3개 이상}} 이어서 사용 금지</li><li>이을 때 {{4개 이상}}의 볼트 또는 전용철물</li><li>높이 {{3.5m 초과}} 시 높이 {{2m 이내}}마다 수평연결재를 2개 방향으로 만들고 변위 방지</li></ul><b>강관틀 동바리</b>: 강관틀과 강관틀 사이 교차가새, 최상층 및 5층 이내마다 측면과 틀면 방향·교차가새 방향으로 띠장틀, 5틀 이내마다 교차가새 방향 띠장틀<br><b>거푸집에 작용하는 하중</b>: 연직방향 하중(고정하중: 철근콘크리트·거푸집 무게 + 작업하중·충격하중), 횡방향 하중, 콘크리트 측압, 특수하중<br><b>콘크리트 측압이 커지는 조건</b>: 타설 속도가 빠를수록, 슬럼프가 클수록, 온도·습도 낮을수록(경화 느림), 다짐(진동)이 과할수록, 거푸집 수밀성이 높을수록, 벽 두께가 두꺼울수록, 철골·철근량이 적을수록, 콘크리트 비중이 클수록<br><b>타설·해체 시</b><ul><li>타설 중 거푸집·동바리 변형·변위·침하 감시자 배치, 이상 시 작업 중지·대피</li><li>편심이 생기지 않게 골고루 분산 타설</li><li>해체: 충분한 강도 확인 후, 해체 순서 준수, 하부 출입 금지</li></ul>',
+ ex:'<ul><li>층고 4.5m 슬래브 동바리 → 파이프서포트 2개 이음 + 2m마다 양방향 수평연결재</li></ul>',
+ exam:'<ul><li>파이프서포트 3개·4개·3.5m·2m (자주 출제)</li><li>측압 증가 조건</li></ul>',
+ law:'안전보건기준규칙 제328조~제337조(거푸집 및 동바리). <span style="color:var(--sub)">2023 개정 조문 확인 권장.</span>'},
+
+{id:'e4',title:'4. 흙막이',
+ core:'공법 {{H-Pile+토류판·강널말뚝(시트파일)·지하연속벽·CIP·SCW}} / 지지 {{버팀대(스트럿)·어스앵커·레이커·소일네일링}} / {{히빙}} 연약 점토 바닥 부풂 / {{보일링}} 사질토 물·모래 솟음 / 계측 {{경사계·지하수위계·하중계·변형률계·지표침하계·균열계}}',
+ def:'<ul><li><b>흙막이</b>: 땅을 깊이 팔 때 주변 흙과 물이 굴착면으로 무너져 들어오지 않도록 막는 가설 구조물</li></ul>',
+ detail:'<b>흙막이 벽체 공법</b><table><tr><th>공법</th><th>특징</th></tr><tr><td>H-Pile + 토류판</td><td>경제적, 차수성 낮음</td></tr><tr><td>강널말뚝(시트파일)</td><td>차수성 좋음, 연약지반</td></tr><tr><td>지하연속벽(슬러리월)</td><td>강성·차수성 우수, 본구조체로 사용 가능</td></tr><tr><td>CIP·SCW</td><td>현장타설 말뚝·시멘트 교반 기둥을 연속 설치</td></tr></table><b>지지 방식</b>: 버팀대(스트럿) + 띠장, 어스앵커(배면 지반에 정착), 레이커(경사 버팀), 소일네일링<br><b>이상 현상</b><table><tr><th>현상</th><th>지반</th><th>내용</th><th>대책</th></tr><tr><td>{{히빙}}(heaving)</td><td>연약 점토</td><td>흙막이 바깥 흙의 무게로 굴착 바닥이 부풀어 오름</td><td>근입 깊이 증가, 배면 하중 감소(표토 제거), 지반 개량, 굴착 바닥 하중 증가(부분 굴착)</td></tr><tr><td>{{보일링}}(boiling)</td><td>사질토</td><td>수위 차로 바닥에서 물과 모래가 끓듯 솟아오름</td><td>근입 깊이 증가, 차수성 높은 흙막이, 지하수위 저하(웰포인트·딥웰), 지반 개량</td></tr><tr><td>파이핑</td><td>사질토</td><td>물길이 생겨 흙이 유실되며 구멍</td><td>차수, 지수벽</td></tr></table><b>계측기</b><table><tr><th>계측기</th><th>측정</th></tr><tr><td>지중경사계(인클리노미터)</td><td>흙막이 벽·지반의 수평 변위</td></tr><tr><td>지하수위계</td><td>지하수위 변화</td></tr><tr><td>간극수압계</td><td>흙 속 물의 압력</td></tr><tr><td>하중계(로드셀)</td><td>버팀대·앵커 축력</td></tr><tr><td>변형률계</td><td>부재 응력 변화</td></tr><tr><td>지표침하계, 건물경사계, 균열계</td><td>주변 지반·건물 영향</td></tr></table><b>흙막이 지보공 점검</b>: 부재 손상·변형·부식·변위·탈락, 버팀대 긴압 정도, 부재 접속부·부착부·교차부 상태, 침하 정도',
+ exam:'<ul><li>히빙 vs 보일링 (지반·대책) — 자주 출제</li><li>계측기와 측정 대상</li></ul>',
+ law:'안전보건기준규칙 제346조~제348조(흙막이 지보공).'},
+
+{id:'e5',title:'키워드 카드 — 6과목 주요항목 5',tag:'암기',
+ core:'1.85·1.5·2·31·400 / 5×5·6×8 / 달비계 10 / 40cm·3cm / 3개·4개·3.5·2 / 히빙 점토·보일링 모래',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>강관비계 띠장 방향 기둥 간격</td><td>{{1.85m 이하}}</td></tr><tr><td>31m 아래 기둥</td><td>{{2개 강관으로}}</td></tr><tr><td>비계기둥 간 적재하중</td><td>{{400kg 이하}}</td></tr><tr><td>강관틀비계 벽이음</td><td>{{수직 6m · 수평 8m}}</td></tr><tr><td>달비계 와이어로프</td><td>{{안전계수 10}}</td></tr><tr><td>이동식비계 적재</td><td>{{250kg 이하}}</td></tr><tr><td>말비계 기울기</td><td>{{75° 이하}}</td></tr><tr><td>작업발판 폭</td><td>{{40cm 이상}}</td></tr><tr><td>비계다리 계단참</td><td>{{8m 이상이면 7m마다}}</td></tr><tr><td>파이프서포트 이음</td><td>{{3개 이상 금지, 4개 볼트}}</td></tr><tr><td>3.5m 초과 동바리</td><td>{{2m마다 수평연결재}}</td></tr><tr><td>타설 속도 빠름</td><td>{{측압 증가}}</td></tr><tr><td>연약 점토 바닥 부풂</td><td>{{히빙}}</td></tr><tr><td>모래·물 솟음</td><td>{{보일링}}</td></tr><tr><td>수평 변위</td><td>{{지중경사계}}</td></tr><tr><td>버팀대 축력</td><td>{{하중계}}</td></tr></table>'}
+];
+
+var MN={
+e1:[
+ {k:'1.85 · 1.5 · 2 · 31 · 400',s:'"<b>일팔오</b>(1.85) 띠장 방향, <b>일오</b>(1.5) 장선 방향, 띠장은 <b>2</b>m, 위에서 <b>31</b>m 아래는 쌍기둥, 기둥 사이 <b>400</b>kg(쌀 다섯 가마)"',m:'{{1.85m}} · {{1.5m}} · {{2m}} · {{31m}} · {{400kg}}'},
+ {k:'강 5×5 · 틀 6×8',s:'"<b>강관</b>은 <b>오오</b>(5·5), <b>틀</b>은 <b>육팔</b>(6·8) — 틀이 더 튼튼해서 간격이 넓다"',m:'강관 {{5m×5m}} / 강관틀 {{6m×8m}}'},
+ {k:'달비계 10 · 5 · 2.5',s:'"매달린 사람 목숨줄(와이어로프)은 <b>10</b>배, 체인·훅은 <b>5</b>배, 강재 지점은 <b>2.5</b>배"',m:'와이어로프·강선 {{10}} · 체인·훅 {{5}} · 강재 지점 {{2.5}}'}],
+e2:[
+ {k:'40 · 3',s:'"발판은 <b>어깨너비</b>(40cm), 틈은 <b>손가락 하나</b>(3cm) 안 들어가게"',m:'작업발판 {{40cm 이상}} · 틈 {{3cm 이하}}'},
+ {k:'30° · 15° · 8m→7m',s:'"통로는 <b>30°</b>까지, <b>15°</b> 넘으면 미끄럼막이, 비계다리는 <b>8</b>m 넘으면 <b>7</b>m마다 쉼터"',m:'{{30° 이하}} · {{15° 초과 미끄럼막이}} · {{8m 이상 → 7m마다 계단참}}'}],
+e3:[
+ {k:'3 · 4 · 3.5 · 2',s:'"서포트는 <b>세 개</b> 잇기 금지, 이을 땐 <b>볼트 네 개</b>, <b>3.5m</b> 넘으면 <b>2m</b>마다 가로대"',m:'{{3개 이상 이음 금지}} · {{4개 볼트}} · {{3.5m 초과}} · {{2m마다 수평연결재}}'},
+ {k:'측압 = 빨리·묽게·춥게·많이 다짐',s:'"콘크리트를 <b>빨리, 묽게, 추울 때, 세게 흔들어</b> 부으면 거푸집이 밀려 터진다"',m:'{{타설속도↑}} · {{슬럼프↑}} · {{온도↓}} · {{다짐 과다}}'}],
+e4:[
+ {k:'히빙 = 점토 / 보일링 = 모래',s:'"<b>히</b>빙은 <b>찰흙</b>이 <b>밀가루 반죽</b>처럼 부풀고, <b>보일</b>링은 <b>모래</b>가 <b>물 끓듯</b> 솟는다"',m:'히빙 {{연약 점토, 바닥 부풂}} / 보일링 {{사질토, 물·모래 솟음}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

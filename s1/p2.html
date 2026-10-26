@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1과목 2. 안전보호구 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 1과목 · 산업재해 예방 및 안전보건교육</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 2. 안전보호구 관리 · 세세항목 5개 → 학습단위 14개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">1과목 목차</a><a href="p1.html">◀ 이전</a><a href="p3.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s1-p2-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'2-1. 보호구의 개요'},
+{id:'d1',title:'1. 보호구의 개념 · 구비조건 · 선정 · 관리',
+ core:'보호구는 {{최후의 수단}} / 구비조건 {{착용 간편·작업 방해 없음·방호성능 충분·품질·마무리·외관}} / 관리 {{그늘 건조·개인 전용·정기 점검}}',
+ def:'<ul><li><b>보호구</b>: 근로자 몸에 착용해 유해·위험요인으로부터 신체를 보호하는 기구</li><li>위험을 <b>없애는</b> 것이 아니라 <b>피해를 줄이는</b> 것이라, 공학적 대책(제거·대체·방호장치)과 관리적 대책을 먼저 하고 마지막에 쓰는 <b>최후의 수단</b>입니다.</li></ul>',
+ why:'<ul><li>보호구는 착용하지 않으면 효과가 0이고 잘못 고르면 오히려 사고를 부릅니다. 그래서 "어떤 조건을 갖춰야 하나(구비조건)"와 "어떻게 고르나(선정조건)"를 따로 묻습니다.</li></ul>',
+ detail:'<b>구비조건</b><ol><li>착용이 간편할 것</li><li>작업에 방해가 되지 않을 것</li><li>유해·위험요소에 대한 방호성능이 충분할 것</li><li>재료의 품질이 양호할 것</li><li>구조와 끝마무리가 양호할 것</li><li>외양과 외관이 양호할 것</li></ol><b>선정 조건</b><ul><li>사용 목적에 맞는 <b>종류</b>, 작업자에 맞는 <b>형상·크기</b>, 필요한 <b>성능</b>, 충분한 <b>수량</b></li><li>안전인증(KCs) 또는 자율안전확인 표시가 있는 제품</li></ul><b>관리·보관</b><ul><li>직사광선을 피하고 통풍이 잘 되는 곳에 보관, 세척 후 <b>그늘에서 건조</b></li><li>부식성 액체·유기용제·기름·산 등과 혼합 보관 금지, 발열체 주변 금지</li><li>질병 감염 우려가 있으면 <b>개인 전용</b>으로 지급</li><li>정기 점검, 손상·성능 저하 시 교체</li><li>사업주는 작업 조건에 맞는 보호구를 <b>작업 근로자 수 이상</b> 지급, 근로자는 착용 의무</li></ul>',
+ ex:'<ul><li>소음 작업장: 먼저 기계에 방음 커버(공학적 대책), 작업 시간 조정(관리적 대책), 그래도 남는 소음에 귀마개(보호구)</li></ul>',
+ cmp:'<table><tr><th>구분</th><th>구비조건</th><th>선정조건</th></tr><tr><td>질문</td><td>보호구가 갖춰야 할 성질</td><td>사업장이 고를 때 볼 것</td></tr><tr><td>예</td><td>착용 간편, 끝마무리 양호</td><td>종류, 형상, 성능, 수량</td></tr></table>',
+ exam:'<ul><li>구비조건에 해당하지 <b>않는</b> 것: "가격이 저렴할 것", "무게가 무거워 튼튼할 것" 같은 보기</li><li>보관: "햇빛에 말린다" → 틀림 (그늘 건조)</li></ul>',
+ law:'산업안전보건기준에 관한 규칙 제31조(보호구의 제한적 사용), 제32조(보호구의 지급 등), 제33조(보호구의 관리).'},
+
+{id:'d2',title:'2. 작업별 지급 보호구 · 안전인증/자율안전확인 대상',
+ core:'2m 이상 추락 → {{안전대}} / 흩날림 → {{보안경}} / 용접 → {{보안면}} / 영하 18℃ 이하 급냉동어창 → {{방한 4종}} / 안전인증 보호구 {{12종}}',
+ def:'<ul><li><b>안전인증 보호구</b>: 위험성이 커서 제조·수입 전에 정부 인증을 받아야 하는 보호구</li><li><b>자율안전확인 보호구</b>: 상대적으로 위험이 낮아 제조자가 스스로 기준 적합을 확인·신고하는 보호구</li></ul>',
+ why:'<ul><li>"이 작업에는 무엇을 지급하나"는 현장 판단 문제로, 1과목뿐 아니라 실기에서도 자주 나옵니다.</li></ul>',
+ detail:'<b>작업별 지급 보호구 (안전보건규칙 제32조)</b><table><tr><th>작업 조건</th><th>보호구</th></tr><tr><td>물체가 떨어지거나 날아올 위험, 근로자 추락 위험</td><td>{{안전모}}</td></tr><tr><td>높이 또는 깊이 {{2m 이상}} 추락 위험</td><td>{{안전대}}</td></tr><tr><td>물체의 낙하·충격, 물체에 끼임, 감전, 정전기 대전</td><td>{{안전화}}</td></tr><tr><td>물체가 흩날릴 위험</td><td>{{보안경}}</td></tr><tr><td>용접 시 불꽃·물체가 흩날릴 위험</td><td>{{보안면}}</td></tr><tr><td>감전 위험</td><td>{{절연용 보호구}}</td></tr><tr><td>고열에 의한 화상 위험</td><td>{{방열복}}</td></tr><tr><td>선창 등 분진이 심하게 발생하는 하역작업</td><td>{{방진마스크}}</td></tr><tr><td>섭씨 {{영하 18도}} 이하 급냉동어창 하역작업</td><td>{{방한모·방한복·방한화·방한장갑}}</td></tr><tr><td>이륜자동차·원동기장치자전거로 물건 운반·배달</td><td>승차용 안전모</td></tr></table><b>안전인증 대상 보호구 (12종)</b><ol><li>추락 및 감전 위험방지용 안전모</li><li>안전화</li><li>안전장갑</li><li>방진마스크</li><li>방독마스크</li><li>송기마스크</li><li>전동식 호흡보호구</li><li>보호복</li><li>안전대</li><li>차광 및 비산물 위험방지용 보안경</li><li>용접용 보안면</li><li>방음용 귀마개 또는 귀덮개</li></ol><b>자율안전확인 대상 보호구 (3종)</b><ul><li>안전모(추락·감전 위험방지용 <b>제외</b>)</li><li>보안경(차광 및 비산물 위험방지용 <b>제외</b>)</li><li>보안면(용접용 <b>제외</b>)</li></ul>',
+ ex:'<ul><li>3m 높이 비계 작업 → 안전모 + 안전대</li><li>그라인더 작업 → 보안경 (흩날림), 용접 → 보안면</li></ul>',
+ cmp:'<table><tr><th>같은 이름</th><th>안전인증</th><th>자율안전확인</th></tr><tr><td>안전모</td><td>추락·감전 방지용</td><td>그 외(일반 작업용)</td></tr><tr><td>보안경</td><td>차광·비산물 방지용</td><td>그 외</td></tr><tr><td>보안면</td><td>용접용</td><td>그 외</td></tr></table>',
+ exam:'<ul><li>안전인증 대상이 <b>아닌</b> 것 고르기 (예: "일반 보안면", "방열복 아닌 일반 작업복")</li><li>2m, 영하 18도 숫자</li><li>보안경(흩날림) vs 보안면(용접) 혼동</li></ul>',
+ law:'안전보건규칙 제32조, 산업안전보건법 시행령 제74조(안전인증대상기계등)·제77조(자율안전확인대상기계등).'},
+
+{grp:'2-2. 보호구의 종류별 특성'},
+{id:'d3',title:'3. 안전모',
+ core:'AB {{낙하·비래+추락}} / AE {{낙하·비래+감전}} / ABE {{낙하·비래+추락+감전}} / 구조 {{모체·착장체·충격흡수재·턱끈·챙}} / 감전용은 {{7,000V 이하}} 전압 대응',
+ def:'<ul><li>물체의 낙하·비래, 추락, 감전으로부터 머리를 보호하는 보호구</li></ul>',
+ why:'<ul><li>A(낙하·비래)는 모든 안전모의 기본이고, 여기에 B(추락)·E(전기)를 붙여 용도를 표시합니다. 기호의 뜻만 알면 종류 문제는 외울 필요가 없습니다.</li></ul>',
+ detail:'<b>종류 (안전인증)</b><table><tr><th>종류</th><th>사용 구분</th><th>비고</th></tr><tr><td>{{AB}}</td><td>물체 낙하·비래 및 추락에 의한 위험 방지·경감</td><td>—</td></tr><tr><td>{{AE}}</td><td>물체 낙하·비래 위험 방지·경감, 머리 부위 감전 위험 방지</td><td>내전압성</td></tr><tr><td>{{ABE}}</td><td>물체 낙하·비래 및 추락 위험 방지·경감, 머리 부위 감전 위험 방지</td><td>내전압성</td></tr></table><ul><li>내전압성: <b>7,000V 이하</b>의 전압에 견디는 성질</li><li>기호: A = 낙하·비래, B = 추락, E = 전기(감전)</li></ul><b>구조</b><table><tr><th>부품</th><th>역할</th></tr><tr><td>모체</td><td>머리를 덮는 외피(쉘)</td></tr><tr><td>착장체</td><td>머리고정대·머리받침고리·머리받침끈 — 머리에 고정하고 충격을 분산</td></tr><tr><td>충격흡수재</td><td>충격 흡수 (추락용 B 타입에 필요)</td></tr><tr><td>턱끈</td><td>벗겨짐 방지</td></tr><tr><td>챙(차양)</td><td>햇빛·낙하물 차단</td></tr></table><ul><li>모체 표면 색은 밝고 선명할 것, 통기구멍은 AE·ABE(감전용)에는 두면 안 됨</li></ul>',
+ ex:'<ul><li>전주 위 배전 작업 → 추락 + 감전 위험 = <b>ABE</b></li><li>지상 변전설비 점검 → 낙하물 + 감전 = <b>AE</b></li><li>고층 철골 작업 → 낙하물 + 추락 = <b>AB</b></li></ul>',
+ cmp:'<table><tr><th></th><th>AB</th><th>AE</th><th>ABE</th></tr><tr><td>추락</td><td>○</td><td>×</td><td>○</td></tr><tr><td>감전</td><td>×</td><td>○</td><td>○</td></tr><tr><td>내수성·내전압 시험</td><td>×</td><td>○</td><td>○</td></tr></table>',
+ exam:'<ul><li>종류별 용도 짝짓기 (특히 AE에 "추락" 넣은 오답)</li><li>착장체 구성품</li><li>"내전압성은 7,000V 이하" (시험 전압 20kV와 구분 → 성능시험 카드)</li></ul>',
+ law:'보호구 안전인증 고시 별표 1(안전모의 성능기준).'},
+
+{id:'d4',title:'4. 안전화 · 안전장갑(절연장갑)',
+ core:'안전화 {{가죽제·고무제·정전기·발등·절연화·절연장화·화학물질용}} / 절연장갑 {{00 갈·0 빨·1 흰·2 노·3 녹·4 등}}',
+ def:'<ul><li><b>안전화</b>: 물체의 낙하·충격, 날카로운 물체에 찔림, 감전·정전기 등으로부터 발을 보호</li><li><b>안전장갑</b>: 전기용 절연장갑, 유기화합물용 장갑 등으로 손을 보호</li></ul>',
+ why:'<ul><li>위험 종류(충격·찔림·전기·화학)에 따라 재질과 구조가 달라서, 작업과 안전화 종류를 짝짓는 문제가 나옵니다.</li></ul>',
+ detail:'<b>안전화 종류</b><table><tr><th>종류</th><th>용도</th></tr><tr><td>가죽제 안전화</td><td>물체 낙하·충격, 날카로운 것에 찔림 방지</td></tr><tr><td>고무제 안전화</td><td>위 기능 + 방수·내화학성</td></tr><tr><td>정전기 안전화</td><td>정전기의 인체 대전 방지</td></tr><tr><td>발등 안전화</td><td>발등까지 보호</td></tr><tr><td>절연화</td><td>저압 전기 감전 방지</td></tr><tr><td>절연장화</td><td>고압 전기 감전 방지</td></tr><tr><td>화학물질용 안전화</td><td>화학물질로부터 발 보호</td></tr></table><b>안전화 작업 구분 (성능시험 기준)</b><table><tr><th>구분</th><th>내충격성(낙하높이)</th><th>내압박성</th></tr><tr><td>중작업용</td><td>{{1,000mm}}</td><td>15.0kN</td></tr><tr><td>보통작업용</td><td>{{500mm}}</td><td>10.0kN</td></tr><tr><td>경작업용</td><td>{{250mm}}</td><td>4.4kN</td></tr></table><b>내전압용 절연장갑 등급</b><table><tr><th>등급</th><th>최대사용전압(교류)</th><th>색상</th></tr><tr><td>00</td><td>500V</td><td>{{갈색}}</td></tr><tr><td>0</td><td>1,000V</td><td>{{빨간색}}</td></tr><tr><td>1</td><td>7,500V</td><td>{{흰색}}</td></tr><tr><td>2</td><td>17,000V</td><td>{{노란색}}</td></tr><tr><td>3</td><td>26,500V</td><td>{{녹색}}</td></tr><tr><td>4</td><td>36,000V</td><td>{{등색}}</td></tr></table>',
+ ex:'<ul><li>반도체 공장(정전기에 민감) → 정전기 안전화</li><li>중량물 취급 철강 공장 → 중작업용 가죽제 안전화</li></ul>',
+ cmp:'<table><tr><th>절연화</th><th>절연장화</th></tr><tr><td>저압용</td><td>고압용</td></tr></table>',
+ exam:'<ul><li>절연장갑 등급 색상 순서 (암기: <b>갈·빨·흰·노·녹·등</b>)</li><li>안전화 중·보통·경작업용 낙하높이</li></ul>',
+ law:'보호구 안전인증 고시 별표 2(안전화), 별표 3(안전장갑). <span style="color:var(--sub)">절연장갑 전압·안전화 시험값은 교재 기준과 함께 확인 권장.</span>'},
+
+{id:'d5',title:'5. 호흡용 보호구 (방진·방독·송기)',
+ core:'산소 {{18% 미만}} → 방진·방독 사용 금지, {{송기마스크·공기호흡기}} / 방진 등급 {{특급·1급·2급}} / 정화통 {{유기 갈색·할로겐·황화수소·시안화수소 회색·아황산 노랑·암모니아 녹색}}',
+ def:'<ul><li><b>방진마스크</b>: 분진·미스트·흄을 필터로 걸러냄</li><li><b>방독마스크</b>: 유해가스·증기를 정화통(흡수제)으로 제거</li><li><b>송기마스크</b>: 외부의 깨끗한 공기를 호스로 공급 (공기 정화가 아니라 공급)</li></ul>',
+ why:'<ul><li>방진·방독은 주변 공기를 <b>걸러서</b> 마시는 방식이라 산소 자체가 부족하면 소용이 없습니다. 그래서 산소결핍 장소는 반드시 공기를 <b>공급</b>하는 송기마스크나 공기호흡기를 씁니다.</li></ul>',
+ detail:'<b>방진마스크</b><ul><li>형태: 분리식(격리식·직결식, 전면형·반면형), 안면부 여과식</li></ul><table><tr><th>등급</th><th>분진포집효율(분리식)</th><th>안면부여과식</th><th>사용 장소</th></tr><tr><td>{{특급}}</td><td>{{99.95%}} 이상</td><td>99.0% 이상</td><td>베릴륨 등 독성이 강한 물질 분진, 석면 취급 장소</td></tr><tr><td>{{1급}}</td><td>{{94.0%}} 이상</td><td>94.0% 이상</td><td>특급 외 분진, 금속흄 등 열적으로 생기는 분진, 기계적으로 생기는 분진</td></tr><tr><td>{{2급}}</td><td>{{80.0%}} 이상</td><td>80.0% 이상</td><td>특급·1급 외 분진</td></tr></table><ul><li>선정 기준: 분진포집효율 <b>높고</b>, 흡기·배기 저항 <b>낮고</b>, 사용적(유효공간) <b>작고</b>, 중량 가볍고, 시야 넓고, 안면 밀착성 좋을 것</li></ul><b>방독마스크</b><table><tr><th>종류</th><th>시험가스</th><th>정화통 색</th></tr><tr><td>유기화합물용</td><td>시클로헥산</td><td>{{갈색}}</td></tr><tr><td>할로겐용</td><td>염소가스·증기</td><td>{{회색}}</td></tr><tr><td>황화수소용</td><td>황화수소</td><td>{{회색}}</td></tr><tr><td>시안화수소용</td><td>시안화수소</td><td>{{회색}}</td></tr><tr><td>아황산용</td><td>아황산가스</td><td>{{노란색}}</td></tr><tr><td>암모니아용</td><td>암모니아</td><td>{{녹색}}</td></tr></table><ul><li>복합용: 해당 가스 색을 모두 표시(2층 분리) / 겸용: 백색과 해당 가스 색</li><li>등급: 고농도(가스 2% 이하, 암모니아 3% 이하), 중농도(1% 이하, 암모니아 1.5% 이하), 저농도·최저농도(0.1% 이하)</li><li><b>파과</b>: 정화통이 포화되어 유해가스가 새어 나오기 시작하는 상태 → 파과 전에 교체</li><li><span style="color:var(--sub)">일산화탄소용(적색)은 구 기준·일부 교재에 나오는 항목</span></li></ul><b>송기마스크·공기호흡기</b><ul><li>송기마스크: 호스마스크, 에어라인마스크, 복합식 에어라인마스크</li><li>공기호흡기(자급식): 압축공기 용기를 메고 사용 — 화재 진압, 산소결핍 밀폐공간 구조</li><li>전동식 호흡보호구: 전동기로 여과된 공기를 공급 (방진·방독 기능)</li></ul>',
+ ex:'<ul><li>맨홀(산소농도 16%) 내부 작업 → 방독마스크 <b>불가</b>, 송기마스크</li><li>도장 작업(톨루엔 등 유기용제) → 유기화합물용(갈색) 방독마스크</li><li>석면 해체 → 특급 방진마스크</li></ul>',
+ cmp:'<table><tr><th></th><th>방진</th><th>방독</th><th>송기</th></tr><tr><td>대상</td><td>입자(분진·흄)</td><td>가스·증기</td><td>모든 경우</td></tr><tr><td>방식</td><td>여과</td><td>흡수·흡착</td><td>공기 공급</td></tr><tr><td>산소 18% 미만</td><td>×</td><td>×</td><td>○</td></tr></table>',
+ calc:'→ 방독마스크 유효시간 계산은 「성능기준·시험」의 호흡보호구 카드에서',
+ exam:'<ul><li>정화통 색 짝짓기 (특히 황화수소·시안화수소가 <b>회색</b>)</li><li>특급 99.95% 숫자</li><li>"산소결핍 장소에서 방독마스크 사용" → 틀림</li></ul>',
+ law:'보호구 안전인증 고시 별표 4(방진마스크), 별표 5(방독마스크), 별표 6(송기마스크), 안전보건규칙 제3편 제10장(밀폐공간).'},
+
+{id:'d6',title:'6. 안전대',
+ core:'벨트식 {{1개걸이·U자걸이}} / 안전그네식 {{1개걸이·U자걸이·추락방지대·안전블록}} / 추락방지대·안전블록은 {{안전그네식만}}',
+ def:'<ul><li>고소작업 중 추락을 막거나, 추락했을 때 충격을 줄여 몸을 잡아 주는 보호구</li><li><b>벨트식</b>: 허리에 차는 형태 / <b>안전그네식</b>: 어깨·허벅지까지 감싸 추락 충격을 몸 전체로 분산</li></ul>',
+ why:'<ul><li>벨트식은 추락 시 충격이 허리에 집중되어 부상 위험이 크므로, 실제로 떨어질 수 있는 작업(추락방지대·안전블록)에는 안전그네식만 쓰게 합니다.</li></ul>',
+ detail:'<b>종류 (안전인증)</b><table><tr><th>종류</th><th>사용 구분</th></tr><tr><td>벨트식</td><td>1개 걸이용, U자 걸이용</td></tr><tr><td>안전그네식</td><td>1개 걸이용, U자 걸이용, {{추락방지대}}, {{안전블록}}</td></tr></table><ul><li><b>1개 걸이</b>: 죔줄 한쪽 끝을 구조물에 걸어 추락 시 잡아 줌</li><li><b>U자 걸이</b>: 죔줄을 전주 등에 돌려 걸어 몸을 기대고 작업(전주 작업)</li><li><b>추락방지대</b>: 수직 구명줄을 따라 움직이다 추락하면 잠김</li><li><b>안전블록</b>: 줄이 자동 감기고, 추락 시 자동 잠김</li></ul><b>부품</b>: 벨트, 안전그네, 지탱벨트, 죔줄, 버클, D링, 각링, 8자형 링, 훅, 카라비너, 보조훅, 신축조절기, 충격흡수장치<ul><li>안전대 부착설비: 안전대를 걸 수 있는 견고한 구조물 또는 <b>구명줄</b></li></ul>',
+ ex:'<ul><li>전주 위 배선 작업 → U자 걸이 (몸을 기대야 양손 작업 가능)</li><li>수직 사다리 승강 → 추락방지대 (안전그네식)</li></ul>',
+ cmp:'<table><tr><th></th><th>벨트식</th><th>안전그네식</th></tr><tr><td>1개걸이·U자걸이</td><td>○</td><td>○</td></tr><tr><td>추락방지대·안전블록</td><td>×</td><td>○</td></tr></table>',
+ exam:'<ul><li>"벨트식 추락방지대" → 존재하지 않음</li><li>U자 걸이 = 전주 작업</li><li><span style="color:var(--sub)">교재에 1종~5종 구분이 나오면 구 KS 기준(1종 U자걸이, 2종 1개걸이, 3종 공용, 4종 안전블록, 5종 추락방지대)</span></li></ul>',
+ law:'보호구 안전인증 고시 별표 9(안전대), 안전보건규칙 제44조(안전대의 부착설비 등).'},
+
+{id:'d7',title:'7. 보안경 · 보안면 · 귀마개 · 보호복',
+ core:'차광보안경 {{자외선·적외선·복합·용접}} / 보안면 {{헬멧형·핸드실드형}} / 귀마개 {{EP-1 저음~고음, EP-2 고음}}, 귀덮개 {{EM}} / 방열복 {{상의·하의·두건·장갑·발덮개}}',
+ def:'<ul><li><b>보안경</b>: 눈을 유해광선·비산물로부터 보호 / <b>보안면</b>: 얼굴 전체 보호</li><li><b>귀마개·귀덮개</b>: 소음으로부터 청력 보호 / <b>보호복</b>: 고열(방열복)·화학물질로부터 몸 보호</li></ul>',
+ detail:'<b>보안경</b><ul><li>차광보안경(안전인증): 자외선용, 적외선용, 복합용(자외선+적외선), 용접용</li><li>비산물 위험방지용: 유리 보안경, 플라스틱 보안경, 도수렌즈 보안경 (일반용은 자율안전확인)</li><li>차광도 번호: 숫자가 클수록 빛을 많이 차단</li></ul><b>용접용 보안면</b><ul><li>헬멧형(머리에 착용), 핸드실드형(손으로 들고 사용)</li></ul><b>방음용 귀마개·귀덮개</b><table><tr><th>종류</th><th>등급</th><th>성능</th></tr><tr><td rowspan="2">귀마개</td><td>{{1종 EP-1}}</td><td>저음부터 고음까지 차음</td></tr><tr><td>{{2종 EP-2}}</td><td>주로 고음 차음, 회화음 영역(저음)은 비교적 통과</td></tr><tr><td>귀덮개</td><td>{{EM}}</td><td>귀 전체를 덮음</td></tr></table><ul><li>소음이 매우 크면 귀마개와 귀덮개를 함께 착용</li></ul><b>보호복</b><ul><li>방열복: 방열상의, 방열하의, 방열일체복, 방열장갑, 방열두건</li><li>화학물질용 보호복: 화학물질 투과 방지</li></ul>',
+ ex:'<ul><li>아크용접 → 용접용 차광보안경 또는 용접용 보안면</li><li>대화가 필요한 고음 소음 작업 → EP-2</li><li>제철소 용해로 → 방열복</li></ul>',
+ cmp:'<table><tr><th></th><th>EP-1</th><th>EP-2</th></tr><tr><td>차음 범위</td><td>저음~고음</td><td>고음 위주</td></tr><tr><td>대화</td><td>어려움</td><td>상대적으로 가능</td></tr></table>',
+ exam:'<ul><li>EP-1과 EP-2 성능 바꾸기 함정</li><li>귀덮개 기호 EM</li><li>차광보안경 4종류</li></ul>',
+ law:'보호구 안전인증 고시 별표 10(차광보안경), 별표 11(용접용 보안면), 별표 12(방음용 귀마개·귀덮개), 별표 8(보호복).'},
+
+{grp:'2-3. 보호구의 성능기준 및 시험방법'},
+{id:'d8',title:'8. 안전모 성능시험',
+ core:'내관통성 {{AE·ABE 9.5mm, AB 11.1mm}} 이하 / 충격흡수성 {{4,450N}} 미만 / 내전압성 {{교류 20kV 1분}}, 충전전류 {{10mA}} 이하 / 내수성 질량증가율 {{1% 미만}} / 난연성 {{5초}} / 턱끈풀림 {{150~250N}}',
+ def:'<ul><li>안전인증을 받으려면 통과해야 하는 시험 항목과 기준값</li></ul>',
+ why:'<ul><li>각 시험은 안전모 기능에 대응합니다: 뚫리지 않는가(내관통), 충격을 줄이는가(충격흡수), 전기를 막는가(내전압), 물에 젖어도 절연이 유지되는가(내수), 불에 타지 않는가(난연), 턱끈이 적당히 풀리는가(턱끈풀림 — 너무 안 풀리면 목을 다침).</li></ul>',
+ detail:'<table><tr><th>시험</th><th>기준</th><th>대상</th></tr><tr><td>{{내관통성}}</td><td>관통거리 AE·ABE {{9.5mm 이하}}, AB {{11.1mm 이하}}</td><td>전 종류</td></tr><tr><td>{{충격흡수성}}</td><td>최고전달충격력 {{4,450N 미만}}, 모체·착장체 기능 상실 없음</td><td>전 종류</td></tr><tr><td>{{내전압성}}</td><td>교류 {{20kV}}에서 {{1분간}} 절연파괴 없이 견디고, 충전전류 {{10mA 이하}}</td><td>AE·ABE</td></tr><tr><td>{{내수성}}</td><td>질량증가율 {{1% 미만}}</td><td>AE·ABE</td></tr><tr><td>{{난연성}}</td><td>모체가 불꽃을 내며 {{5초 이상}} 연소되지 않을 것</td><td>전 종류</td></tr><tr><td>{{턱끈풀림}}</td><td>{{150N 이상 250N 이하}}에서 풀릴 것</td><td>전 종류</td></tr></table><ul><li>내수성 질량증가율 = (담근 후 질량 − 담그기 전 질량) ÷ 담그기 전 질량 × 100</li></ul>',
+ cmp:'<table><tr><th>숫자</th><th>의미</th></tr><tr><td>7,000V</td><td>AE·ABE가 <b>사용 가능한</b> 전압 한계</td></tr><tr><td>20kV</td><td>내전압성 <b>시험</b> 전압</td></tr><tr><td>10mA</td><td>시험 중 허용 충전전류</td></tr></table>',
+ calc:'담그기 전 400g, 담근 후 403g → (403−400)÷400×100 = <b>0.75%</b> → 1% 미만이므로 합격.',
+ exam:'<ul><li>내관통성 AB가 더 큰 값(11.1mm)인 이유: AB는 감전 보호가 없어 기준이 조금 완화</li><li>내전압성·내수성은 <b>AE·ABE만</b> 시험</li><li>질량증가율 계산 문제</li></ul>',
+ law:'보호구 안전인증 고시 별표 1. <span style="color:var(--sub)">시험값은 고시 개정 여부를 교재와 함께 확인.</span>'},
+
+{id:'d9',title:'9. 호흡보호구 성능 · 유효시간 계산',
+ core:'유효시간 = {{표준유효시간 × 시험가스농도 ÷ 공기 중 유해가스농도}} / 방진 성능 = {{포집효율·흡기/배기저항·누설률}}',
+ def:'<ul><li><b>파과시간</b>: 시험가스를 흘렸을 때 정화통을 통과한 가스가 기준 농도에 도달하기까지의 시간</li><li><b>유효시간</b>: 실제 작업장 농도에서 정화통을 쓸 수 있는 시간</li></ul>',
+ why:'<ul><li>정화통은 흡수할 수 있는 가스의 총량이 정해져 있어서, 농도가 높을수록 빨리 포화됩니다. 그래서 시간은 농도에 <b>반비례</b>합니다.</li></ul>',
+ detail:'<b>방독마스크 정화통 유효시간</b><ul><li>유효사용시간 = (표준유효시간 × 시험가스 농도) ÷ 공기 중 유해가스 농도</li></ul><b>방진마스크 주요 성능 항목</b><ul><li>분진포집효율(여과효율): 특급 99.95% / 1급 94% / 2급 80% 이상 (분리식)</li><li>흡기저항·배기저항: 낮을수록 숨쉬기 편함</li><li>안면부 누설률, 시야, 배기밸브 작동</li></ul><b>방독마스크 주요 성능 항목</b><ul><li>파과시간, 흡기·배기저항, 누설률, 시야</li></ul>',
+ calc:'표준유효시간 100분, 시험가스 농도 0.5%, 작업장 유해가스 농도 0.2%<br>→ 100 × 0.5 ÷ 0.2 = <b>250분</b>',
+ exam:'<ul><li>유효시간 공식에서 분자·분모 뒤바꾸기 (농도가 낮으면 시간이 <b>길어져야</b> 맞음 — 검산용)</li><li>방진마스크 등급별 포집효율</li></ul>',
+ law:'보호구 안전인증 고시 별표 4·별표 5.'},
+
+{id:'d10',title:'10. 안전화 · 절연장갑 · 귀마개 성능 요약',
+ core:'안전화 내충격 {{1,000·500·250mm}}, 내압박 {{15·10·4.4kN}} / 절연장갑 최대사용전압 {{500·1,000·7,500·17,000·26,500·36,000V}}',
+ detail:'<b>안전화</b><table><tr><th>구분</th><th>내충격성</th><th>내압박성</th></tr><tr><td>중작업용</td><td>1,000mm 높이 낙하</td><td>15.0kN</td></tr><tr><td>보통작업용</td><td>500mm</td><td>10.0kN</td></tr><tr><td>경작업용</td><td>250mm</td><td>4.4kN</td></tr></table><ul><li>그 외 시험: 내답발성(찔림 저항), 박리저항, 내유성, 정전기 안전화는 대전방지 성능, 절연화는 절연 성능</li></ul><b>절연장갑</b>: 등급 00~4, 높은 등급일수록 고전압용 (종류별 특성 카드의 표 참고)<br><b>귀마개·귀덮개</b>: 주파수별 차음치로 성능 평가, EP-1은 저음역 차음치도 요구',
+ cmp:'<table><tr><th>규칙</th><th>기억법</th></tr><tr><td>중→보통→경</td><td>낙하높이 절반씩: 1,000 → 500 → 250</td></tr></table>',
+ exam:'<ul><li>안전화 작업 구분별 낙하높이 숫자</li></ul>',
+ law:'보호구 안전인증 고시 별표 2·3·12. <span style="color:var(--sub)">세부 시험값은 교재와 함께 확인.</span>'},
+
+{grp:'2-4. 안전보건표지의 종류·용도 및 적용'},
+{id:'d11',title:'11. 안전보건표지 종류와 형태',
+ core:'금지 {{8}}·경고 {{15}}·지시 {{9}}·안내 {{8}} / 금지 {{빨간 원+사선}}, 경고 {{노란 삼각형}}(화학물질은 {{빨간 마름모}}), 지시 {{파란 원}}, 안내 {{녹색 사각형}}',
+ def:'<ul><li>유해·위험 시설이나 장소의 경고, 비상시 조치 안내 등을 그림·기호·글자로 나타낸 표지</li></ul>',
+ why:'<ul><li>말을 읽지 않아도 <b>모양과 색만 보고</b> 바로 알 수 있게 표준화한 것입니다. 그래서 시험은 "이 표지는 어느 분류인가"를 모양·색으로 묻습니다.</li></ul>',
+ detail:'<b>금지표지 (8종)</b> — 흰 바탕, 빨간 원과 사선, 검은 그림<ul><li>출입금지, 보행금지, 차량통행금지, 사용금지, 탑승금지, 금연, 화기금지, 물체이동금지</li></ul><b>경고표지 (15종)</b><ul><li>노란 바탕 + 검은 삼각형 테두리·그림: 방사성물질, 고압전기, 매달린 물체, 낙하물, 고온, 저온, 몸균형 상실, 레이저광선, 위험장소</li><li>무색 바탕 + 빨간 마름모(검정도 가능) — <b>화학물질 경고</b>: 인화성물질, 산화성물질, 폭발성물질, 급성독성물질, 부식성물질, 발암성·변이원성·생식독성·전신독성·호흡기과민성물질</li></ul><b>지시표지 (9종)</b> — 파란 원, 흰 그림<ul><li>보안경 착용, 방독마스크 착용, 방진마스크 착용, 보안면 착용, 안전모 착용, 귀마개 착용, 안전화 착용, 안전장갑 착용, 안전복 착용</li></ul><b>안내표지 (8종)</b> — 녹색(또는 흰 바탕 녹색 그림)<ul><li>녹십자표지, 응급구호표지, 들것, 세안장치, 비상용기구, 비상구, 좌측비상구, 우측비상구</li></ul><b>출입금지표지 (3종)</b><ul><li>허가대상물질 작업장, 석면 취급·해체 작업장, 금지대상물질의 취급 실험실 등</li></ul>',
+ ex:'<ul><li>도장 부스 입구: 화기금지(금지) + 인화성물질 경고(화학물질 경고) + 방독마스크 착용(지시)</li><li>비상 샤워 위치: 세안장치(안내)</li></ul>',
+ cmp:'<table><tr><th>헷갈리는 표지</th><th>분류</th></tr><tr><td>금연·화기금지</td><td>금지</td></tr><tr><td>인화성물질</td><td>경고(화학물질, 빨간 마름모)</td></tr><tr><td>고온·저온</td><td>경고(노란 삼각형)</td></tr><tr><td>녹십자표지</td><td>안내</td></tr><tr><td>세안장치</td><td>안내 (지시 아님)</td></tr><tr><td>안전복 착용</td><td>지시</td></tr></table>',
+ exam:'<ul><li>표지 그림을 보여주고 이름·분류 묻기</li><li>금지표지가 <b>아닌</b> 것 (예: "화기엄금"은 금지, "인화성물질"은 경고)</li><li>녹십자는 안내표지</li><li>종류 수(8·15·9·8). 오래된 자료에는 지시표지가 8종(안전복 착용 없음)으로 나오니 현행 9종으로 기억</li></ul>',
+ law:'산업안전보건법 제37조, 시행규칙 제38조·별표 6(안전보건표지의 종류와 형태)·별표 7(용도·설치장소).'},
+
+{id:'d12',title:'12. 안전보건표지 설치·제작 기준',
+ core:'{{쉽게 알아볼 수 있는}} 장소·위치 / 흔들리거나 {{쉽게 파손되지 않게}} / 야간에는 {{야광·발광}} / 내용을 {{문자로 추가}} 가능',
+ def:'<ul><li>표지를 어디에, 어떻게 붙이고 만드는지에 관한 기준</li></ul>',
+ detail:'<ul><li>설치: 근로자가 쉽게 알아볼 수 있는 장소·시설·물체에 설치, 흔들리거나 쉽게 파손되지 않도록 견고하게 부착</li><li>건축물·기계 등에 직접 <b>도장</b>할 수 있음</li><li>야간에 필요한 표지는 <b>야광물질</b> 사용 등으로 쉽게 알아볼 수 있게</li><li>표지에 필요한 내용을 <b>문자로 추가</b> 표시 가능 (글자는 표지 크기와 비례)</li><li>외국인 근로자를 고용한 경우 그 나라 언어로 작성 (외국인고용법에 따른 근로자)</li><li>제작: 그림·부호의 크기는 표지 크기에 비례, 쉽게 변형·변색되지 않는 재료</li><li>표지 색은 다음 카드의 색도 기준을 따름</li></ul>',
+ ex:'<ul><li>외국인 근로자가 많은 공장 → 한국어 표지와 함께 해당 언어로 표지</li></ul>',
+ exam:'<ul><li>설치 기준에 맞지 <b>않는</b> 것 고르기 (예: "작업에 방해되지 않도록 잘 보이지 않는 곳에 설치")</li></ul>',
+ law:'산업안전보건법 제37조, 시행규칙 제39조(설치 등)·제40조(제작)·별표 9(기본모형).'},
+
+{grp:'2-5. 안전보건표지의 색채 및 색도기준'},
+{id:'d13',title:'13. 색채·색도 기준과 용도',
+ core:'빨강 {{7.5R 4/14}} 금지·화학경고 / 노랑 {{5Y 8.5/12}} 경고 / 파랑 {{2.5PB 4/10}} 지시 / 녹색 {{2.5G 4/10}} 안내 / 흰색 {{N9.5}} / 검정 {{N0.5}}',
+ def:'<ul><li><b>색도</b>: 먼셀 표색계로 나타낸 색. <b>색상 명도/채도</b> 순서로 씀 (예: 7.5R 4/14 = 색상 7.5R, 명도 4, 채도 14)</li><li>N은 무채색(흰색·회색·검정), 뒤 숫자는 명도</li></ul>',
+ why:'<ul><li>빨강은 가장 강한 위험(멈춰라), 노랑은 주의, 파랑은 지시, 녹색은 안전·피난이라는 국제적 관례에 맞춘 것입니다.</li></ul>',
+ detail:'<table><tr><th>색채</th><th>색도기준</th><th>용도</th><th>사용 예</th></tr><tr><td>{{빨간색}}</td><td>{{7.5R 4/14}}</td><td>금지</td><td>정지신호, 소화설비 및 그 장소, 유해행위의 금지</td></tr><tr><td></td><td></td><td>경고</td><td>화학물질 취급장소에서의 유해·위험 경고</td></tr><tr><td>{{노란색}}</td><td>{{5Y 8.5/12}}</td><td>경고</td><td>화학물질 취급장소 외의 위험경고, 주의표지, 기계방호물</td></tr><tr><td>{{파란색}}</td><td>{{2.5PB 4/10}}</td><td>지시</td><td>특정 행위의 지시 및 사실의 고지</td></tr><tr><td>{{녹색}}</td><td>{{2.5G 4/10}}</td><td>안내</td><td>비상구 및 피난소, 사람 또는 차량의 통행표지</td></tr><tr><td>{{흰색}}</td><td>{{N9.5}}</td><td>—</td><td>파란색 또는 녹색에 대한 보조색</td></tr><tr><td>{{검은색}}</td><td>{{N0.5}}</td><td>—</td><td>문자 및 빨간색 또는 노란색에 대한 보조색</td></tr></table><ul><li>허용 오차: 색도 기준의 오차 범위 내 (± 표기는 교재 확인)</li></ul>',
+ ex:'<ul><li>소화기 위치 표시 → 빨간색 / 기계 방호 덮개 → 노란색 / 비상구 → 녹색</li></ul>',
+ cmp:'<table><tr><th>보조색</th><th>어디에</th></tr><tr><td>흰색</td><td>파랑·녹색의 보조</td></tr><tr><td>검정</td><td>빨강·노랑의 보조, 문자</td></tr></table>',
+ calc:'"5Y 8.5/12" 읽기 → 색상 5Y(노랑), 명도 8.5(매우 밝음), 채도 12',
+ exam:'<ul><li>색도기준과 색 짝짓기 (특히 <b>노랑 5Y 8.5/12</b>만 명도가 8.5)</li><li>"소화설비"는 빨간색, "기계방호물"은 노란색</li><li>흰색·검정의 보조색 대상 바꾸기</li></ul>',
+ law:'산업안전보건법 시행규칙 별표 8(안전보건표지의 색도기준 및 용도).'},
+
+{id:'d14',title:'숫자 카드 — 주요항목 2 기준값',tag:'암기',
+ core:'2m {{안전대}} / 18% {{산소결핍}} / 99.95·94·80% {{방진 등급}} / 7,000V·20kV·10mA {{안전모 전기}} / 8·15·9·8 {{표지 수}}',
+ detail:'<table><tr><th>숫자</th><th>무엇</th></tr><tr><td>2m 이상</td><td>{{안전대}} 지급</td></tr><tr><td>영하 18℃ 이하</td><td>{{급냉동어창 방한 보호구}}</td></tr><tr><td>12종 / 3종</td><td>{{안전인증 보호구 / 자율안전확인 보호구}}</td></tr><tr><td>산소 18% 미만</td><td>{{방진·방독 금지 → 송기마스크}}</td></tr><tr><td>99.95 / 94 / 80%</td><td>{{방진마스크 특급·1급·2급}}(분리식)</td></tr><tr><td>7,000V 이하</td><td>{{AE·ABE 사용 전압}}</td></tr><tr><td>20kV 1분, 10mA</td><td>{{안전모 내전압성 시험}}</td></tr><tr><td>9.5 / 11.1mm</td><td>{{내관통성 AE·ABE / AB}}</td></tr><tr><td>4,450N</td><td>{{충격흡수성}} 최고전달충격력</td></tr><tr><td>1% 미만</td><td>{{내수성}} 질량증가율</td></tr><tr><td>5초</td><td>{{난연성}}</td></tr><tr><td>150~250N</td><td>{{턱끈풀림}}</td></tr><tr><td>1,000 / 500 / 250mm</td><td>{{안전화 중·보통·경작업용 낙하높이}}</td></tr><tr><td>8 · 15 · 9 · 8</td><td>{{금지·경고·지시·안내}} 표지 수</td></tr><tr><td>7.5R 4/14</td><td>{{빨간색}}</td></tr><tr><td>5Y 8.5/12</td><td>{{노란색}}</td></tr><tr><td>2.5PB 4/10</td><td>{{파란색}}</td></tr><tr><td>2.5G 4/10</td><td>{{녹색}}</td></tr></table>'}
+];
+
+var MN={
+d1:[
+ {k:'착·방·성·품·마·외',s:'"<b>착</b>한 <b>방</b>패는 <b>성</b>능 좋고 <b>품</b>질 좋고 <b>마</b>무리 좋고 <b>외</b>모도 좋다" — 쓰기 편하고(착용 간편·작업 방해 없음) 잘 막아 준다',m:'{{착용 간편·작업 방해 없음}} · {{방호성능 충분}} · {{재료 품질}} · {{구조·끝마무리}} · {{외관}}'},
+ {k:'그늘 · 개인 · 점검',s:'"보호구는 <b>뱀파이어</b> — 햇빛 싫어(그늘 건조), 남의 것 안 써(개인 전용), 매일 거울 봐(정기 점검)"',m:'{{그늘 건조}} · {{개인 전용}} · {{정기 점검}}'}],
+d2:[
+ {k:'2m · 영하 18℃',s:'"<b>2m</b>는 농구선수 키 — 그보다 높으면 안전대" / "<b>영하 18도</b>는 냉동실 온도 — 냉동어창은 방한 4종(모자·옷·신발·장갑)"',m:'{{2m 이상}} 안전대 / {{영하 18℃ 이하}} 방한모·방한복·방한화·방한장갑'},
+ {k:'흩날림 = 경 · 용접 = 면',s:'"<b>눈</b>에 튀면 안<b>경</b>, <b>얼굴</b>이 뜨거우면 보안<b>면</b>"',m:'물체 흩날림 {{보안경}} / 용접 불꽃 {{보안면}}'},
+ {k:'자율 3종 = 모·경·면 일반용',s:'"<b>모경면</b>(모경면 = 모자·안경·가면) — 특수용(추락·감전, 차광, 용접)만 정부 인증, 일반용은 자율"',m:'자율안전확인: {{일반 안전모}} · {{일반 보안경}} · {{일반 보안면}}'}],
+d3:[
+ {k:'A · B · E',s:'"<b>A</b>bove(위에서 떨어짐) · <b>B</b>ottom(아래로 떨어짐) · <b>E</b>lectric(전기)" — A는 모든 안전모의 기본',m:'A {{낙하·비래}} / B {{추락}} / E {{감전}}'},
+ {k:'모·착·충·턱·챙',s:'"<b>모착</b>(모자를 착용)하면 <b>충</b>격에도 <b>턱</b>이 <b>챙</b>겨진다"',m:'{{모체}} · {{착장체}} · {{충격흡수재}} · {{턱끈}} · {{챙}}'}],
+d4:[
+ {k:'갈·빨·흰·노·녹·등',s:'"<b>갈</b>비를 굽는다: <b>빨</b>갛게 달고 → <b>흰</b> 연기 → <b>노</b>릇노릇 → <b>녹</b>진하게 → <b>등</b>심 완성" — 전압이 높아질수록 고기가 익어 간다',m:'00 {{갈색}} · 0 {{빨간색}} · 1 {{흰색}} · 2 {{노란색}} · 3 {{녹색}} · 4 {{등색}}'},
+ {k:'1,000 · 500 · 250',s:'"중작업은 <b>1m</b>에서 떨어뜨리고, 한 단계 가벼울 때마다 <b>반</b>으로"',m:'중 {{1,000mm}} · 보통 {{500mm}} · 경 {{250mm}}'}],
+d5:[
+ {k:'정화통 색',s:'"<b>유기</b>농 빵은 <b>갈색</b> / <b>독가스 3총사</b>(할로겐·황화수소·시안화수소)는 <b>회색</b> 연기 / 유<b>황</b>은 <b>노랑</b> / <b>암모니아</b>는 비료 → 풀이 자라 <b>녹색</b>"',m:'유기화합물 {{갈색}} / 할로겐·황화수소·시안화수소 {{회색}} / 아황산 {{노란색}} / 암모니아 {{녹색}}'},
+ {k:'99.95 · 94 · 80',s:'"특급은 <b>구구구오</b>(거의 100), 1급은 <b>구사</b>일생(94), 2급은 <b>팔십</b> 노인(80)"',m:'특급 {{99.95%}} · 1급 {{94%}} · 2급 {{80%}}'},
+ {k:'18%',s:'"<b>18</b>세 미만 출입 금지처럼, 산소 <b>18%</b> 미만은 거르는 마스크 출입 금지 → 공기를 <b>가져가는</b> 송기마스크"',m:'산소 {{18% 미만}} → {{송기마스크·공기호흡기}}'}],
+d6:[
+ {k:'벨트 2 · 그네 4',s:'"<b>벨트</b>는 허리 하나라 기본 <b>2</b>개(1개걸이·U자걸이)만, <b>그네</b>는 온몸을 받쳐 <b>4</b>개 다 (추락방지대·안전블록 추가)"',m:'벨트식 {{1개걸이·U자걸이}} / 안전그네식 {{+ 추락방지대·안전블록}}'},
+ {k:'U자 = 전주',s:'"<b>U</b>자로 <b>전봇대</b>를 끌어안고 일한다"',m:'U자 걸이 = {{전주 작업}}'}],
+d7:[
+ {k:'EP-1 · EP-2 · EM',s:'"<b>1</b>종은 <b>1</b>등이라 다 막고(저음~고음), <b>2</b>종은 <b>2</b>등이라 고음만, <b>M</b>은 귀 전체를 덮는 <b>M</b>uff(머프)"',m:'EP-1 {{저음~고음}} / EP-2 {{고음 위주}} / EM {{귀덮개}}'}],
+d8:[
+ {k:'9.5 · 11.1',s:'"감전(E)까지 막는 놈은 더 깐깐해서 <b>9.5</b>, AB는 <b>일일일</b>(11.1)"',m:'AE·ABE {{9.5mm}} / AB {{11.1mm}}'},
+ {k:'20kV · 10mA · 1분',s:'"<b>스무</b>(20) 살 청년이 <b>1분</b> 버티면 <b>열</b>(10) 점 이하로 통과" — 사용 한계 7,000V와 구분',m:'교류 {{20kV}} {{1분}}, 충전전류 {{10mA 이하}}'},
+ {k:'150 ~ 250N',s:'"턱끈은 <b>백오십~이백오십</b> — 너무 꽉도 헐렁도 아니게, 목 안 다치게 적당히 풀려야"',m:'턱끈풀림 {{150N 이상 250N 이하}}'},
+ {k:'4,450N · 1% · 5초',s:'"<b>사사오공</b>(4450) 충격, 물 먹어도 <b>1%</b>, 불 붙어도 <b>5초</b> 안에 꺼짐"',m:'충격 {{4,450N 미만}} / 내수 {{1% 미만}} / 난연 {{5초}}'}],
+d9:[
+ {k:'표준 × 시험 ÷ 실제',s:'"<b>표준</b> 시간에 <b>시험</b> 농도를 곱하고, <b>실제</b> 농도로 나눈다 — 실제가 독할수록(분모↑) 시간은 짧아진다"',m:'유효시간 = {{표준유효시간 × 시험가스농도 ÷ 공기 중 농도}}'}],
+d11:[
+ {k:'8 · 15 · 9 · 8',s:'"금지는 <b>팔</b>(8)자 사납게 막고, 경고는 <b>십오</b>야(15) 보름달처럼 환하게 비추고, 지시는 <b>구</b>(9)두 신어라, 안내는 <b>팔</b>(8)방으로 길 안내"',m:'금지 {{8}} · 경고 {{15}} · 지시 {{9}} · 안내 {{8}}'},
+ {k:'원 · 삼각 · 원 · 사각',s:'"<b>빨간 동그라미에 줄</b> = 하지 마, <b>노란 세모</b> = 조심, <b>파란 동그라미</b> = 해라, <b>초록 네모</b> = 이쪽이야 (비상구 문 모양)"',m:'금지 {{빨간 원+사선}} / 경고 {{노란 삼각형}} / 지시 {{파란 원}} / 안내 {{녹색 사각형}}'}],
+d13:[
+ {k:'7.5R 4/14',s:'"빨강은 <b>칠오</b>(7.5) <b>사일사</b>(4/14) — 사(死) 일(一) 사(死), 죽음 경고라 빨강"',m:'빨간색 {{7.5R 4/14}}'},
+ {k:'5Y 8.5/12',s:'"노랑만 <b>8.5</b>로 제일 밝다 — 노란색은 원래 밝은 색"',m:'노란색 {{5Y 8.5/12}}'},
+ {k:'2.5PB · 2.5G 4/10',s:'"파랑과 녹색은 <b>쌍둥이</b> — 둘 다 2.5에 4/10, 글자만 PB(Purple Blue)와 G(Green)"',m:'파란색 {{2.5PB 4/10}} / 녹색 {{2.5G 4/10}}'},
+ {k:'흰 = 파·녹 / 검 = 빨·노',s:'"<b>시원한 색</b>(파랑·녹색)엔 흰색, <b>뜨거운 색</b>(빨강·노랑)엔 검정을 짝"',m:'흰색 {{파랑·녹색 보조}} / 검정 {{빨강·노랑 보조, 문자}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>

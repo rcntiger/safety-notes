@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3과목 4. 기계안전시설 관리</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#5b6577;--line:#dfe3ea;--pri:#1f5fbf;--pri2:#e6effc;--warn:#fff4d6;--star:#e0a100;--ok:#1c8a4b;--mask:#1d2330}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1c2029;--tx:#e8ebf2;--sub:#9aa3b5;--line:#2c3240;--pri:#6ea3f5;--pri2:#223350;--warn:#3a3217;--star:#f2bf2e;--ok:#4cc27d;--mask:#e8ebf2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header{padding:12px 0 4px}
+.ctrl{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.ctrl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 0 2px}
+.meta{color:var(--sub);font-size:12.5px}
+.rounds{display:flex;gap:4px}
+.rounds button,.tools button{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.rounds button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button.on{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.hint{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+h2.grp{font-size:16px;margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pri)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.item.vague{border-color:var(--star);background:linear-gradient(var(--warn),var(--warn)) top/100% 4px no-repeat,var(--card)}
+.ih{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}
+.ih .tt{flex:1 1 220px;font-weight:700}
+.ih .tt small{display:block;font-weight:400;color:var(--sub);font-size:12.5px}
+.badge{font-size:11px;background:var(--warn);color:var(--tx);padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:600}
+.chk{display:flex;gap:3px;align-items:center}
+.chk label{font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.chk input{margin:2px 0 0}
+.ic button{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;padding:3px 8px;font-size:13px;cursor:pointer;margin-left:4px}
+.ic button.on{color:var(--star);border-color:var(--star);font-weight:700}
+.core{margin:0 14px 10px;padding:8px 12px;background:var(--pri2);border-radius:8px;font-size:14px}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:8px 14px;font-weight:600;font-size:13.5px;color:var(--pri);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸ ";}
+details[open]>summary:before{content:"▾ ";}
+.cb{padding:2px 14px 12px}
+.cb ul{margin:4px 0;padding-left:20px}
+.cb table{border-collapse:collapse;width:100%;margin:6px 0;font-size:13.5px}
+.cb th,.cb td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.cb th{background:var(--pri2)}
+.m{border-bottom:1px dotted var(--pri);font-weight:600}
+body.mask .m{background:var(--mask);color:transparent;border-radius:3px;cursor:pointer;border-bottom:none;user-select:none}
+body.mask .m.show{background:transparent;color:inherit;border-bottom:1px dotted var(--pri)}
+.empty{text-align:center;color:var(--sub);padding:30px}
+.mn{margin:0 14px 10px;padding:8px 12px;border-left:4px solid var(--star);border-radius:8px;background:var(--warn)}
+.mnh{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px}
+.mni{padding:5px 0;border-top:1px dashed var(--line)}
+.mni:first-of-type{border-top:none}
+.mnk{display:inline-block;font-weight:700;background:var(--star);color:#1d2330;border-radius:6px;padding:0 7px;font-size:12.5px}
+.mns{font-size:14px;margin:3px 0 2px}
+.mnm{font-size:13px;color:var(--sub)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;margin:6px 0 2px}
+.nav a{color:var(--pri);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .dis{color:var(--sub);opacity:.5}
+footer{margin-top:30px;font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){
+ h1{font-size:16px}
+ .ctrl{padding:6px 0 4px}
+ .ctrl .row{flex-wrap:nowrap;gap:4px}
+ .rounds button,.tools button{padding:5px 8px;font-size:12.5px}
+ .rounds .w{display:none}
+ .tools .w{display:none}
+ #prog{font-size:11.5px;white-space:nowrap}
+ .ih{padding:10px 12px}
+ .core{margin:0 12px 8px}
+ .mn{margin:0 12px 8px}
+ summary{padding:7px 12px}
+ .cb{padding:2px 12px 10px}
+}
+@media (min-width:641px){
+ body{font-size:17px}
+ h1{font-size:20px}
+ .meta,.hint,.ih .tt small{font-size:14.5px}
+ .rounds button,.tools button,.ic button{font-size:15px}
+ h2.grp{font-size:18px}
+ .badge{font-size:13px}
+ .chk label{font-size:14px}
+ .core{font-size:16px}
+ summary,.cb table{font-size:15.5px}
+ .cb span[style*="font-size:13px"]{font-size:15px!important}
+ .mnh{font-size:14px}
+ .mnk{font-size:14.5px}
+ .mns{font-size:16px}
+ .mnm{font-size:15px}
+ footer{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>산업안전기사 필기 3과목 · 기계·기구 및 설비 안전 관리</h1>
+  <div class="meta">2024.1.1~2026.12.31 출제기준 · 주요항목 4. 기계안전시설 관리 · 세세항목 11개 → 학습단위 8개</div>
+  <div class="nav"><a href="../index.html">전체 목차</a><a href="index.html">3과목 목차</a><a href="p3.html">◀ 이전</a><a href="p5.html">다음 ▶</a></div>
+  <div class="hint" id="hint"></div>
+</header>
+<div class="ctrl">
+  <div class="row">
+    <div class="rounds" id="rounds"></div>
+    <div class="tools">
+      <button id="bMask" title="정답 가리기">가리기</button>
+      <button id="bStar" title="★·애매함만 보기">★<span class="w">·애매함만</span></button>
+    </div>
+    <span class="meta" id="prog"></span>
+  </div>
+  <div class="bar"><i id="barfill"></i></div>
+</div>
+<div id="list"></div>
+<footer>
+  「기출 보충」 표시는 공식 출제기준 문구에는 없지만 기출에 자주 나오는 내용입니다. 법정 수치는 시험 적용일 기준 법령을 한 번 더 확인하세요. 체크·★ 기록은 이 브라우저에만 저장됩니다.
+</footer>
+</div>
+
+<script>
+var KEY='ise-s3-p4-v1';
+var LABEL={def:'① 정의',why:'② 원리·이유',detail:'③ 세부 내용',ex:'④ 현장 예시',cmp:'⑤ 헷갈리는 비교',calc:'⑥ 예제 풀이',exam:'⑦ 기출 포인트',law:'⑧ 법령 근거'};
+var ORDER=['def','why','detail','ex','cmp','calc','exam','law'];
+
+var DATA=[
+{grp:'4-1. 안전시설 관리 계획하기'},
+{id:'d1',title:'1. 기계 방호장치 (선정·구비조건)',
+ core:'구비조건 {{작업 방해 없음·확실한 방호·쉽게 해제 불가·보전 쉬움·내구성}} / 해체 금지, 부득이 해체 시 {{허가 → 해체 → 작업 → 즉시 원상복구}}',
+ def:'<ul><li>방호장치를 고를 때 갖춰야 할 조건과 운용 원칙 (종류는 1장 방호장치 분류 참고)</li></ul>',
+ why:'<ul><li>작업을 불편하게 만드는 방호장치는 결국 근로자가 떼어 버립니다. 그래서 "작업에 방해가 되지 않을 것"이 첫 조건입니다.</li></ul>',
+ detail:'<b>방호장치의 구비조건</b><ul><li>작업에 방해가 되지 않고 생산성 저하가 적을 것</li><li>위험 부위를 확실히 방호할 것 (신뢰성)</li><li>쉽게 제거·해제할 수 없을 것 (탬퍼 프루프)</li><li>점검·보수가 쉬울 것, 내구성, 경제성</li><li>방호장치 자체가 새로운 위험을 만들지 않을 것</li></ul><b>방호 덮개 설치 조건</b><ul><li>가공물·공구에 의한 위험 방지, 손·발이 위험점에 닿지 않는 구조</li><li>개구부 간격은 안전거리 기준(6 + 0.15X 등)에 맞게</li></ul><b>방호장치 해체 (안전보건기준규칙 제93조)</b><ul><li>해체하려면 사업주 허가 → 해체 → 작업 종료 후 즉시 원상회복</li><li>기능 상실을 발견하면 지체 없이 사업주에게 신고</li></ul>',
+ exam:'<ul><li>방호장치 구비조건에 <b>틀린</b> 것</li><li>방호장치 해체 시 절차</li></ul>',
+ law:'산업안전보건법 제80조, 안전보건기준규칙 제93조.'},
+
+{id:'d2',title:'2. 안전작업절차 · 공정도를 활용한 공정분석',
+ core:'안전작업절차 {{작업 전 점검 → 운전 → 정지 → 정비(LOTO) → 재가동}} 단계별 / 공정분석으로 {{운반·정체 지점 = 충돌·협착 위험 지점}} 파악',
+ def:'<ul><li>설비별 안전한 작업 순서를 정하고, 공정 흐름에서 위험이 몰리는 지점을 찾는 방법 (1장 표준안전작업절차서와 같은 내용)</li></ul>',
+ detail:'<b>설비 안전작업절차의 구성</b><ol><li>작업 전 점검 (방호장치, 비상정지, 작업시작 전 점검 항목)</li><li>운전 (정상 조작 순서, 금지 행위)</li><li>정지 (정상 정지·비상 정지)</li><li>정비·청소·이상 처리 (운전 정지, 잠금·표지 LOTO, 잔류 에너지 제거)</li><li>재가동 (방호장치 원상복구, 주변 확인, 신호)</li></ol><b>공정도 활용</b><ul><li>공정 흐름(가공·운반·검사·정체·저장)을 그려 지게차·대차 동선, 사람 통행이 겹치는 곳을 찾음</li><li>정체·저장이 많은 곳 → 적재물 붕괴·낙하 위험</li></ul>',
+ exam:'<ul><li>정비 작업 시 조치 순서</li></ul>',
+ law:'안전보건기준규칙 제38조(작업계획서), 제92조.'},
+
+{id:'d3',title:'3. Fool Proof · Fail Safe',
+ core:'{{Fool proof}} = 사람이 실수해도 안전 (가드·록·트립·오버런·인터록) / {{Fail safe}} = 기계가 고장 나도 안전 ({{passive 정지 · active 경보 · operational 계속}})',
+ def:'<ul><li>1장 본질적 안전, 2과목 인간실수 예방기법과 같은 개념입니다. 3과목에서는 기계 장치 예로 자주 나옵니다.</li></ul>',
+ detail:'<b>Fool proof 기구의 예</b><table><tr><th>기구</th><th>예</th></tr><tr><td>가드</td><td>인터록 가드 (문을 열면 정지, 닫혀야 기동)</td></tr><tr><td>록(lock) 기구</td><td>조건이 맞지 않으면 조작부가 잠김</td></tr><tr><td>트립 기구</td><td>신체가 위험 범위에 들어가면 정지 (광전자식, 매트 스위치)</td></tr><tr><td>오버런 기구</td><td>정지 후 관성 회전 중에는 덮개가 열리지 않음</td></tr><tr><td>밀어내기 기구</td><td>손쳐내기식</td></tr><tr><td>기동 방지 기구</td><td>양수조작식, 조작 순서가 틀리면 기동 안 됨</td></tr></table><b>Fail safe의 예</b><ul><li>전기 회로 단선 시 정지 신호 (페일세이프 회로), 정전 시 자동 브레이크</li><li>엘리베이터 비상 정지장치, 철도 신호 고장 시 정지 신호</li><li>안전밸브, 퓨즈</li></ul>',
+ cmp:'<table><tr><th>Fool proof</th><th>Fail safe</th></tr><tr><td>사람의 실수</td><td>기계의 고장</td></tr><tr><td>인터록, 양수조작</td><td>정전 브레이크, 안전밸브</td></tr></table>',
+ exam:'<ul><li>예시를 주고 Fool proof / Fail safe 구분 (자주 출제)</li></ul>',
+ law:'법령 근거 없음(이론).'},
+
+{grp:'4-2. 안전시설 설치하기'},
+{id:'d4',title:'4. 안전시설물 설치기준 · 안전보건표지 설치기준',
+ core:'안전난간 {{상부 90cm 이상·발끝막이판 10cm 이상·100kg}} / 개구부 {{덮개·울·난간}} / 회전부 {{덮개·울·슬리브·건널다리}} / 표지 {{쉽게 보이는 곳·견고하게·야간 야광}}',
+ def:'<ul><li>기계 주변에 설치하는 물리적 안전시설과 표지의 설치 기준 (1과목 6장 기준규칙, 2장 표지와 연결)</li></ul>',
+ detail:'<b>원동기·회전축 등 (안전보건기준규칙 제87조)</b><ul><li>원동기·회전축·기어·풀리·플라이휠·벨트·체인 등 위험 부위에 덮개·울·슬리브·건널다리</li><li>회전축·기어 등에 부속하는 키·핀 등 고정구는 묻힘형(돌출 금지) 또는 덮개</li><li>벨트 이음 부분에 돌출 고정구 사용 금지</li><li>건널다리에는 안전난간·미끄러지지 않는 발판</li></ul><b>기계 주변 안전시설</b><ul><li>안전난간: 상부 난간대 90cm 이상, 발끝막이판 10cm 이상, 100kg 하중</li><li>작업발판·통로, 추락 위험 개구부 덮개, 방호울</li><li>비상정지 스위치: 쉽게 닿는 위치, 적색 버섯형</li></ul><b>안전보건표지 설치</b>: 근로자가 쉽게 알아볼 수 있는 장소, 흔들리거나 파손되지 않게, 야간에는 야광·조명, 필요 시 문자 추가 (1과목 2장)',
+ exam:'<ul><li>회전축 고정구 묻힘형</li><li>안전난간 치수</li></ul>',
+ law:'안전보건기준규칙 제13조(안전난간), 제87조(원동기·회전축 등의 위험 방지), 시행규칙 제39조(표지 설치).'},
+
+{id:'d5',title:'5. 기계 종류별 안전장치 설치기준 · 기계의 위험점 분석',
+ core:'지게차 {{헤드가드·백레스트·전조등·후미등}} / 컨베이어 {{이탈·역주행 방지·비상정지·덮개·건널다리}} / 양중기 {{과부하방지·권과방지·비상정지·제동}} / 위험점 {{협·끼·절·물·접·회}}',
+ def:'<ul><li>3장에서 배운 기계별 방호장치를 한 표로 정리한 카드입니다.</li></ul>',
+ detail:'<table><tr><th>기계</th><th>주요 안전장치</th></tr><tr><td>지게차</td><td>헤드가드, 백레스트, 전조등·후미등, 경보장치, 좌석 안전띠</td></tr><tr><td>컨베이어</td><td>이탈·역주행 방지장치, 비상정지장치, 덮개·울, 건널다리</td></tr><tr><td>양중기(크레인 등)</td><td>과부하방지장치, 권과방지장치, 비상정지장치, 제동장치, 훅 해지장치</td></tr><tr><td>구내운반차</td><td>제동장치, 경음기, 방향지시기, 전조등·후미등</td></tr><tr><td>프레스</td><td>가드식·손쳐내기식·수인식·양수조작식·광전자식</td></tr><tr><td>롤러기</td><td>급정지장치, 가드</td></tr><tr><td>연삭기</td><td>덮개, 워크레스트</td></tr><tr><td>둥근톱</td><td>반발예방장치, 날접촉예방장치</td></tr><tr><td>보일러</td><td>압력방출장치, 압력제한스위치, 고저수위조절장치, 화염검출기</td></tr><tr><td>산업용 로봇</td><td>방책(1.8m), 감응형 방호장치, 비상정지</td></tr></table><b>위험점 분석 절차</b>: 운동 부분 찾기 → 운동 형태(회전·왕복·직선) 판단 → 위험점 종류(협착·끼임·절단·물림·접선물림·회전말림) 결정 → 방호장치 선정',
+ exam:'<ul><li>기계와 방호장치 짝짓기</li></ul>',
+ law:'안전보건기준규칙 제2편 제1장.'},
+
+{grp:'4-3. 안전시설 유지·관리하기'},
+{id:'d6',title:'6. KS B 규격과 ISO 규격 통칙',
+ core:'{{ISO 12100}} 기계류 안전 설계 일반원칙 — 위험성 감소 3단계 {{본질적 안전설계 → 안전방호·보완적 방호 → 사용상 정보}} / {{ISO 13849}} 제어시스템 안전 성능수준 {{PL a~e}} / KS B = {{기계 부문}} 국가표준',
+ def:'<ul><li><b>KS(한국산업표준)</b>: 국가 표준. B는 기계 부문</li><li><b>ISO</b>: 국제표준화기구의 국제 표준. 기계 안전 KS는 대부분 ISO를 그대로 부합화(KS B ISO …)</li></ul>',
+ detail:'<b>기계 안전 표준 체계</b><table><tr><th>유형</th><th>내용</th><th>예</th></tr><tr><td>A형(기본 안전 표준)</td><td>모든 기계에 적용되는 기본 개념·원칙</td><td>{{ISO 12100}} (설계 일반원칙, 위험성평가·감소)</td></tr><tr><td>B형(그룹 안전 표준)</td><td>여러 기계에 공통인 안전 측면·장치</td><td>ISO 13857 안전거리, {{ISO 13849}} 제어 시스템, ISO 13850 비상정지, ISO 14119 인터록</td></tr><tr><td>C형(개별 기계 안전 표준)</td><td>특정 기계</td><td>프레스, 로봇(ISO 10218) 등</td></tr></table><b>ISO 12100 위험성 감소 3단계</b><ol><li>본질적 안전 설계 (위험 제거·감소)</li><li>안전 방호 및 보완적 방호 조치 (가드, 방호장치, 비상정지)</li><li>사용상 정보 (경고표지, 매뉴얼, 교육)</li></ol><b>ISO 13849</b>: 안전 관련 제어 부품의 성능 수준 PL(a~e, e가 가장 높음)<br><b>IEC 62061</b>: 안전무결성 수준 SIL',
+ exam:'<ul><li>ISO 12100 위험성 감소 3단계 순서</li></ul>',
+ law:'국가표준기본법, 산업표준화법(KS). 법정 기준은 아니지만 안전인증 기준의 기초.'},
+
+{id:'d7',title:'7. 유해위험기계기구 종류 및 특성 (정리)',
+ core:'안전인증 {{프레스·전단기·크레인·리프트·압력용기·롤러기·사출성형기·고소작업대·곤돌라}} / 자율안전확인 {{연삭기·로봇·혼합기·파쇄기·컨베이어·정비용 리프트·공작기계·목재가공기계·인쇄기}} / 안전검사 {{사용 중 정기}}',
+ def:'<ul><li>1장 「유해위험기계기구 종류」 카드의 복습용 요약입니다.</li></ul>',
+ detail:'<table><tr><th>제도</th><th>대상 기계</th><th>유지관리 포인트</th></tr><tr><td>안전인증</td><td>프레스, 전단기·절곡기, 크레인, 리프트, 압력용기, 롤러기, 사출성형기, 고소작업대, 곤돌라</td><td>KCs 인증 표시 확인, 인증 방호장치 유지</td></tr><tr><td>자율안전확인</td><td>연삭기·연마기, 산업용 로봇, 혼합기, 파쇄기·분쇄기, 식품가공용 기계, 컨베이어, 자동차정비용 리프트, 공작기계, 고정형 목재가공용 기계, 인쇄기</td><td>자율안전확인 표시, 방호장치 유지</td></tr><tr><td>안전검사</td><td>프레스, 전단기, 크레인, 리프트, 압력용기, 곤돌라, 국소배기장치, 원심기, 롤러기, 사출성형기, 고소작업대, 컨베이어, 산업용 로봇, 혼합기, 파쇄기 등</td><td>주기(3년 → 2년, 건설 6개월) 준수, 합격 표시</td></tr></table><b>공통 유지관리</b>: 작업시작 전 점검(안전보건기준규칙 별표 3), 정기 점검 기록, 방호장치 임의 해체 금지, 설비 변경 시 재검토',
+ exam:'<ul><li>제도별 대상 구분</li></ul>',
+ law:'산업안전보건법 시행령 제74조·제77조·제78조.'},
+
+{id:'d8',title:'키워드 카드 — 3과목 주요항목 4',tag:'암기',
+ core:'구비조건 {{작업 방해 X}} / 해체 {{허가 → 즉시 복구}} / ISO 12100 {{본질 → 방호 → 정보}}',
+ detail:'<table><tr><th>키워드</th><th>짝</th></tr><tr><td>방호장치 첫째 조건</td><td>{{작업에 방해가 되지 않을 것}}</td></tr><tr><td>방호장치 해체 후</td><td>{{즉시 원상회복}}</td></tr><tr><td>인터록 가드</td><td>{{Fool proof}}</td></tr><tr><td>정전 시 브레이크</td><td>{{Fail safe}}</td></tr><tr><td>회전축 고정구</td><td>{{묻힘형}}</td></tr><tr><td>A형 기본 안전 표준</td><td>{{ISO 12100}}</td></tr><tr><td>PL a~e</td><td>{{ISO 13849}}</td></tr><tr><td>사용상 정보</td><td>{{위험성 감소 3단계의 마지막}}</td></tr></table>'}
+];
+
+var MN={
+d1:[
+ {k:'불편하면 뗀다',s:'"<b>불편한 안전장치는 결국 떼어진다</b> — 그래서 첫째 조건은 \'작업에 방해 없음\'"',m:'구비조건 1순위 {{작업에 방해되지 않을 것}}'},
+ {k:'허 → 해 → 복',s:'"<b>허해복</b>(허락받고 해체하고 바로 복구)"',m:'{{허가}} → {{해체}} → {{즉시 원상회복}}'}],
+d3:[
+ {k:'가 · 록 · 트 · 오',s:'"<b>가록트오</b> → \'가로 트고 오버\'" — 가드, 록, 트립, 오버런',m:'Fool proof {{가드·록·트립·오버런}} 기구'}],
+d6:[
+ {k:'본 → 방 → 정',s:'"<b>본방</b>사수 후 <b>정</b>보 확인" — 설계로 없애고, 막고, 알려준다',m:'{{본질적 안전설계}} → {{방호 조치}} → {{사용상 정보}}'}]
+};
+function mnBox(id){var a=MN[id];if(!a)return '';var h='<div class="mn"><div class="mnh">연상 암기</div>';a.forEach(function(x){h+='<div class="mni"><span class="mnk">'+x.k+'</span><div class="mns">'+x.s+'</div><div class="mnm">→ '+mk(x.m)+'</div></div>'});return h+'</div>';}
+var st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+var round=1,maskOn=false,filterOn=false;
+var items=DATA.filter(function(d){return d.id});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function g(id){if(!st[id])st[id]={r:[0,0,0,0,0],s:0,v:0};return st[id]}
+function mk(t){return (t||'').replace(/\{\{(.+?)\}\}/g,'<span class="m">$1</span>')}
+
+var HINTS={1:'1회독 · 이해: 8칸을 모두 펼쳐 읽습니다. 헷갈리면 「애매함」을 누르세요.',2:'2회독 · 구조화: 세부 내용과 비교표만 봅니다. 애매함은 노란 표시로 강조됩니다.',3:'3회독 · 인출: 핵심 단어가 가려집니다. 떠올린 뒤 눌러 확인하고, 틀리면 ★.',4:'4회독 · 약점: ★·애매함 항목만 다시 풉니다.',5:'5회독 · 초압축: 항목별 한 줄 요약만 가려서 훑습니다. 시험 직전용.'};
+
+function render(){
+  var o='',shown=0;
+  document.body.classList.toggle('mask',maskOn);
+  DATA.forEach(function(d){
+    if(d.grp){o+='<h2 class="grp">'+d.grp.replace(/^\S+\s/,function(m){return m})+'</h2>';return}
+    var s=g(d.id);
+    if((filterOn||round===4)&&!(s.s||s.v))return;
+    shown++;
+    var open=round===1?ORDER:(round===5?[]:['detail','cmp']);
+    var h='<div class="item'+(s.v?' vague':'')+'" id="'+d.id+'"><div class="ih"><div class="tt">'+d.title+(d.tag?'<span class="badge">'+d.tag+'</span>':'')+'</div><div class="chk">';
+    for(var i=0;i<5;i++)h+='<label>'+(i+1)+'<input type="checkbox" data-id="'+d.id+'" data-r="'+i+'"'+(s.r[i]?' checked':'')+'></label>';
+    h+='</div><div class="ic"><button data-act="v" data-id="'+d.id+'" class="'+(s.v?'on':'')+'">애매함</button><button data-act="s" data-id="'+d.id+'" class="'+(s.s?'on':'')+'">★</button></div></div>';
+    h+='<div class="core"><b>핵심</b> · '+mk(d.core)+'</div>';
+    h+=mnBox(d.id);
+    if(round!==5){
+      ORDER.forEach(function(k){
+        if(!d[k])return;
+        h+='<details'+(open.indexOf(k)>-1?' open':'')+'><summary>'+LABEL[k]+'</summary><div class="cb">'+mk(d[k])+'</div></details>';
+      });
+    }
+    h+='</div>';o+=h;
+  });
+  if(!shown)o+='<div class="empty">표시할 항목이 없습니다. ★·애매함을 표시한 항목이 여기에 모입니다.</div>';
+  document.getElementById('list').innerHTML=o;
+  var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+  document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+  document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  document.getElementById('hint').textContent=HINTS[round];
+  var rb=document.querySelectorAll('#rounds button');
+  for(var i=0;i<rb.length;i++)rb[i].classList.toggle('on',i===round-1);
+  document.getElementById('bMask').classList.toggle('on',maskOn);
+  document.getElementById('bStar').classList.toggle('on',filterOn);
+}
+
+(function init(){
+  var r=document.getElementById('rounds');
+  for(var i=1;i<=5;i++){var b=document.createElement('button');b.innerHTML=i+'<span class="w">회독</span>';b.setAttribute('data-round',i);r.appendChild(b)}
+  r.addEventListener('click',function(e){
+    var bt=e.target.closest('button');var n=bt&&bt.getAttribute('data-round');if(!n)return;
+    round=+n;maskOn=(round>=3);render();
+  });
+  document.getElementById('bMask').onclick=function(){maskOn=!maskOn;render()};
+  document.getElementById('bStar').onclick=function(){filterOn=!filterOn;render()};
+  document.getElementById('list').addEventListener('click',function(e){
+    var t=e.target;
+    if(t.classList&&t.classList.contains('m')&&document.body.classList.contains('mask')){t.classList.toggle('show');return}
+    var a=t.getAttribute&&t.getAttribute('data-act');
+    if(a){var s=g(t.getAttribute('data-id'));s[a]=s[a]?0:1;save();render()}
+  });
+  document.getElementById('list').addEventListener('change',function(e){
+    var t=e.target;if(t.type!=='checkbox')return;
+    var s=g(t.getAttribute('data-id'));s.r[+t.getAttribute('data-r')]=t.checked?1:0;save();
+    var done=0;items.forEach(function(d){if(g(d.id).r[round-1])done++});
+    document.getElementById('prog').textContent=round+'회독 '+done+'/'+items.length;
+    document.getElementById('barfill').style.width=(done/items.length*100)+'%';
+  });
+  render();
+})();
+</script>
+</body>
+</html>
